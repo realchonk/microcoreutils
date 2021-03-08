@@ -6,6 +6,7 @@ programs=$(patsubst src/%.c,bin/%,$(wildcard src/*.c))
 all: progs
 
 progs: bin $(programs)
+	ln -sf test bin/[
 
 bin:
 	mkdir -p bin
@@ -16,5 +17,11 @@ bin/%: src/%.c
 clean:
 	rm -rf bin
 
-.PHONY: all progs clean
+todo:
+	@grep -n TODO $(wildcard src/*.c)
+
+help:
+	@cat README.MD
+
+.PHONY: all progs clean todo help
 
