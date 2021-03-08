@@ -9,19 +9,22 @@ static void cat(FILE* file) {
 }
 
 int main(int argc, char* argv[]) {
-	if (argc == 1) return cat(stdin), 0;
 	int ec = 0;
-	for (int i = 1; i < argc; ++i) {
+	int has_done = 0;
+   for (int i = 1; i < argc; ++i) {
 		FILE* file;
+      if (strcmp("-u", argv[i]) == 0) continue;
       if (strcmp("-", argv[i]) == 0) file = stdin;
       else file = fopen(argv[i], "r");
-		if (!file) {
-			fprintf(stderr, "%s: %s: %s\n", argv[0], argv[i], strerror(errno));
+		has_done = 1;
+      if (!file) {
+			fprintf(stderr, "cat: %s: %s\n", argv[i], strerror(errno));
 			ec = 1;
 			continue;
 		}
 		cat(file);
 		fclose(file);
-	}
+   }
+	if (!has_done) cat(stdin);
 	return ec;
 }

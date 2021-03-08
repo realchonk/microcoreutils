@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
 
@@ -25,6 +26,7 @@ static void print_str(const char* s) {
          switch (ch) {
          case 'a':   putchar('\a'); break;
          case 'b':   putchar('\b'); break;
+         case 'c':   exit(0);
          case 'f':   putchar('\f'); break;
          case 'n':   putchar('\n'); break;
          case 'r':   putchar('\r'); break;
