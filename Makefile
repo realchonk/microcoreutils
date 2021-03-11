@@ -29,6 +29,9 @@ todo:
 
 help:
 	@cat README.MD
+	@echo
+	@echo "TODOs:"
+	@grep -n TODO $(wildcard src/*.c)
 
 $(BINDIR):
 	install -dm755 $@
