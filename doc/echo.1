@@ -1,0 +1,126 @@
+.TH echo 1 "2021-03-11"
+
+.SH NAME
+echo - write arguments to standard output
+
+.SH SYNOPSIS
+.SY echo
+.OP string...
+.YS
+
+.SH DESCRIPTION
+.SY The
+.I
+echo
+utility writes its arguments to standard output,
+followed by a <newline>.
+
+.SH OPTIONS
+The
+.I
+echo
+utility recognizes the "--" argument as a string operand.
+.PP
+Implementations shall not support any options.
+
+.SH OPERANDS
+The following operands are be supported:
+.I
+string
+.RE
+.RS 5
+\\a
+.RE
+.RS 10
+Write an <alert>.
+.RE
+.RS 5
+\\b
+.RE
+.RS 10
+Write a <backspace>.
+.RE
+.RS 5
+\\c
+.RE
+.RS 10
+Suppress the <newline> that otherwise follows the final argument in the output.
+All characters following the '\\c' in the arguments are ignored.
+.RE
+.RS 5
+\\f
+.RE
+.RS 10
+Write a <form-feed>.
+.RE
+.RS 5
+\\n
+.RE
+.RS 10
+Write a <newline>.
+.RE
+.RS 5
+\\r
+.RE
+.RS 10
+Write a <carriage-return>.
+.RE
+.RS 5
+\\t
+.RE
+.RS 10
+Write a <tab>.
+.RE
+.RS 5
+\\v
+.RE
+.RS 10
+Write a <vertical-tab>.
+.RE
+.RS 5
+\\\\
+.RE
+.RS 10
+Write a <backslash> character.
+.RE
+.RS 5
+\\0\fInum\fR
+.RE
+.RS 10
+Write an 8-bit value that is a zero, one, two or three-digit octal number
+.I
+num\fR.
+.RE
+.RS 5
+\\x\fInum\fR
+.RE
+.RS 10
+Write an 8-bit value that is a zero, one or two-digit hexadecimal number
+.I
+num
+(extension).
+
+.SH STDIN
+Not used.
+
+.SH STDOUT
+The
+.I
+echo
+utility arguments are separated by single <space> characters and a <newline> character follows the last argument, if '\\c' was not specified.
+
+.SH STDERR
+Not used.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+The
+.I
+echo
+utility always returns 0 as the exit status, meaning success.
+

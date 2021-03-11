@@ -1,0 +1,63 @@
+.TH unlink 1 "2021-03-11"
+
+.SH NAME
+unlink - call the unlink function
+
+.SH SYNOPSIS
+.SY unlink
+.I
+file
+.YS
+
+.SH DESCRIPTION
+The
+.I
+unlink
+utility performs the function call:
+.RE
+unlink(\fIfile\fR);
+.PP
+A used may need appropriate privileges to invoke the
+.I
+unlink
+utility.
+
+.SH OPTIONS
+None.
+
+.SH OPERANDS
+The following operands are supported:
+.RE
+.I
+file
+.RE
+.RS 5
+The pathname of an existing file.
+
+.SH STDIN
+Not used.
+
+.SH STDOUT
+Not used.
+
+.SH STDERR
+The standard error is being used for diagnostic messages.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+The following exit values shall be returned:
+.PP
+0
+.RE
+.RS 5
+Successfull completion.
+.RE
+>0
+.RE
+.RS 5
+An error occured.

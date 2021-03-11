@@ -1,0 +1,84 @@
+.TH cat 1 "2021-03-11"
+
+.SH NAME
+cat - concatenate and print files
+
+.SH SYNOPSIS
+.SY cat
+.OP -u
+.OP file...
+.YS
+
+.SH DESCRIPTION
+The
+.I
+cat
+utility reads files in sequence and writes their contents to the standard output in the same sequence.
+
+.SH OPTIONS
+.B
+-u
+.RE
+.RS 5
+(ignored)
+
+.SH OPERANDS
+The following operand is supported:
+.PP
+.I
+file
+.RE
+.RS 5
+A pathname of an input file. If no
+.I
+file
+operands are specified, the standard input is being used. If a
+.I
+file
+is '-', the
+.I
+cat
+utility reads from the standard input at that point in sequence.
+The
+.I
+cat
+utility does not close or reopen standard input referenced in this way,
+but accepts multiple occurences of '-' as a
+.I
+file
+operand.
+
+.SH STDIN
+The standard input is being used if no
+.I
+file
+operands are specifies, or if a
+.I
+file
+operand is '-'.
+See INPUT FILES section.
+
+.SH STDOUT
+The standard output contains the sequence of bytes read from the input files.
+
+.SH STDERR
+The standard error is being used for diagnostic messages.
+
+.SH INPUT FILES
+The input files can be of any type.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+The following exit values are returned:
+.PP
+0
+.RE
+.RS 5
+All input files were output successfully.
+.RE
+>0
+.RE
+.RS 5
+An error occured.

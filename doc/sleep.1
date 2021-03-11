@@ -1,0 +1,62 @@
+.TH sleep 1 "2021-03-11"
+
+.SH NAME
+sleep - suspend execution for an interval
+
+.SH SYNOPSIS
+.SY sleep
+.I
+time
+.YS
+
+.SH DESCRIPTION
+The
+.I
+sleep
+utility suspends execution for at least the integral number of seconds specified by the
+.I
+time
+operand.
+
+.SH OPTIONS
+None.
+
+.SH OPERANDS
+The following operand are be supported:
+.PP
+.I
+time
+.RE
+.RS 5
+A non-negative decimal integer specifying the number of seconds for which to suspend execution.
+
+.SH STDIN
+Not used.
+
+.SH STDOUT
+Not used.
+
+.SH STDERR
+Not used.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+The following exit values are returned:
+.PP
+0
+.RE
+.RS 5
+The execution was successfully suspended for at least
+.I
+time
+seconds.
+.RE
+>0
+.RE
+.RS 5
+An error occured.
