@@ -1,0 +1,90 @@
+.TH uname 1 "2021-03-11"
+
+.SH NAME
+uname - return UNIX name
+
+.SH SYNOPSIS
+.SY uname
+.OP -amnrsv
+.YS
+
+.SH DESCRIPTION
+By default the
+.I
+uname
+utility writes the operating system name to standard output.
+When options are specified, 
+.I
+uname
+writes the specified information to standard output.
+
+.SH OPTIONS
+.B
+-a
+.RE
+.RS 5
+Behaves as though all of the options
+.B
+-mnrsv
+were specified.
+.RE
+.B
+-m
+.RE
+.RS 5
+Write the name of the hardware type on which the system is running to standard output.
+.RE
+.B
+-n
+.RE
+.RS 5
+Write the hostname to standard output.
+.RE
+.B
+-r
+.RE
+.RS 5
+Write the current release level of the operating system implementation to standard output.
+.RE
+.B
+-s
+.RE
+.RS 5
+Write the name of the implementation of the operating system.
+.RE
+.B
+-v
+.RE
+.RS 5
+Write the current version level of this release of the operating system implementation to standard output.
+
+.SH OPERANDS
+None.
+
+.SH STDIN
+Not used.
+
+.SH STDOUT
+Information of the operating system is written to standard output.
+
+.SH STDERR
+The standard error is being used for diagnostic messages.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+The following exit values are returned:
+.PP
+0
+.RE
+.RS 5
+The requested information was successfully written.
+.RE
+>0
+.RE
+.RS 5
+An error occured.
