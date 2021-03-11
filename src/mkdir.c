@@ -8,7 +8,7 @@
 
 int main(int argc, char* argv[]) {
    if (argc < 2) {
-      puts("Usage: mkdir [-p] [-m mode] dir...");
+      fputs("Usage: mkdir [-p] [-m mode] dir...\n", stderr);
       return 1;
    }
 
@@ -23,24 +23,46 @@ int main(int argc, char* argv[]) {
          mode = strtol(optarg, NULL, 8) & 0777;
          break;
       case ':':
-         puts("mkdir: -m needs an argument");
+         fputs("mkdir: -m needs an argument\n", stderr);
          break;
       case '?':
-         printf("mkdir: unknown option: -%c\n", optopt);
+         fprintf(stderr, "mkdir: unknown option: -%c\n", optopt);
          break;
       }
    }
    int ec = 0;
    for (; optind < argc; ++optind) {
-      const char* name = argv[optind];
+      const char* path = argv[optind];
       if (make_parents) {
-         // TODO
+         char* buffer = (char*)malloc(strlen(path) + 1);
+         if (!buffer) {
+            fprintf(stderr, "mkdir: %s\n", strerror(errno));
+            ec = 1;
+            continue;
+         }
+
+         char* end = buffer;
+         while (1) {
+            strcpy(buffer, path);
+            end = strchr(end, '/');
+            if (!end) break;
+            *end = '\0';
+            ++end;
+            if (mkdir(buffer, mode) != 0) {
+               fprintf(stderr, "mkdir: failed to create: '%s': %s\n", path, strerror(errno));
+               ec = 1;
+               goto failed;
+            }
+
+         }
+
+         free(buffer);
       }
-      const int r = mkdir(name, mode);
-      if (r != 0) {
-         printf("mkdir: failed to create '%s': %s\n", name, strerror(errno));
+      if (mkdir(path, mode) != 0) {
+         fprintf(stderr, "mkdir: failed to create '%s': %s\n", path, strerror(errno));
          ec = 1;
       }
+failed:;
    }
    return ec;
 }

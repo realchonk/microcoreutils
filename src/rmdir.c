@@ -39,7 +39,7 @@ print_usage:
          strcpy(buffer, path);
          while ((end = strrchr(buffer, '/')) != NULL) {
             *end = '\0';
-            if (rmdir(path) < 0) {
+            if (rmdir(path) != 0) {
                fprintf(stderr, "rmdir: %s: %s\n", path, strerror(errno));
                ec = 1;
                break;
