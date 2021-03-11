@@ -17,9 +17,9 @@ There are no extra options than described by POSIX.<br>
 - dirname
 - id
 - uname
+- wc
 
 ## Unfinished
-- wc
 - test
 - rm
 

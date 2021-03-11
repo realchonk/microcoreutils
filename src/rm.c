@@ -3,7 +3,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
+#include <dirent.h>
 #include <stdio.h>
 #include <errno.h>
 
@@ -20,6 +22,69 @@ static int do_prompt(void) {
    return (ch == 'y') || (ch == 'Y');
 }
 
+static int euid, egid, recursive, force, prompt;
+static int delete_file(const char*);
+static int recursive_delete(const char* path) {
+   DIR* dir;
+   struct dirent* ent;
+   if ((dir = opendir(path)) == NULL) {
+      fprintf(stderr, "rm: failed to open '%s': %s\n", path, strerror(errno));
+      return 0;
+   }
+
+   const size_t len = strlen(path);
+   char* buffer = (char*)malloc(len + 260);
+   readdir(dir);  // read .
+   readdir(dir);  // read ..
+   int rv = 1;
+   while ((ent = readdir(dir)) != NULL) {
+      memcpy(buffer, path, len);
+      buffer[len] = '/';
+      strncpy(buffer + len + 1, ent->d_name, 256);
+      
+      if (!delete_file(buffer) && !force)
+         rv = 0;
+
+   }
+   free(buffer);
+   return rv;
+}
+
+static int delete_file(const char* path) {
+   struct stat statbuf;
+   if (stat(path, &statbuf) != 0) {
+      if (!force) {
+         fprintf(stderr, "rm: cannot remove '%s': %s\n", path, strerror(errno));
+         return 0;
+      }
+      return 1;
+   }
+   const int mode = statbuf.st_mode & 0777;
+   const int uid = statbuf.st_uid;
+   const int gid = statbuf.st_gid;
+   if (prompt || (!has_permission(euid, egid, uid, gid, mode) && !force)) {
+      fprintf(stderr, "rm: remove '%s'? ", path);
+      if (!do_prompt()) return 1;
+   }
+
+
+   if ((statbuf.st_mode & S_IFMT) == S_IFDIR) {
+      // 'path' is a directory
+      if (!recursive) {
+         fprintf(stderr, "rm: cannot remove '%s': %s\n", path, strerror(EISDIR));
+         return 0;
+      }
+      return recursive_delete(path);
+   }
+
+   if (unlink(path) != 0) {
+      fprintf(stderr, "rm: cannot remove '%s': %s\n", path, strerror(errno));
+      return 0;
+   }
+   return 1;
+}
+
+
 int main(int argc, char* argv[]) {
    if (argc < 2) {
    print_usage:
@@ -27,9 +92,9 @@ int main(int argc, char* argv[]) {
       fputs("       rm -f [-iRr] [file...]\n", stderr);
       return 1;
    }
-   int force = 0;
-   int recursive = 0;
-   int prompt = 0;
+   force = 0;
+   recursive = 0;
+   prompt = 0;
    int option;
    while ((option = getopt(argc, argv, ":iRrf")) != -1) {
       switch (option) {
@@ -45,47 +110,13 @@ int main(int argc, char* argv[]) {
       else goto print_usage;
    }
 
-   const int euid = geteuid();
-   const int egid = getegid();
+   euid = geteuid();
+   egid = getegid();
 
    int ec = 0;
    for (; optind < argc; ++optind) {
       const char* path = argv[optind];
-      struct stat statbuf;
-      if (stat(path, &statbuf) != 0) {
-         if (!force) {
-            fprintf(stderr, "rm: cannot remove '%s': %s\n", path, strerror(errno));
-            ec = 1;
-         }
-         continue;
-      }
-
-      const int mode = statbuf.st_mode & 0777;
-      const int uid = statbuf.st_uid;
-      const int gid = statbuf.st_gid;
-
-      if (prompt || (!has_permission(euid, egid, uid, gid, mode) && !force)) {
-         fprintf(stderr, "rm: remove '%s'? ", path);
-         if (!do_prompt()) continue;
-      }
-
-
-      if ((statbuf.st_mode & S_IFMT) == S_IFDIR) {
-         // 'path' is a directory
-         if (!recursive) {
-            fprintf(stderr, "rm: cannot remove '%s': %s\n", path, strerror(EISDIR));
-            ec = 1;
-            continue;
-         }
-         // TODO: implement recursive remove
-         fputs("Recursive rm is not implemented!\n", stderr);
-         continue;
-      }
-
-      if (unlink(path) != 0) {
-         fprintf(stderr, "rm: cannot remove '%s': %s\n", path, strerror(errno));
-         ec = 1;
-      }
+      if (!delete_file(path)) ec = 1;
    }
    return ec;
 }
