@@ -1,26 +1,60 @@
-.TH cat 1 "2021-03-11"
+.TH head 1 "2021-03-11"
 
 .SH NAME
-cat - concatenate and print files
+head - copy the first part of files
 
 .SH SYNOPSIS
-.SY cat
-.OP -u
+.SY head
+.OP -n number
 .OP file...
 .YS
 
 .SH DESCRIPTION
 The
 .I
-cat
-utility reads files in sequence and writes their contents to the standard output in the same sequence.
+head
+utility copies its input files to the standard output,
+ending the output for each file at a designated point.
+.PP
+Copying ends at the point in each input file indicated by the
+.B
+-n
+.I
+number
+option.
+The option-argument
+.I
+number
+is measured in units of lines.
 
 .SH OPTIONS
 .B
--u
+-n
+.I
+number
 .RE
 .RS 5
-(ignored)
+The first
+.I
+number
+lines of each input file will be copied to standard output.
+The
+.I
+number
+option-argument has to be a positive decimal integer.
+.PP
+When a file contains less than
+.I
+number
+lines, it is copied to standard output entirely.
+.PP
+If no options are specified,
+.I
+head
+acts if
+.B
+-n 10
+has been specified.
 
 .SH OPERANDS
 The following operand is supported:
@@ -37,16 +71,8 @@ operands are specified, the standard input is being used. If a
 file
 is '-', the
 .I
-cat
-utility reads from the standard input at that point in sequence.
-The
-.I
-cat
-utility does not close or reopen standard input referenced in this way,
-but accepts multiple occurences of '-' as a
-.I
-file
-operand.
+head
+utility reads from the standard input.
 
 .SH STDIN
 The standard input is being used if no

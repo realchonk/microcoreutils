@@ -1,0 +1,78 @@
+.TH mkdir 1 "2021-03-11"
+
+.SH NAME
+mkdir - make directories
+
+.SH SYNOPSIS
+.SY mkdir
+.OP -p
+.OP -m mode
+.I
+dir...
+.YS
+
+.SH DESCRIPTION
+The
+.I
+mkdir
+utility creates the directories specified by the operands, in the order specified.
+
+.SH OPTIONS
+.B
+-m
+.I
+mode
+.RE
+.RS 5
+Set the file permission bits of the newly-created directory to the specified
+.I
+mode
+value.
+.RE
+.B
+-p
+.RE
+.RS 5
+Create any missing intermediate pathname components.
+.PP
+Each
+.I
+dir
+operand that names an existing directory is ignored.
+
+.SH OPERANDS
+The following operands are supported:
+.PP
+.I
+dir
+.RE
+.RS 5
+A pathname of a directory to be created.
+
+.SH STDIN
+Not used.
+
+.SH STDOUT
+Not used.
+
+.SH STDERR
+The standard error is being used for diagnostic messages.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+The following exit values shall be returned:
+.PP
+0
+.RE
+.RS 5
+Successfull completion.
+.RE
+>0
+.RE
+.RS 5
+An error occured.

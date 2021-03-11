@@ -1,0 +1,76 @@
+.TH basename 1 "2021-03-11"
+
+.SH NAME
+basename - return non-directory portion of a pathname
+
+.SH SYNOPSIS
+.SY basename
+.I string
+[\fIsuffix\fR]
+.YS
+
+.SH DESCRIPTION
+The
+.I
+basename
+utility prints the non-directory portion of a pathname.
+It prints the actual file name, discarded from the directory-part of the path.
+Optionally the
+.I
+basename
+utility discards the leading
+.I
+suffix
+of the
+.I
+string\fR.
+
+
+.SH OPTIONS
+None.
+
+.SH OPERANDS
+The following operands are be supported:
+.PP
+.I
+string
+.RE
+.RS 5
+A string.
+.RE
+.I
+suffix
+.RE
+.RS 5
+A string
+
+.SH STDIN
+Not used.
+
+.SH STDOUT
+The
+.I
+basename
+utility writes the resulting string followed by a <newline> character to the standard output.
+
+.SH STDERR
+The standard error is being used only for diagnostic messages.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+The following exit values are returned:
+.PP
+0
+.RE
+.RS 5
+Successfull completion.
+.RE
+>0
+.RE
+.RS 5
+An error occured.

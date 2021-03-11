@@ -1,38 +1,41 @@
-.TH unlink 1 "2021-03-11"
+.TH rmdir 1 "2021-03-11"
 
 .SH NAME
-unlink - call the unlink function
+rmdir - remove directories
 
 .SH SYNOPSIS
-.SY unlink
+.SY rmdir
+.OP -p
 .I
-file
+dir...
 .YS
 
 .SH DESCRIPTION
 The
 .I
-unlink
-utility performs the function call:
-.RE
-unlink(\fIfile\fR);
-.PP
-A used may need appropriate privileges to invoke the
+rmdir
+utility removes directory entries specified by the each
 .I
-unlink
-utility.
+dir
+operands, in the order specified.
+.PP
+The directories are processed in the order specified.
 
 .SH OPTIONS
-None.
+.B
+-p
+.RE
+.RS 5
+Remove all directories in a pathname.
 
 .SH OPERANDS
 The following operands are supported:
 .PP
 .I
-file
+dir
 .RE
 .RS 5
-The pathname of an existing file.
+A pathname of a directory to be removed.
 
 .SH STDIN
 Not used.

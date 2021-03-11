@@ -1,0 +1,86 @@
+.TH tee 1 "2021-03-11"
+
+.SH NAME
+tee - duplicate standard input
+
+.SH SYNOPSIS
+.SY tee
+.OP -ai
+[\fIfile\fR...]
+.YS
+
+.SH DESCRIPTION
+The
+.I
+tee
+utility copies standard input to standard output,
+making a copy in zero or more files.
+If the
+.B
+-a
+option is specified
+.I
+tee
+appends to
+.I
+file\fR.
+
+.SH OPTIONS
+.B
+-a
+.RE
+.RS 5
+Append the output to the files.
+.RE
+.B
+-i
+.RE
+.RS 5
+Ignore the
+.I
+SIGINT
+signal.
+
+.SH OPERANDS
+The following operand is supported:
+.PP
+.I
+file
+.RE
+.RS 5
+A pathname of an output file.
+If a
+.I
+file
+is '-', it refers to a file named -
+
+.SH STDIN
+The standard input can be of any type.
+
+.SH STDOUT
+The standard output is a copy of standard input.
+
+.SH STDERR
+The standard error is being used for diagnostic messages.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+If any
+.I
+file
+operands are specified, the standard input is copied to each names file.
+
+.SH EXIT STATUS
+The following exit values are returned:
+.PP
+0
+.RE
+.RS 5
+All input files were output successfully.
+.RE
+>0
+.RE
+.RS 5
+An error occured.
