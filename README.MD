@@ -19,6 +19,7 @@ There are no extra options than described by POSIX.<br>
 - uname
 - wc
 - rm
+- tr
 
 ## Unfinished
 - test

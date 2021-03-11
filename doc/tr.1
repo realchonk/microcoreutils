@@ -1,0 +1,98 @@
+.TH tr 1 "2021-03-11"
+
+.SH NAME
+tr - translate characters
+
+.SH SYNOPSIS
+.SY tr
+.OP -c|-C
+.OP -s
+.I string1
+.I string2
+.YS
+.SY tr
+.B -s
+.OP -c|-C
+.I string1
+.YS
+.SY tr
+.B -d
+.OP -c|-C
+.I string1
+.YS
+.SY tr
+.B -ds
+.OP -c|-C
+.I string1
+.I string2
+.YS
+
+.SH DESCRIPTION
+The
+.I
+tr
+utility copies the standard input to the standard output with substitution or deletion of selected characters.
+The options specified and the
+.I string1
+and
+.I string2
+operands control translations that occur while copying characters.
+
+.SH OPTIONS
+.B -c
+.RE
+.RS 5
+Complement the set of characters specified in
+.I string1\fR.
+.RE
+.B -C
+.RE
+.RS 5
+(same as -c)
+.RE
+.B -d
+.RE
+.RS 5
+Delete all occurences of input characters that are specified by
+.I string1\fR.
+.RE
+.B -s
+.RE
+.RS 5
+Replace instances of repeated characters with a single character.
+
+.SH OPERANDS
+.B string1\fR,
+.B string2
+.RE
+.RS 5
+Translation control strings.
+Each string represents a set of characters to be converted into an array of characters used for translation.
+
+.SH STDIN
+The standard input can be of any type of file
+
+.SH STDOUT
+The
+.I tr
+output is identical to the input, with the exception of the specified transformations.
+
+.SH STDERR
+The standard error is being used only for diagnostic messages.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+0
+.RE
+.RS 5
+All input processed successfully.
+.RE
+>0
+.RE
+.RS 5
+An error occured.
