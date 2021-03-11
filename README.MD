@@ -18,9 +18,10 @@ There are no extra options than described by POSIX.<br>
 - id
 - uname
 - wc
+- rm
 
 ## Unfinished
 - test
-- rm
-
-
+- chmod (minor problem)
+- chown (minor problem)
+- chgrp (minor problem)

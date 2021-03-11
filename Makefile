@@ -1,7 +1,7 @@
 CC=cc
 CFLAGS=-std=gnu99 -Wall -Wextra -O3
 
-programs=$(patsubst src/%.c,bin/%,$(wildcard src/*.c))
+programs=bin/[ $(patsubst src/%.c,bin/%,$(wildcard src/*.c))
 
 DESTDIR ?= /usr/local
 BINDIR ?= $(DESTDIR)/bin
@@ -13,10 +13,12 @@ doc_MANDIR=$(patsubst doc/%.1,$(MANDIR)/%.1,$(wildcard doc/*.1))
 all: progs
 
 progs: bin $(programs)
-	ln -sf test bin/[
 
 bin:
 	mkdir -p bin
+
+bin/[: bin/test
+	ln -sf test bin/[
 
 bin/%: src/%.c
 	$(CC) -o $@ $< $(CFLAGS)
