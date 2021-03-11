@@ -16,6 +16,7 @@ There are no extra options than described by POSIX.<br>
 - basename
 - dirname
 - id
+- uname
 
 ## Unfinished
 - wc
