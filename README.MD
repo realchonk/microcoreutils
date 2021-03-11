@@ -10,4 +10,4 @@
 - unlink
 - head
 - mv
-
+- rmdir
