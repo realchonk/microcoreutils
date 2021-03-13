@@ -46,6 +46,7 @@ static int do_chmod(const char* path, mode_t mode) {
          return false;
       }
       if ((dir = opendir(path)) == NULL) {
+         free(buffer);
          fprintf(stderr, "chmod: failed to access '%s': %s\n", path, strerror(errno));
          return false;
       }
@@ -60,6 +61,7 @@ static int do_chmod(const char* path, mode_t mode) {
             rv = false;
          }
       }
+      free(buffer);
    }
    if (chmod(path, mode) != 0) {
       fprintf(stderr, "chmod: failed to change mode for '%s': %s\n", path, strerror(errno));

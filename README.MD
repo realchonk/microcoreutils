@@ -26,3 +26,5 @@ There are no extra options than described by POSIX.<br>
 - chmod (minor problem)
 - chown (minor problem)
 - chgrp (minor problem)
+- pwd (minor problem)
+- ls (incomplete options)
