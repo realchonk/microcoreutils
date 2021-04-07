@@ -22,6 +22,7 @@ There are no extra options than described by POSIX.<br>
 - tr
 - date
 - kill
+- tty
 
 ## Unfinished
 - test
