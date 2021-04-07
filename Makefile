@@ -1,5 +1,5 @@
 CC=cc
-CFLAGS=-std=gnu99 -Wall -Wextra -O3
+CFLAGS=-static -std=gnu99 -Wall -Wextra -O3
 
 programs=bin/[ $(patsubst src/%.c,bin/%,$(wildcard src/*.c))
 
