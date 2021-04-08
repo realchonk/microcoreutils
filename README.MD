@@ -23,6 +23,7 @@ There are no extra options than described by POSIX.<br>
 - date
 - kill
 - tty
+- sync
 
 ## Unfinished
 - test
