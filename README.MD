@@ -24,6 +24,7 @@ There are no extra options than described by POSIX.<br>
 - kill
 - tty
 - sync
+- env
 
 ## Unfinished
 - test
@@ -32,4 +33,5 @@ There are no extra options than described by POSIX.<br>
 - chgrp (minor problem)
 - pwd (minor problem)
 - ls (incomplete options)
+- clear
 
