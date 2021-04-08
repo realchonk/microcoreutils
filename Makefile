@@ -1,7 +1,7 @@
 CC=cc
 CFLAGS=-static -std=gnu99 -Wall -Wextra -O3
 
-programs=bin/[ $(patsubst src/%.c,bin/%,$(wildcard src/*.c))
+programs=bin/[ $(patsubst src/%.c,bin/%,$(wildcard src/*.c)) $(patsubst src/%.sh,bin/%,$(wildcard src/*.sh))
 
 DESTDIR ?= /usr/local
 BINDIR ?= $(DESTDIR)/bin
@@ -22,6 +22,9 @@ bin/[: bin/test
 
 bin/%: src/%.c
 	$(CC) -o $@ $< $(CFLAGS)
+
+bin/%: src/%.sh
+	install -m755 $< $@
 
 clean:
 	rm -rf bin

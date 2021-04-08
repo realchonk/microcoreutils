@@ -32,7 +32,7 @@ int main(void) {
    while (1) {
       pid_t pid = fork();
       if (pid == 0) {
-         execl("/bin/sh", "/bin/sh", NULL);
+         execl("/bin/sh", "-", NULL);
          perror("init: failed to exec /bin/sh");
          return 1;
       }
