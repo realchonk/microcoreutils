@@ -34,4 +34,5 @@ There are no extra options than described by POSIX.<br>
 - pwd (minor problem)
 - ls (incomplete options)
 - clear
-
+- ed
+- halt

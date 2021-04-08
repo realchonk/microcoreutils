@@ -1,5 +1,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <stdbool.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,18 +12,106 @@
 #include <pwd.h>
 #include <grp.h>
 
-#ifndef true
-#define true 1
-#define false 0
-#endif
+static bool get_mode(const char* filename, mode_t* mode) {
+   struct stat st;
+   if (stat(filename, &st) < 0) {
+      fprintf(stderr, "chmod: %s: %s\n", filename, strerror(errno));
+      return false;
+   }
+   *mode = st.st_mode;
+   return true;
+}
 
-static int parse_mode(const char* s, unsigned* u) {
-   unsigned val = 0;
+static bool parse_mode(const char* s, mode_t* u) {
+   mode_t val = 0;
    for (size_t i = 0; s[i]; ++i) {
-      if (s[i] < '0' || s[i] > '7') return 0;
+      if (s[i] < '0' || s[i] > '7') return false;
       val = val * 8 + (s[i] - '0');
    }
    *u = val;
+   return true;
+}
+
+static void mode_add(mode_t* mode, int mask, bool value) {
+   if (value) *mode |= mask;
+   else *mode &= ~mask;
+}
+static bool strcnt(const char* s, char ch) {
+   while (*s) {
+      if (*s == ch) return true;
+      ++s;
+   }
+   return false;
+}
+static bool parse_mode2(const char* s, mode_t* mode, const mode_t um) {
+   bool u = false, g = false, o = false, a = false;
+   char op = '\0';
+
+   // rwxXst
+   char perms[6] = { 0 };
+   while (strcnt("ugoa", *s)) {
+      switch (*s) {
+      case 'u': u = true; break; // owner
+      case 'g': g = true; break; // group
+      case 'o': o = true; break; // other users
+      case 'a': a = true; break; // all users
+      }
+      ++s;
+   }
+   if (!strcnt("+-", *s)) return false;
+   op = *s++;
+   // TODO: add support for u+g etc.
+   // TODO: add support for multiple mode (eg. -rw+x)
+
+   if (!*s) return false;
+   while (strcnt("rwxXst", *s)) {
+      switch (*s) {
+      case 'r': perms[0] = op; break;
+      case 'w': perms[1] = op; break;
+      case 'x': perms[2] = op; break;
+      case 'X': perms[3] = op; break;
+      case 's': perms[4] = op; break;
+      case 't': perms[5] = op; break;
+      }
+      ++s;
+   }
+   if (*s) return false;
+
+   if (u + g + o + a == 0) {
+      if (perms[0]) mode_add(mode, 0444 & ~um, perms[0] == '+');
+      if (perms[1]) mode_add(mode, 0222 & ~um, perms[1] == '+');
+      if (perms[2]) mode_add(mode, 0111 & ~um, perms[2] == '+');
+      if (perms[3]) mode_add(mode, S_ISGID & ~um, perms[3] == '+');
+      if (perms[4]) mode_add(mode, S_ISUID & ~um, perms[4] == '+');
+      if (perms[5]) mode_add(mode, S_ISVTX & ~um, perms[5] == '+');
+      return true;
+   }
+   
+   if (u) {
+      if (perms[0]) mode_add(mode, S_IRUSR, perms[0] == '+');
+      if (perms[1]) mode_add(mode, S_IWUSR, perms[1] == '+');
+      if (perms[2]) mode_add(mode, S_IXUSR, perms[2] == '+');
+      if (perms[3]) mode_add(mode, S_ISGID, perms[3] == '+');
+      if (perms[4]) mode_add(mode, S_ISUID, perms[4] == '+');
+      if (perms[5]) mode_add(mode, S_ISVTX, perms[5] == '+');
+   }
+   if (g) {
+      if (perms[0]) mode_add(mode, S_IRGRP, perms[0] == '+');
+      if (perms[1]) mode_add(mode, S_IWGRP, perms[1] == '+');
+      if (perms[2]) mode_add(mode, S_IXGRP, perms[2] == '+');
+      if (perms[3]) mode_add(mode, S_ISGID, perms[3] == '+');
+      if (perms[4]) mode_add(mode, S_ISUID, perms[4] == '+');
+      if (perms[5]) mode_add(mode, S_ISVTX, perms[5] == '+');
+   }
+   if (o) {
+      if (perms[0]) mode_add(mode, S_IROTH, perms[0] == '+');
+      if (perms[1]) mode_add(mode, S_IWOTH, perms[1] == '+');
+      if (perms[2]) mode_add(mode, S_IXOTH, perms[2] == '+');
+      if (perms[3]) mode_add(mode, S_ISGID, perms[3] == '+');
+      if (perms[4]) mode_add(mode, S_ISUID, perms[4] == '+');
+      if (perms[5]) mode_add(mode, S_ISVTX, perms[5] == '+');
+   }
+
    return true;
 }
 
@@ -70,8 +159,6 @@ static int do_chmod(const char* path, mode_t mode) {
    return rv;
 }
 
-// TODO: add support for extended syntax (like: a+wt or +x)
-
 int main(int argc, char* argv[]) {
    if (argc < 2) {
 print_usage:
@@ -79,22 +166,21 @@ print_usage:
       return 1;
    }
    recursive = 0;
-   int option;
-   while ((option = getopt(argc, argv, ":R")) != -1) {
-      switch (option) {
-      case 'R':   recursive = 1; break;
-      default:    goto print_usage;
-      }
-   }
-   if ((argc - optind) < 2) goto print_usage;
-
-   unsigned mode;
-   if (!parse_mode(argv[optind++], &mode)) goto print_usage;
+   int narg = 1;
+   while (narg < argc && strcmp(argv[narg], "-R") == 0) recursive = 1, ++narg;
+   if (narg >= argc) goto print_usage;
+   const char* mode_str = argv[narg++];
+   const mode_t um = umask(0);
+   umask(um);
 
    int rv = 0;
-   for (; optind < argc; ++optind) {
-      const char* path = argv[optind];
-      if (!do_chmod(path, mode)) rv = 1;
+   for (; narg < argc; ++narg) {
+      const char* str = argv[narg];
+      if (strcmp(str, "-R") == 0) { recursive = 1; continue; }
+      mode_t mode;
+      if (!get_mode(str, &mode)) { rv = 1; continue; }
+      if (!parse_mode(mode_str, &mode) && !parse_mode2(mode_str, &mode, um)) goto print_usage;
+      if (!do_chmod(str, mode)) rv = 1;
    }
 
    return rv;

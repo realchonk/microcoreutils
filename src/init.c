@@ -3,15 +3,30 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <stdbool.h>
 #include <unistd.h>
+#include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+static bool running;
+static void signal_handler(int sig) {
+   switch (sig) {
+   case SIGTERM:
+   case SIGKILL: running = false; break;
+   }
+}
 
 int main(void) {
    if (getpid() != 1) {
       fputs("init: already running\n", stderr);
       return 1;
    }
+
+   // Register signal handlers
+   signal(SIGTERM, signal_handler);
+   signal(SIGKILL, signal_handler);
+
    // Create /proc, /sys, /dev, /dev/pts
    mkdir("/proc", 755);
    mkdir("/sys", 755);
@@ -29,7 +44,8 @@ int main(void) {
    putenv("SHELL=/bin/sh");
 
    // Start single-user mode
-   while (1) {
+   running = true;
+   while (running) {
       pid_t pid = fork();
       if (pid == 0) {
          execl("/bin/sh", "-", NULL);
@@ -40,6 +56,8 @@ int main(void) {
       waitpid(pid, &wstatus, 0);
       if (!WIFEXITED(wstatus) || WEXITSTATUS(wstatus) != 0) break;
    }
+
+   // TODO: terminate all processes
 
    // Write all changes to disk
    sync();
