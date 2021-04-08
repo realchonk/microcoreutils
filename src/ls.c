@@ -102,13 +102,10 @@ static int do_ls(const char* path) {
          fprintf(stderr, "ls: failed to access '%s': %s\n", path, strerror(errno));
          return 1;
       }
-      if (!show_hidden || show_hidden == 'A') {
-         readdir(dir);
-         readdir(dir);
-      }
       while ((ent = readdir(dir)) != NULL) {
          if (!show_hidden && ent->d_name[0] == '.')
             continue;
+         if ((strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0) && show_hidden != 'a') continue;
          memcpy(buffer, path, len);
          buffer[len] = '/';
          strncpy(buffer + len + 1, ent->d_name, sizeof(ent->d_name));
@@ -124,6 +121,8 @@ static int do_ls(const char* path) {
    }
    return 0;
 }
+
+// TODO: Implement sorting
 
 int main(int argc, char* argv[]) {
    int option;
