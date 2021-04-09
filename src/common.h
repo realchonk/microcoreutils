@@ -3,7 +3,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdbool.h>
+#include <string.h>
 #include <ctype.h>
+#include <errno.h>
 #include <pwd.h>
 #include <grp.h>
 
@@ -48,5 +50,12 @@ inline static int getusrinfo(uid_t* uid, gid_t* gid, const char* user, const cha
    }
    return true;
 }
+
+inline static const char* basename(const char* path) {
+   const char* tmp = strrchr(path, '/');
+   return tmp ? tmp + 1 : path;
+}
+
+
 
 #endif /* FILE_COMMON_H */

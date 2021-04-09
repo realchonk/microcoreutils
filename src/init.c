@@ -44,11 +44,14 @@ static bool init_hostname(const char* path, const char* defval) {
    FILE* file = fopen(path, "r");
    if (!file) return set_hostname(defval, strlen(defval));
    char buffer[HOST_NAME_MAX + 1];
-   fgets(buffer, sizeof(buffer), file);
+   if (!fgets(buffer, sizeof(buffer), file)) {
+      fclose(file);
+      return set_hostname(defval, strlen(defval));
+   }
    fclose(file);
 
    const size_t len = strlen(buffer) - 1;
-   buffer[len] = '\0';
+   if (buffer[len] == '\n') buffer[len] = '\0';
    return set_hostname(buffer, len);
 }
 

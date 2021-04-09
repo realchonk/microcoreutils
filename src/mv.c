@@ -30,7 +30,7 @@ print_usage:
       if (prompt && stat(dest, &s) >= 0) {
          char ch;
          printf("mv: overwrite '%s'? ", dest);
-         scanf("%c", &ch);
+         while (scanf("%c\n", &ch) == 0);
          if (ch != 'y') return 0;
       }
       const int ec = rename(src, dest);

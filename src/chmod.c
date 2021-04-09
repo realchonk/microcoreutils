@@ -58,24 +58,24 @@ static bool parse_mode2(const char* s, mode_t* mode, const mode_t um) {
       }
       ++s;
    }
-   if (!strcnt("+-", *s)) return false;
-   op = *s++;
-   // TODO: add support for u+g etc.
-   // TODO: add support for multiple mode (eg. -rw+x)
-
-   if (!*s) return false;
-   while (strcnt("rwxXst", *s)) {
-      switch (*s) {
-      case 'r': perms[0] = op; break;
-      case 'w': perms[1] = op; break;
-      case 'x': perms[2] = op; break;
-      case 'X': perms[3] = op; break;
-      case 's': perms[4] = op; break;
-      case 't': perms[5] = op; break;
+   do {
+      if (!strcnt("+-", *s)) return false;
+      op = *s++;
+      // TODO: add support for u+g etc and =
+      
+      if (!*s) return false;
+      while (strcnt("rwxXst", *s)) {
+         switch (*s) {
+         case 'r': perms[0] = op; break;
+         case 'w': perms[1] = op; break;
+         case 'x': perms[2] = op; break;
+         case 'X': perms[3] = op; break;
+         case 's': perms[4] = op; break;
+         case 't': perms[5] = op; break;
+         }
+         ++s;
       }
-      ++s;
-   }
-   if (*s) return false;
+   } while (*s);
 
    if (u + g + o + a == 0) {
       if (perms[0]) mode_add(mode, 0444 & ~um, perms[0] == '+');
@@ -139,12 +139,11 @@ static int do_chmod(const char* path, mode_t mode) {
          fprintf(stderr, "chmod: failed to access '%s': %s\n", path, strerror(errno));
          return false;
       }
-      readdir(dir); // read '.'
-      readdir(dir); // read '..'
+      memcpy(buffer, path, len);
+      buffer[len] = '/';
       while ((ent = readdir(dir)) != NULL) {
-         memcpy(buffer, path, len);
-         buffer[len] = '/';
-         strncpy(buffer + len + 1, ent->d_name, sizeof(ent->d_name));
+         if (strcmp(".", ent->d_name) == 0 || strcmp("..", ent->d_name) == 0) continue;
+         strncpy(buffer + len + 1, ent->d_name, 0 + sizeof(ent->d_name)); // '0 + ...' to suppress warnings on gcc
          if (chmod(buffer, mode) != 0) {
             fprintf(stderr, "chmod: failed to change mode for '%s': %s\n", buffer, strerror(errno));
             rv = false;
@@ -174,14 +173,18 @@ print_usage:
    umask(um);
 
    int rv = 0;
+   bool had_file = false;
    for (; narg < argc; ++narg) {
       const char* str = argv[narg];
       if (strcmp(str, "-R") == 0) { recursive = 1; continue; }
       mode_t mode;
+      had_file = true;
       if (!get_mode(str, &mode)) { rv = 1; continue; }
       if (!parse_mode(mode_str, &mode) && !parse_mode2(mode_str, &mode, um)) goto print_usage;
       if (!do_chmod(str, mode)) rv = 1;
    }
+
+   if (!had_file) goto print_usage;
 
    return rv;
 }

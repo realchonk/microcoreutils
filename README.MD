@@ -26,12 +26,12 @@ There are no extra options than described by POSIX.<br>
 - sync
 - env
 - pwd
+- chown
+- chgrp
+- test
 
 ## Unfinished
-- test (minor problem: ```-f file_descriptor``` not supported)
 - chmod (minor problem)
-- chown (minor problem)
-- chgrp (minor problem)
 - ls (incomplete options)
 - clear (minor problem)
 - ed

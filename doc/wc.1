@@ -1,0 +1,77 @@
+.TH wc 1 "2021-04-10"
+
+.SH NAME
+wc - word, line and byte or character count
+
+.SH SYNOPSIS
+.SY wc
+.OP -c\fR|\fB-m
+.OP -lw
+[\fIfile...\fR]
+.YS
+
+.SH DESCRIPTION
+The
+.I wc
+utility reads one or more input files and, by default,
+writes the number of lines, words and bytes contained in each input file to the standard output.
+The utility also writes a total count for all named files, if more than one input file is specified.
+
+.SH OPTIONS
+.B -c
+.RE
+.RS 5
+Write to the standard output the number of bytes in each input file.
+.RE
+.B -l
+.RE
+.RS 5
+Write to the standard output the number of lines in each input file.
+.RE
+.B -m
+.RE
+.RS 5
+Write to the standard output the number of characters in each input file.
+.RE
+.B -w
+.RE
+.RS 5
+Write to the standard output the number of words in each input file.
+
+.SH OPERANDS
+.I file
+.RE
+.RS 5
+A pathname to an input file. If no
+.I file
+operands are specified, the standard input is used.
+
+.SH STDIN
+The standard input is used if no
+.I file
+operands are specified, or one if a
+.I file
+operand is '-'.
+
+.SH STDOUT
+The resulting count is written to standard output.
+
+.SH STDERR
+The standard error is being used only for diagnostic messages.
+
+.SH INPUT FILES
+The input files may be of any type.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+0
+.RE
+.RS 5
+All input processed successfully.
+.RE
+>0
+.RE
+.RS 5
+An error occured.

@@ -1,0 +1,118 @@
+.TH chgrp 1 "2021-04-10"
+
+.SH NAME
+chgrp - change the file group ownership
+
+.SH SYNOPSIS
+.SY chgrp
+.OP -h
+.I group
+.I file...
+.YS
+
+.SY chgrp
+.B -R
+.OP -H\fR|\fB-L\fR|\fB-P
+.I group
+.I file...
+.YS
+
+.SH DESCRIPTION
+The
+.I
+chgrp
+utility sets the group ID of the file named by each
+.I file
+operand to the group ID specified by the
+.I group
+operand.
+If the option
+.B -R
+was used, the
+.I chgrp
+utility changes the file group ownership of directory trees.
+
+.SH OPTIONS
+.B -R
+.RE
+.RS 5
+Recursively change file group IDs.
+.RE
+.B -h
+.RE
+.RS 5
+If a file is of type symbolic link, the
+.I chgrp
+utility tries to change the ownership of the link.
+.RE
+.B -H
+.RE
+.RS 5
+If the
+.B -R
+option is specified and a symbolic link referencing a directory is specified on the command line,
+.I chgrp
+changes the group ID of the directory referenced by the symbolic link
+and all files in the file hierarchy below it.
+.RE
+.B -L
+.RE
+.RS 5
+If the
+.B -R
+option is specified and a symbolic link referencing a directory is specified on the command line
+or encountered during traversal of a file hierarchy,
+.I chgrp
+changes the group ID of the directory referenced by the symbolic link
+and all files in the file hierarchy below it.
+.RE
+.B -P
+.RE
+.RS 5
+If the
+.B -R
+option is specified and a symbolic link referencing a directory is specified on the command line
+or encountered during traversal of a file hierarchy,
+.I chgrp
+changes the group ID of the symbolic link.
+
+.SH OPERANDS
+The following operands are supported:
+.PP
+.I group
+.RE
+.RS 5
+A group ID to be assigned to \fIfile\fR.
+.RE
+.I file
+.RE
+.RS 5
+A pathname of a file whose user ID is to be modified.
+
+.SH STDIN
+Not used.
+
+.SH STDOUT
+Not used.
+
+.SH STDERR
+The standard error is being used for diagnostic messages.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+The following exit values shall be returned:
+.PP
+0
+.RE
+.RS 5
+Successfull completion.
+.RE
+>0
+.RE
+.RS 5
+An error occured.

@@ -1,9 +1,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <stdbool.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
+#include <limits.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <errno.h>
@@ -11,54 +13,9 @@
 #include <pwd.h>
 #include <grp.h>
 #include "common.h"
+#include "chown.h"
 
-#ifndef true
-#define true 1
-#define false 0
-#endif
-
-static int recursive;
-static int do_chown(const char* path, uid_t uid, gid_t gid) {
-   struct stat st;
-   if (stat(path, &st) != 0) {
-      fprintf(stderr, "chown: failed to stat '%s': %s\n", path, strerror(errno));
-      return false;
-   }
-   int rv = true;
-   if (recursive && (st.st_mode & S_IFMT) == S_IFDIR) {
-      // path is a directory
-      const size_t len = strlen(path);
-      DIR* dir;
-      struct dirent* ent;
-      char* buffer = (char*)malloc(len + 260);
-      if (!buffer) {
-         fprintf(stderr, "chown: failed to allocate buffer: %s\n", strerror(errno));
-         return false;
-      }
-      if ((dir = opendir(path)) == NULL) {
-         fprintf(stderr, "chown: failed to access '%s': %s\n", path, strerror(errno));
-         return false;
-      }
-      readdir(dir); // read '.'
-      readdir(dir); // read '..'
-      while ((ent = readdir(dir)) != NULL) {
-         memcpy(buffer, path, len);
-         buffer[len] = '/';
-         strncpy(buffer + len + 1, ent->d_name, sizeof(ent->d_name));
-         if (chown(buffer, uid, gid) != 0) {
-            fprintf(stderr, "chown: failed to change owner of '%s': %s\n", buffer, strerror(errno));
-            rv = false;
-         }
-      }
-   }
-   if (chown(path, uid, gid) != 0) {
-      fprintf(stderr, "chown: failed to change owner of '%s': %s\n", path, strerror(errno));
-      return false;
-   }
-   return rv;
-}
-
-// TODO: add support for -H, -L, -P options
+static int recursive, opt_h = 0, opt_upper = 0, initial;
 
 int main(int argc, char* argv[]) {
    if (argc < 2) {
@@ -67,12 +24,12 @@ print_usage:
       fputs("       chown -R [-H|-L|-P] owner[:group] file...\n", stderr);
       return 1;
    }
-   recursive = 0;
-   int opt_h = 0, opt_upper = 0;
    int option;
+   recursive = 0;
+   opt_upper = 'P';
    while ((option = getopt(argc, argv, ":RHLPh")) != -1) {
       switch (option) {
-      case 'R':   recursive = 1; break;
+      case 'R':   recursive = 1; opt_upper = 'P'; break;
       case 'h':   opt_h = 1; break;
       case 'H':   opt_upper = 'H'; break;
       case 'L':   opt_upper = 'L'; break;
@@ -80,8 +37,8 @@ print_usage:
       default:    goto print_usage;
       }
    }
-   if ((argc - optind) < 2) goto print_usage;
-
+   if ((argc - optind) < 2 || (opt_upper && !recursive)) goto print_usage;
+   
    char* owner = argv[optind++];
    char* group = NULL;
    char* end;
@@ -100,11 +57,10 @@ print_usage:
    gid_t gid = -1;
    if (!getusrinfo(&uid, &gid, owner, group)) return 1;
 
-   printf("uid=%s, gid=%s\n", owner, group);
-
    int rv = 0;
    for (; optind < argc; ++optind) {
       const char* path = argv[optind];
+      initial = true;
       if (!do_chown(path, uid, gid)) rv = 1;
    }
 

@@ -4,11 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "common.h"
 
 #define streq(s1, s2) (strcmp(s1, s2) == 0)
-
-// TODO: finish this program
-// https://pubs.opengroup.org/onlinepubs/9699919799/utilities/test.htm
 
 static const char* progname;
 
@@ -68,9 +66,11 @@ static int parse_expr(int* const i, int argc, char* argv[]) {
       case 's':
          if (stat(argv[(*i)++], &st) != 0) return 1;
          else return st.st_size == 0;
-      case 't':
-         fprintf(stderr, "%s: -t file_descriptor is currently not supported\n", progname);
-         exit(2);
+      case 't': {
+         char* endp;
+         const int tty = strtol(argv[(*i)++], &endp, 10);
+         return *endp ? 1 : !isatty(tty);
+      }
       case 'u':
          if (stat(argv[(*i)++], &st) != 0) return 1;
          else return !(st.st_mode & S_ISUID);
@@ -156,11 +156,6 @@ static int parse_expr_xsi(int* const i, int argc, char* argv[]) {
       else break;
    }
    return left;
-}
-
-static const char* basename(const char* path) {
-   const char* tmp = strrchr(path, '/');
-   return tmp ? tmp + 1 : path;
 }
 
 int main(int argc, char* argv[]) {

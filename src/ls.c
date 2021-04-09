@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
@@ -7,11 +8,56 @@
 #include <errno.h>
 #include <time.h>
 #include "common.h"
+#include "buf.h"
 
-// TODO: add additional options
-// see: https://pubs.opengroup.org/onlinepubs/9699919799/utilities/ls.html
 
-static int show_hidden = 0, list = 0, follow_links = 0, print_slash = 0;
+static int(*sorter)(const void*, const void*) = NULL;
+static int show_hidden = 0, list = 0, follow_links = 0, print_slash = 0, reverse_sort = 0, print_inode = 0;
+
+struct ls_result {
+   char* path;
+   const char* name; // points to (path + n)
+   struct stat st;
+};
+static int sort_none(const void* p1, const void* p2) {
+   (void)p1;
+   (void)p2;
+   return -1;
+}
+static int sort_name(const void* p1, const void* p2) {
+   const struct ls_result* e1 = p1;
+   const struct ls_result* e2 = p2;
+   const int r = strcmp(e1->name, e2->name);
+   return reverse_sort ? -r : r;
+}
+static int sort_t(const void* p1, const void* p2) {
+   const struct ls_result* e1 = p1;
+   const struct ls_result* e2 = p2;
+   int r = e1->st.st_mtim.tv_nsec - e2->st.st_mtim.tv_nsec;
+   if (r == 0) r = strcmp(e1->name, e2->name);
+   return reverse_sort ? -r : r;
+}
+static int sort_S(const void* p1, const void* p2) {
+   const struct ls_result* e1 = p1;
+   const struct ls_result* e2 = p2;
+   int r = e1->st.st_size - e2->st.st_size;
+   if (r == 0) r = strcmp(e1->name, e2->name);
+   return reverse_sort ? -r : r;
+}
+static int sort_c(const void* p1, const void* p2) {
+   const struct ls_result* e1 = p1;
+   const struct ls_result* e2 = p2;
+   int r = e1->st.st_ctim.tv_nsec - e2->st.st_ctim.tv_nsec;
+   if (r == 0) r = strcmp(e1->name, e2->name);
+   return reverse_sort ? -r : r;
+}
+static int sort_u(const void* p1, const void* p2) {
+   const struct ls_result* e1 = p1;
+   const struct ls_result* e2 = p2;
+   int r = e1->st.st_atim.tv_nsec - e2->st.st_atim.tv_nsec;
+   if (r == 0) r = strcmp(e1->name, e2->name);
+   return reverse_sort ? -r : r;
+}
 
 static void print_mode(char* mode, const struct stat* st) {
    switch (st->st_mode & S_IFMT) {
@@ -24,19 +70,20 @@ static void print_mode(char* mode, const struct stat* st) {
    case S_IFSOCK:mode[0] = 's'; break;
    default:      mode[0] = '?'; break;
    }
-   mode[1] = st->st_mode & 0400 ? 'r' : '-';
-   mode[2] = st->st_mode & 0200 ? 'w' : '-';
-   mode[3] = st->st_mode & 0100 ? 'x' : '-';
-   mode[4] = st->st_mode & 0040 ? 'r' : '-';
-   mode[5] = st->st_mode & 0020 ? 'w' : '-';
-   mode[6] = st->st_mode & 0010 ? 'x' : '-';
-   mode[7] = st->st_mode & 0004 ? 'r' : '-';
-   mode[8] = st->st_mode & 0002 ? 'w' : '-';
-   mode[9] = st->st_mode & 0001 ? 'x' : '-';
+   mode[1] = st->st_mode & S_IRUSR ? 'r' : '-';
+   mode[2] = st->st_mode & S_IWUSR ? 'w' : '-';
+   mode[3] = "-xSs"[!!(st->st_mode & S_IXUSR) + (!!(st->st_mode & S_ISUID) << 1)];
+   mode[4] = st->st_mode & S_IRGRP ? 'r' : '-';
+   mode[5] = st->st_mode & S_IWGRP ? 'w' : '-';
+   mode[6] = "-xSs"[!!(st->st_mode & S_IXGRP) + (!!(st->st_mode & S_ISGID) << 1)];
+   mode[7] = st->st_mode & S_IROTH ? 'r' : '-';
+   mode[8] = st->st_mode & S_IWOTH ? 'w' : '-';
+   mode[9] = "-xTt"[!!(st->st_mode & S_IXOTH) + ((((st->st_mode & S_IFMT) == S_IFDIR) && (st->st_mode & S_ISVTX)) << 1)];
    mode[10] = '\0';
 }
 
-static int print_entry(const char* name, struct stat* st, const char* path) {
+static void print_entry(const char* name, struct stat* st, const char* path) {
+   if (print_inode) printf("%ju ", (uintmax_t)st->st_ino);
    if (list) {
       char mode[11];
       print_mode(mode, st);
@@ -77,8 +124,12 @@ static int print_entry(const char* name, struct stat* st, const char* path) {
       case 'l': {
          const size_t lt_len = st->st_size ? st->st_size : PATH_MAX;
          char* link_target = malloc(lt_len + 1);
-         readlink(path, link_target, lt_len);
-         link_target[lt_len] = '\0';
+         const ssize_t new_len = readlink(path, link_target, lt_len);
+         if (new_len <= 0) {
+            perror("Failed to readlink");
+            return;
+         }
+         link_target[new_len] = '\0';
          printf("%s %u %s %s %8u %s %s -> %s\n", mode, (unsigned)st->st_nlink, owner, group, (unsigned)st->st_size, time, name, link_target);
          free(link_target);
          break;
@@ -93,16 +144,16 @@ static int print_entry(const char* name, struct stat* st, const char* path) {
       if (free_owner) free(owner);
       if (free_group) free(group);
    } else printf("%s%s\n", name, print_slash && (st->st_mode & S_IFMT) == S_IFDIR ? "/" : "");
-   return 1;
 }
 
 
-
-static int do_ls(const char* path) {
+static struct ls_result* do_ls(const char* path) {
+   struct ls_result trs;
+   struct ls_result* result = NULL;
    struct stat st;
    if (stat(path, &st) != 0) {
       fprintf(stderr, "ls: cannot access '%s': %s\n", path, strerror(errno));
-      return 1;
+      return NULL;
    }
    if (is_directory(&st)) {
       const size_t len = strlen(path);
@@ -112,12 +163,12 @@ static int do_ls(const char* path) {
       char* buffer = (char*)malloc(len + 260);
       if (!buffer) {
          fprintf(stderr, "ls: failed to allocate buffer: %s\n", strerror(errno));
-         return 1;
+         return NULL;
       }
       if ((dir = opendir(path)) == NULL) {
          free(buffer);
          fprintf(stderr, "ls: failed to access '%s': %s\n", path, strerror(errno));
-         return 1;
+         return NULL;
       }
       while ((ent = readdir(dir)) != NULL) {
          if (!show_hidden && ent->d_name[0] == '.')
@@ -125,55 +176,87 @@ static int do_ls(const char* path) {
          if ((strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0) && show_hidden != 'a') continue;
          memcpy(buffer, path, len);
          buffer[len] = '/';
-         strncpy(buffer + len + 1, ent->d_name, sizeof(ent->d_name));
+         strncpy(buffer + len + 1, ent->d_name, 0 + sizeof(ent->d_name)); // '0 + ...' to suppress warnings on gcc
          int ec;
          if (follow_links) ec = stat(buffer, &new_st);
          else ec = lstat(buffer, &new_st);
          if (ec != 0) {
             fprintf(stderr, "ls: failed to access '%s': %s\n", buffer, strerror(errno));
-            return 1;
+            return NULL;
          }
-         if (!print_entry(ent->d_name, &new_st, buffer)) return 1;
+         trs.st = new_st;
+         trs.path = strdup(buffer);
+         trs.name = basename(trs.path);
+         buf_push(result, trs);
       }
       free(buffer);
+      closedir(dir);
    } else {
-      if (!print_entry(path, &st, path)) return 1;
+      trs.st = st;
+      trs.path = strdup(path);
+      trs.name = basename(trs.path);
+      buf_push(result, trs);
    }
-   return 0;
+   return result;
 }
 
-// TODO: Implement sorting
+static bool do_ls2(const char* path) {
+   struct ls_result* entries = do_ls(path);
+   if (!entries) return false;
+   const size_t len = buf_len(entries);
+   qsort(entries, len, sizeof(struct ls_result), sorter);
+   for (size_t i = 0; i < len; ++i) {
+      print_entry(entries[i].name, &entries[i].st, entries[i].path);
+      free(entries[i].path);
+   }
+   buf_free(entries);
+   return true;
+}
+
+// TODO: add additional options
+// see: https://pubs.opengroup.org/onlinepubs/9699919799/utilities/ls.html
 
 int main(int argc, char* argv[]) {
    int option;
-   while ((option = getopt(argc, argv, ":likqrsAaCmx1FpHLRdSftcu")) != -1) {
+   sorter = sort_name;
+   while ((option = getopt(argc, argv, ":1likqrsAaCmx1FpHLRdSftcu")) != -1) {
       switch (option) {
+      case '1': break;
       case 'A':
       case 'a': show_hidden = option; break;
+
+      case 'i': print_inode = 1; break;
 
       case 'l': list = 1; break;
       case 'H': follow_links = 0; break;
       case 'L': follow_links = 1; break;
 
       case 'p': print_slash = 1; break;
-         
+        
+      case 'r': reverse_sort = 1; break;
+      case 'f': show_hidden = 'a'; sorter = sort_none; break;
+      case 't': sorter = sort_t; break;
+      case 'S': sorter = sort_S; break;
+      case 'c': sorter = sort_c; break;
+      case 'u': sorter = sort_u; break;
+
       case '?': goto print_usage;
       default:
          fprintf(stderr, "ls: the '-%c' option is currently not supported!\n", option);
          return 1;
       }
    }
-
-   if (optind == argc) return do_ls(".");
+   
+   if (optind == argc) return do_ls2(".");
 
    int ec = 0;
    for (; optind < argc; ++optind) {
       const char* path = argv[optind];
-      if (do_ls(path) != 0) ec = 1;
+      if (!do_ls2(path)) ec = 1;
    }      
    return ec;
 print_usage:
-   fputs("Usage: ls [-l] [-a|-A] [file...]\n", stderr);
+   fputs("Usage: ls [-ir] [-l] [-a|-A] [-1] [-p] [-H|-L] [-S|-f|-t|-c|-u] [file...]\n", stderr);
    return 1;
 }
 

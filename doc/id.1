@@ -1,0 +1,95 @@
+.TH id 1 "2021-04-10"
+
+.SH NAME
+id - return user identity
+
+.SH SYNOPSIS
+.SY id
+[\fIuser\fR]
+.YS
+.SY id
+.B -G
+.OP -n
+[\fIuser\fR]
+.YS
+.SY id
+.B -g
+.OP -nr
+[\fIuser\fR]
+.YS
+.SY id
+.B -u
+.OP -nr
+[\fIuser\fR]
+.YS
+
+
+.SH DESCRIPTION
+The
+.I id
+utility writes information about the given
+.I user
+to standard output.
+If no
+.I user
+was specified, the
+.I id
+utility defaults to the current user.
+
+.SH OPTIONS
+.B -G
+.RE
+.RS 5
+Output all different group IDs (effective, real and supplementary).
+.RE
+.B -g
+.RE
+.RS 5
+Output only the effective group ID.
+.RE
+.B -n
+.RE
+.RS 5
+Output the name instaed of the numeric ID.
+.RE
+.B -r
+.RE
+.RS 5
+Output the real ID instead of the effective ID.
+.RE
+.B -u
+.RE
+.RS 5
+Output only the effective user ID.
+
+.SH OPERANDS
+.I user
+.RE
+.RS 5
+The login name for which information is to be written.
+
+.SH STDIN
+The standard input can be of any type of file
+
+.SH STDOUT
+The information about the user is written to standard output.
+
+.SH STDERR
+The standard error is being used only for diagnostic messages.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+0
+.RE
+.RS 5
+All input processed successfully.
+.RE
+>0
+.RE
+.RS 5
+An error occured.
