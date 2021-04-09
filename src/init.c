@@ -4,6 +4,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <stdbool.h>
+#include <limits.h>
 #include <unistd.h>
 #include <signal.h>
 #include <stdlib.h>
@@ -23,39 +24,32 @@ static void signal_handler(int sig) {
    }
 }
 
-static char* read_file(const char* path, const char* defval, size_t* len_out) {
-   size_t len;
-   char* text;
-   struct stat st;
-   if (lstat(path, &st) != 0) {
-   fallback:
-      len = strlen(defval);
-      text = (char*)malloc(len + 1);
-      if (!text) {
-         perror("Failed to allocate buffer");
-         abort();
-      }
-      memcpy(text, defval, len + 1);
-      goto end;
+static bool set_hostname(const char* hn, size_t len) {
+   if (sethostname(hn, len) != 0) {
+      perror("Failed to set hostname");
+      return false;
    }
-   len = st.st_size;
-   
-   int fd = open(path, O_RDONLY);
-   if (fd < 0) goto fallback;
-
-   text = (char*)malloc(len + 1);
-   if (!text) {
+   char* buffer = (char*)malloc(len + 10);
+   if (!buffer) {
       perror("Failed to allocate buffer");
-      abort();
+      return false;
    }
-   if (read(fd, text, len) < 0) { close(fd); goto fallback; }
-   text[len] = '\0';
+   strcpy(buffer, "HOSTNAME=");
+   strncat(buffer, hn, len);
+   putenv(buffer);
+   // DO NOT FREE!
+   return true;
+}
+static bool init_hostname(const char* path, const char* defval) {
+   FILE* file = fopen(path, "r");
+   if (!file) return set_hostname(defval, strlen(defval));
+   char buffer[HOST_NAME_MAX + 1];
+   fgets(buffer, sizeof(buffer), file);
+   fclose(file);
 
-   close(fd);
-
-end:
-   if (len_out) *len_out = len;
-   return text;
+   const size_t len = strlen(buffer) - 1;
+   buffer[len] = '\0';
+   return set_hostname(buffer, len);
 }
 
 int main(void) {
@@ -81,16 +75,15 @@ int main(void) {
    if (mount(NULL, "/dev/pts", "devpts", 0, NULL) < 0) perror("Failed to mount /dev/pts");
 
    // Set the hostname
-   size_t hostname_len;
-   char* hostname = read_file("/etc/hostname", "linux", &hostname_len);
-   if (sethostname(hostname, hostname_len) < 0) perror("Failed to set hostname");
-   
+   init_hostname("/etc/hostname", "linux");
+
    // Setup some environement variables
-   free(hostname);
    putenv("USER=root");
    putenv("SHELL=/bin/sh");
    putenv("EUID=0");
    putenv("EGID=0");
+   putenv("HOME=/root");
+   putenv("TERM=linux");
 
    // Start single-user mode
    running = true;
