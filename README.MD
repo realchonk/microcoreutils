@@ -28,7 +28,7 @@ There are no extra options than described by POSIX.<br>
 - pwd
 
 ## Unfinished
-- test
+- test (minor problem: ```-f file_descriptor``` not supported)
 - chmod (minor problem)
 - chown (minor problem)
 - chgrp (minor problem)
