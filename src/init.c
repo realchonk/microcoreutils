@@ -10,10 +10,14 @@
 #include <stdio.h>
 
 static bool running;
+static pid_t pid_shell;
 static void signal_handler(int sig) {
    switch (sig) {
    case SIGTERM:
-   case SIGKILL: running = false; break;
+   case SIGKILL:
+      kill(pid_shell, SIGKILL);
+      running = false;
+      break;
    }
 }
 
@@ -52,6 +56,7 @@ int main(void) {
          perror("init: failed to exec /bin/sh");
          return 1;
       }
+      pid_shell = pid;
       int wstatus;
       waitpid(pid, &wstatus, 0);
       if (!WIFEXITED(wstatus) || WEXITSTATUS(wstatus) != 0) break;

@@ -33,6 +33,7 @@ There are no extra options than described by POSIX.<br>
 - chgrp (minor problem)
 - pwd (minor problem)
 - ls (incomplete options)
-- clear
+- clear (minor problem)
 - ed
 - halt
+- init

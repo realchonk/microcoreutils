@@ -10,7 +10,7 @@
 // TODO: add additional options
 // see: https://pubs.opengroup.org/onlinepubs/9699919799/utilities/ls.html
 
-static int show_hidden = 0, list = 0;
+static int show_hidden = 0, list = 0, follow_links = 0, print_slash = 0;
 
 static void print_mode(char* mode, const struct stat* st) {
    switch (st->st_mode & S_IFMT) {
@@ -35,7 +35,7 @@ static void print_mode(char* mode, const struct stat* st) {
    mode[10] = '\0';
 }
 
-static int print_entry(const char* name, struct stat* st) {
+static int print_entry(const char* name, struct stat* st, const char* path) {
    if (list) {
       char mode[11];
       print_mode(mode, st);
@@ -63,19 +63,35 @@ static int print_entry(const char* name, struct stat* st) {
          free_group = 1;
       }
 
-
-      
       struct tm tm = *localtime(&st->st_atim.tv_sec);
       //strftime(time, sizeof(time), "%c", tm);
       char* time = asctime(&tm);
       time[strlen(time) - 1] = '\0';
 
-      if (mode[0] == 'c' || mode[0] == 'b') {
+      switch (mode[0]) {
+      case 'c':
+      case 'b':
          printf("%s %u %s %s %s %s %s\n", mode, (unsigned)st->st_nlink, owner, group, "not supported", time, name);
-      } else printf("%s %u %s %s %8u %s %s\n", mode, (unsigned)st->st_nlink, owner, group, (unsigned)st->st_size, time, name);
+         break;
+      case 'l': {
+         const size_t lt_len = st->st_size ? st->st_size : PATH_MAX;
+         char* link_target = malloc(lt_len + 1);
+         readlink(path, link_target, lt_len);
+         link_target[lt_len] = '\0';
+         printf("%s %u %s %s %8u %s %s -> %s\n", mode, (unsigned)st->st_nlink, owner, group, (unsigned)st->st_size, time, name, link_target);
+         free(link_target);
+         break;
+      }
+      case 'd':
+         printf("%s %u %s %s %8u %s %s%s\n", mode, (unsigned)st->st_nlink, owner, group, (unsigned)st->st_size, time, name, print_slash ? "/" : "");
+         break;
+      default:
+         printf("%s %u %s %s %8u %s %s\n", mode, (unsigned)st->st_nlink, owner, group, (unsigned)st->st_size, time, name);
+         break;
+      }
       if (free_owner) free(owner);
       if (free_group) free(group);
-   } else printf("%s\n", name);
+   } else printf("%s%s\n", name, print_slash && (st->st_mode & S_IFMT) == S_IFDIR ? "/" : "");
    return 1;
 }
 
@@ -109,15 +125,18 @@ static int do_ls(const char* path) {
          memcpy(buffer, path, len);
          buffer[len] = '/';
          strncpy(buffer + len + 1, ent->d_name, sizeof(ent->d_name));
-         if (stat(buffer, &new_st) != 0) {
+         int ec;
+         if (follow_links) ec = stat(buffer, &new_st);
+         else ec = lstat(buffer, &new_st);
+         if (ec != 0) {
             fprintf(stderr, "ls: failed to access '%s': %s\n", buffer, strerror(errno));
             return 1;
          }
-         if (!print_entry(ent->d_name, &new_st)) return 1;
+         if (!print_entry(ent->d_name, &new_st, buffer)) return 1;
       }
       free(buffer);
    } else {
-      if (!print_entry(path, &st)) return 1;
+      if (!print_entry(path, &st, path)) return 1;
    }
    return 0;
 }
@@ -132,7 +151,11 @@ int main(int argc, char* argv[]) {
       case 'a': show_hidden = option; break;
 
       case 'l': list = 1; break;
-   
+      case 'H': follow_links = 0; break;
+      case 'L': follow_links = 1; break;
+
+      case 'p': print_slash = 1; break;
+         
       case '?': goto print_usage;
       default:
          fprintf(stderr, "ls: the '-%c' option is currently not supported!\n", option);
