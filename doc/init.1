@@ -1,0 +1,53 @@
+.TH init 1 "2021-04-09"
+
+.SH NAME
+init - the first process started by the kernel
+
+.SH SYNOPSIS
+.SY init
+.YS
+
+.SH DESCRIPTION
+The
+.I init
+system-utility is the first process to be started by the kernel.
+It mounts \fI/dev\fR, \fI/dev/pts\fR, \fI/sys\fR and \fI/proc\fR, after which it invokes the
+.I /bin/sh
+utility as an interactive login shell, until the
+.I init
+process gets a
+.I SIGTERM
+or
+.I SIGKILL
+signal, after which it calls 
+.I sync()
+and shuts down the machine.
+The
+.I init
+utility may only be started with a
+.I pid
+of 1.
+
+.SH OPTIONS
+None.
+
+.SH OPERANDS
+None.
+
+.SH STDIN
+Not used.
+
+.SH STDOUT
+Not used.
+
+.SH STDERR
+Not used.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+Not applicable.

@@ -1,0 +1,86 @@
+.TH kill 1 "2021-04-09"
+
+.SH NAME
+kill - terminate or signal processes
+
+.SH SYNOPSIS
+.SY kill
+.B -s \fIsignal_name\fR
+.I pid...
+.YS
+.SY kill
+.B -l
+[\fIexit_status\fR]
+.YS
+
+.SH DESCRIPTION
+The
+.I kill
+utility sends a signal to the process or processes specified by each
+.I pid
+operand.
+
+.SH OPTIONS
+.B -s \fIsignal_name\fR
+.RE
+.RS 5
+Specify the signal to send, using one of the symbolic names.
+.RE
+.B -l
+.RE
+.RS 5
+Write all values of
+.I signal_name
+supported by the implementation, if no operand is given.
+If an
+.I exit_status
+operand is given and it is the unsigned decimal integer value of a signal number, the
+.I signal_name
+(the symbolic constant name without the
+.B SIG
+prefix)
+corresponding to that signal is written to standard output.
+
+.SH OPERANDS
+.B pid
+.RE
+.RS 5
+A decimal integer specifying a process or process group to be signaled.
+.RE
+.B exit_status
+.RE
+.RS 5
+A decimal integer specifying a signal number.
+
+
+.SH STDIN
+Not used.
+
+.SH STDOUT
+If the
+.B -l
+option was specified, the symbolic name of each signal is written to standard output.
+
+.SH STDERR
+The standard error is being used for diagnostic messages.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+The following exit values are returned:
+.PP
+0
+.RE
+.RS 5
+At least one matching process was found for each
+.I pid
+operand, and the specified signal was successfully processed for at least one matching process.
+.RE
+>0
+.RE
+.RS 5
+An error occured.

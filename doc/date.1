@@ -1,0 +1,63 @@
+.TH date 1 "2021-04-09"
+
+.SH NAME
+date - print the date and time
+
+.SH SYNOPSIS
+.SY date
+.OP -u
+.OP +format
+.YS
+
+.SH DESCRIPTION
+The
+.I date
+utility writes the date and time to standard output.
+
+.SH OPTIONS
+.B -u
+.RE
+.RS 5
+Perform operations as if the
+.I TZ
+environement variable was set to the string "GMT0".
+Otherwise
+.I date
+uses the timezone indicated by the
+.I TZ
+environement variable or the system default if that variable is unset or null.
+
+.SH OPERANDS
+.B +format
+.RE
+.RS 5
+When the format is specified, each conversion operand is replaced in the standard output by its corresponding value.
+All other characters are copied without change.
+
+.SH STDIN
+Not used.
+
+.SH STDOUT
+The path to the current physical terminal followed by a <newline>.
+
+.SH STDERR
+The standard error is being used for diagnostic messages.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+The following exit values are returned:
+.PP
+0
+.RE
+.RS 5
+Successfull completion.
+.RE
+>0
+.RE
+.RS 5
+An error occured.

@@ -25,13 +25,13 @@ There are no extra options than described by POSIX.<br>
 - tty
 - sync
 - env
+- pwd
 
 ## Unfinished
 - test
 - chmod (minor problem)
 - chown (minor problem)
 - chgrp (minor problem)
-- pwd (minor problem)
 - ls (incomplete options)
 - clear (minor problem)
 - ed

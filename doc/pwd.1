@@ -1,0 +1,60 @@
+.TH pwd 1 "2021-04-09"
+
+.SH NAME
+pwd - print current working directory
+
+.SH SYNOPSIS
+.SY pwd
+.OP -L|-P
+.YS
+
+.SH DESCRIPTION
+The
+.I pwd
+utility writes the absolute pathname of the current working directory to standard output. 
+If no options are specified, the
+.I pwd
+utility behaves, as if the option
+.I -L
+was specified.
+
+.SH OPTIONS
+.B -P
+.RE
+.RS 5
+Resolve all symbolic links.
+.RE
+.B -L
+.RE
+.RS 5
+Do not resolve any symbolic links.
+
+.SH OPERANDS
+None.
+
+.SH STDIN
+Not used.
+
+.SH STDOUT
+The current working directory followed by a <newline>.
+
+.SH STDERR
+Not used.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+0
+.RE
+.RS 5
+Successfull completion.
+.RE
+>0
+.RE
+.RS 5
+An error occured.
+

@@ -116,7 +116,7 @@ int main(int argc, char* argv[]) {
    int ec = 0;
    for (; optind < argc; ++optind) {
       const char* path = argv[optind];
-      if (!delete_file(path)) ec = 1;
+      if (!delete_file(path) && !force) ec = 1;
    }
    return ec;
 }

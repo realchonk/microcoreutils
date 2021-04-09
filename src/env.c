@@ -1,8 +1,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <errno.h>
 
 // For some reason glibc-2.33 on Gentoo doesn't declare this:
 extern char** environ;
@@ -29,7 +31,8 @@ int main(int argc, char* argv[]) {
       if (is_env(argv[optind])) putenv(argv[optind]);
       else {
          execvp(argv[optind], argv + optind);
-         return 1;
+         fprintf(stderr, "env: '%s': %s\n", argv[optind], strerror(errno));
+         return errno == ENOENT ? 127 : 126;
       }
    }
    for (size_t i = 0; environ[i]; ++i) {

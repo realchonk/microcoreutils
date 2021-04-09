@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <limits.h>
 #include <stdio.h>
 #include <errno.h>
 #include <time.h>

@@ -1,0 +1,89 @@
+.TH rm 1 "2021-04-09"
+
+.SH NAME
+rm - remove directory entries
+
+.SH SYNOPSIS
+.SY rm
+.OP -iRr
+.I
+file...
+.YS
+.SY rm
+.I -f
+.OP -iRr
+[\fIfile...\fR]
+
+.SH DESCRIPTION
+The
+.I
+rm
+utility removes directory entries specified by the each
+.I
+file
+operand, in the order specified.
+
+.SH OPTIONS
+.B -f
+.RE
+.RS 5
+Do not prompt for confirmation. Do not write diagnostic messages or modify the exit status in the case of no file operands,
+or in the case of operands that do not exist.
+Any previous occurences of
+.B -i
+are ignored.
+.RE
+.B -i
+.RE
+.RS 5
+Prompt for confirmation. Any previous occurences of
+.B -f
+are ignored.
+.RE
+.B -r
+.RE
+.RS 5
+Remove file hierarchies.
+.RE
+.B -R
+.RE
+.RS 5
+Same as \fB-r\fR.
+
+.SH OPERANDS
+The following operands are supported:
+.PP
+.I
+file
+.RE
+.RS 5
+A pathname of a directory entry to be removed.
+
+.SH STDIN
+The standard input is being used to read an input line in response to each prompt.
+
+.SH STDOUT
+Not used.
+
+.SH STDERR
+The prompts are written to standard error.
+The standard error is also being used for diagnostic messages.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+The following exit values are returned:
+.PP
+0
+.RE
+.RS 5
+Successfull completion.
+.RE
+>0
+.RE
+.RS 5
+An error occured.
