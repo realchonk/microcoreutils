@@ -23,9 +23,7 @@ struct ed_data {
    const char* filename;
    const char* prompt;
    int suppress;
-   struct {
-      size_t line;
-   } insert;
+   size_t current_line;
 };
 
 static char* readline(FILE* file) {
@@ -80,8 +78,8 @@ static enum ed_mode ed_insert(struct ed_data* data, char*** buffer) {
       buf_free(line);
       return ED_NORMAL;
    }
-   buf_insert(*buffer, data->insert.line, line);
-   ++data->insert.line;
+   buf_insert(*buffer, data->current_line, line);
+   ++data->current_line;
    return ED_INSERT;
 }
 static enum ed_mode ed_normal(struct ed_data* data, char*** buffer) {
@@ -109,6 +107,15 @@ static enum ed_mode ed_normal(struct ed_data* data, char*** buffer) {
       goto end;
    }
 
+   if (!*s) {
+      if (data->current_line <= buf_len(*buffer)) {
+         puts((*buffer)[data->current_line - 1]);
+         ++data->current_line;
+      }
+      else puts("?");
+      goto end;
+   }
+
    // parse numbers
    size_t first_num = buf_len(*buffer), second_num = buf_len(*buffer);
 
@@ -132,10 +139,16 @@ static enum ed_mode ed_normal(struct ed_data* data, char*** buffer) {
       } else second_num = first_num;
       if (second_num == 0) { puts("?"); goto end; }
    } else second_num = first_num;
-
+   s = skip_ws(s);
    if (first_num > second_num || second_num > buf_len(*buffer)) { puts("?"); goto end; }
 
    switch (*s) {
+   case '\0':
+      if (first_num <= buf_len(*buffer)) {
+         data->current_line = first_num + 1;
+         puts((*buffer)[first_num - 1]);
+      } else puts("?");
+      break;
    case 'p':
       if (!buf_len(*buffer)) { puts("?"); goto end; }
       for (size_t i = first_num; i <= second_num; ++i) {
@@ -143,20 +156,23 @@ static enum ed_mode ed_normal(struct ed_data* data, char*** buffer) {
       }
       break;
    case 'a':
-      data->insert.line = first_num;
+      data->current_line = first_num;
       mode = ED_INSERT;
       break;
    case 'i':
-      data->insert.line = first_num - 1;
+      data->current_line = first_num ? first_num - 1 : 0;
       mode = ED_INSERT;
       break;
    case 'd':
-      buf_remove(*buffer, first_num - 1, second_num - first_num + 1);
+      if (first_num) buf_remove(*buffer, first_num - 1, second_num - first_num + 1);
+      else puts("?");
       break;
    case 'c':
-      buf_remove(*buffer, first_num - 1, 1);
-      data->insert.line = first_num - 1;
-      mode = ED_INSERT;
+      if (first_num) {
+         buf_remove(*buffer, first_num - 1, 1);
+         data->current_line = first_num - 1;
+         mode = ED_INSERT;
+      } else puts("?");
       break;
    default:
       puts("?");
@@ -172,6 +188,7 @@ int main(int argc, char* argv[]) {
    data.filename = NULL;
    data.prompt = "";
    data.suppress = 0;
+   data.current_line = 1;
    int option;
    while ((option = getopt(argc, argv, "sp:")) != -1) {
       switch (option) {
