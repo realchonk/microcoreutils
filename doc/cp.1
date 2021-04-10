@@ -1,0 +1,129 @@
+.TH cp 1 "2021-04-10"
+
+.SH NAME
+cp - copy files
+
+.SH SYNOPSIS
+.SY cp
+.OP -Pfip
+.I source_file
+.I target_file
+.YS
+
+.SY cp
+.OP -Pfip
+.I source_file...
+.I target
+.YS
+
+.SY cp
+.B -R
+.OP -H\fR|\fB-L\fR|\fB-P
+.OP -fip
+.I source_file...
+.I target
+.YS
+
+.SH DESCRIPTION
+The
+.I cp
+utility is used to copy files and directory structures.
+
+.SH OPTIONS
+.B -f
+.RE
+.RS 5
+If a file descriptor for a destination file cannot be obtained,
+attempt to unlink the destination file and proceed.
+.RE
+.B -i
+.RE
+.RS 5
+Write a prompt to standard error before copying to any existing non-directory destination file.
+If the response from the standard input is affirmative, the copy will be attempted; otherwise it won't.
+.RE
+.B -R
+.RE
+.RS 5
+Copy directory structures.
+.RE
+.B -H
+.RE
+.RS 5
+Take actions based on the type and contents of the file referenced by any symbolic link specified as a
+.I source_file
+operand.
+.RE
+.B -L
+.RE
+.RS 5
+Take actions based on the type and contents of the file referenced by any symbolic link specified as a
+.I source_file
+operand or any symbolic link encountered during traversal of a directory structure.
+.RE
+.B -P
+.RE
+.RS 5
+Take actions on any symbolic link specified as a
+.I source_file
+operand or any symbolic link encountered during traversal of a directory structure.
+.RE
+.B -p
+.RE
+.RS 5
+(Currently unimplemented)
+.PP
+If none of the \fB-H\fR, \fB-L\fR, \fB-P\fR is specified, the
+.I cp
+utility behaves as if
+.B -H
+was specified.
+
+.SH OPERANDS
+The following operands are supported:
+.PP
+.I source_file
+.RE
+.RS 5
+A pathname of a file to be copied.
+.RE
+.I target_file
+.RE
+.RS 5
+A pathname of an existing or non-existing file, used for the output when a single file is copied.
+.RE
+.I target
+.RE
+.RS 5
+A pathname of a directory to contain the copied files.
+
+.SH STDIN
+The standard input is used to read an input line in response to each prompt.
+
+.SH STDOUT
+Not used.
+
+.SH STDERR
+A prompt is written to standard error if the
+.B -i
+option was specified.
+The standard error is also being used for diagnostic messages.
+
+.SH INPUT FILES
+The input files may be of any type.
+
+.SH OUTPUT FILES
+The output files may be of any type.
+
+.SH EXIT STATUS
+The following exit values are returned:
+.PP
+0
+.RE
+.RS 5
+Successfull completion.
+.RE
+>0
+.RE
+.RS 5
+An error occured.

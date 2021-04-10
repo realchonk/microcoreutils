@@ -29,6 +29,8 @@ but there are some extra programs (like init).
 - chown
 - chgrp
 - test
+- ln
+- cp
 
 ## Unfinished
 - chmod (missing minor feature)

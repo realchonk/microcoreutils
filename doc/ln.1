@@ -1,0 +1,107 @@
+.TH ln 1 "2021-04-10"
+
+.SH NAME
+ln - link files
+
+.SH SYNOPSIS
+.SY ln
+.OP -fs
+.OP -L\fR|\fB-P
+.I source_file
+.I target_file
+.YS
+
+.SY ln
+.OP -fs
+.OP -L\fR|\fB-P
+.I source_file...
+.I target_dir
+.YS
+
+.SH DESCRIPTION
+The
+.I ln
+utility is used to create symbolic and hard-links to files and directories.
+
+.SH OPTIONS
+.B -f
+.RE
+.RS 5
+Force existing destination pathname to be removed to allow to link.
+.RE
+.B -s
+.RE
+.RS 5
+Create symbolic links instead of hard-links.
+.RE
+.B -L
+.RE
+.RS 5
+For each
+.I source_file
+operand that names a symbolic link, create a hard-link to the file referenced by the symbolic link.
+.RE
+.B -P
+.RE
+.RS 5
+For each
+.I source_file
+operand that names a symbolic link, create a hard-link to the symbolic link itself.
+.PP
+If the
+.B -s
+option is not specified and neither a
+.B -L
+nor a
+.B -P
+option is specified, the
+.I ln
+utility behaves as if
+.B -L
+was specified.
+
+.SH OPERANDS
+The following operands are supported:
+.PP
+.I source_file
+.RE
+.RS 5
+A pathname of a file to be linked.
+.RE
+.I target_file
+.RE
+.RS 5
+A new pathname of the new file to be created.
+.RE
+.I target_dir
+.RE
+.RS 5
+A pathname of an existing directory in which the new files will be created.
+
+.SH STDIN
+Not used.
+
+.SH STDOUT
+Not used.
+
+.SH STDERR
+The standard error is being used for diagnostic messages.
+
+.SH INPUT FILES
+None.
+
+.SH OUTPUT FILES
+None.
+
+.SH EXIT STATUS
+The following exit values are returned:
+.PP
+0
+.RE
+.RS 5
+Successfull completion.
+.RE
+>0
+.RE
+.RS 5
+An error occured.
