@@ -28,6 +28,16 @@ struct ed_data {
    } insert;
 };
 
+static char* readline(FILE* file) {
+   char* line = NULL;
+   char ch;
+   while ((ch = fgetc(file)) != EOF) {
+      if (ch == '\n') break;
+      else buf_push(line, ch);
+   }
+   buf_push(line, '\0');
+   return line;
+}
 static bool write_file(const char* filename, char** buffer, int suppress) {
    FILE* file = fopen(filename, "w");
    if (!file) {
@@ -42,19 +52,27 @@ static bool write_file(const char* filename, char** buffer, int suppress) {
    if (!suppress) fprintf(stderr, "%d\n", num);
    return true;
 }
-
-
-
-static char* readline(FILE* file) {
+static bool read_file(const char* filename, char*** buffer, int suppress) {
+   FILE* file = fopen(filename, "r");
+   if (!file) {
+      if (!suppress) fprintf(stderr, "ed: %s: %s\n", filename, strerror(errno));
+      return false;
+   }
+   size_t num = 0;
    char* line = NULL;
    char ch;
    while ((ch = fgetc(file)) != EOF) {
-      if (ch == '\n') break;
+      if (ch == '\n') buf_push(line, '\0'), buf_push(*buffer, line), line = NULL;
       else buf_push(line, ch);
+      ++num;
    }
-   buf_push(line, '\0');
-   return line;
+   fclose(file);
+   if (line) buf_push(line, '\0'), buf_push(*buffer, line);
+   if (!suppress) printf("%zu\n", num);
+   return true;
 }
+
+
 
 static enum ed_mode ed_insert(struct ed_data* data, char*** buffer) {
    char* line = readline(stdin);
@@ -67,13 +85,19 @@ static enum ed_mode ed_insert(struct ed_data* data, char*** buffer) {
    return ED_INSERT;
 }
 static enum ed_mode ed_normal(struct ed_data* data, char*** buffer) {
+   printf("%s", data->prompt);
+   fflush(stdout);
    char* line = readline(stdin);
    enum ed_mode mode = ED_NORMAL;
+   char* s  = line;
    if (feof(stdin) || strcmp(line, "q") == 0) {
       buf_free(line);
       return ED_EXIT;
-   } else if (*line == 'w') {
-      char* s = line + 1;
+   }
+   s = skip_ws(s);
+   if (*s == '#') goto end;
+   else if (*s == 'w') {
+      ++s;
       if (*s == 'q') mode = ED_EXIT, ++s;
       s = skip_ws(s);
       if (*s) {
@@ -82,19 +106,63 @@ static enum ed_mode ed_normal(struct ed_data* data, char*** buffer) {
          if (!data->filename || !write_file(data->filename, *buffer, data->suppress))
             puts("?"), mode = ED_NORMAL;
       }
-      buf_free(line);
-      return mode;
+      goto end;
    }
 
    // parse numbers
-   
+   size_t first_num = buf_len(*buffer), second_num = buf_len(*buffer);
 
-
-   else if (strcmp(line, "a") == 0) {
-      data->insert.line = buf_len(*buffer);
-      mode = ED_INSERT;
+   if (*s == '$') {
+      first_num = buf_len(*buffer);
+      ++s;
+   } else if (isdigit(*s)) {
+      first_num = 0;
+      while (isdigit(*s)) first_num = first_num * 10 + (*s++ - '0');
+      if (first_num == 0) { puts("?"); goto end; }
    }
-   else puts("?");
+   s = skip_ws(s);
+   if (*s == ',') {
+      ++s;
+      if (*s == '$') {
+         ++s;
+         second_num = buf_len(*buffer);
+      } else if (isdigit(*s)) {
+         second_num = 0;
+         while (isdigit(*s)) second_num = second_num * 10 + (*s++ - '0');
+      } else second_num = first_num;
+      if (second_num == 0) { puts("?"); goto end; }
+   } else second_num = first_num;
+
+   if (first_num > second_num || second_num > buf_len(*buffer)) { puts("?"); goto end; }
+
+   switch (*s) {
+   case 'p':
+      if (!buf_len(*buffer)) { puts("?"); goto end; }
+      for (size_t i = first_num; i <= second_num; ++i) {
+         puts((*buffer)[i - 1]);
+      }
+      break;
+   case 'a':
+      data->insert.line = first_num;
+      mode = ED_INSERT;
+      break;
+   case 'i':
+      data->insert.line = first_num - 1;
+      mode = ED_INSERT;
+      break;
+   case 'd':
+      buf_remove(*buffer, first_num - 1, second_num - first_num + 1);
+      break;
+   case 'c':
+      buf_remove(*buffer, first_num - 1, 1);
+      data->insert.line = first_num - 1;
+      mode = ED_INSERT;
+      break;
+   default:
+      puts("?");
+      break;
+   }
+end:
    buf_free(line);
    return mode;
 }
@@ -120,20 +188,7 @@ int main(int argc, char* argv[]) {
    else if (narg == 1) data.filename = argv[optind];
 
    char** buffer = NULL;
-   if (data.filename) {
-      FILE* file = fopen(data.filename, "r");
-      if (file) {
-         size_t num = 0;
-         while (!feof(file)) {
-            char* line = readline(file);
-            buf_push(buffer, line);
-            num += buf_len(line);
-         }
-         fclose(file);
-         if (!data.suppress) printf("%zu\n", num - 1);
-      }
-      else if (!data.suppress) fprintf(stderr, "ed: %s: %s\n", data.filename, strerror(errno));
-   }
+   if (data.filename) read_file(data.filename, &buffer, data.suppress);
 
 
    enum ed_mode mode = ED_NORMAL;
