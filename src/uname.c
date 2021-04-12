@@ -9,10 +9,19 @@
 int main(int argc, char* argv[]) {
    int opt_m = 0, opt_n = 0, opt_r = 0, opt_s = 0, opt_v = 0;
    int option;
-   while ((option = getopt(argc, argv, "amnrsv")) != -1) {
+   while ((option = getopt(argc, argv, ":amnrsv")) != -1) {
       switch (option) {
       case 'a':
          opt_m = opt_n = opt_r = opt_s = opt_v = 1;
+         break;
+      case 'm': opt_m = 1; break;
+      case 'n': opt_n = 1; break;
+      case 'r': opt_r = 1; break;
+      case 's': opt_s = 1; break;
+      case 'v': opt_v = 1; break;
+      default:
+         fputs("Usage: uname [-amnrsv]\n", stderr);
+         return 1;
       }
    }
    if (argc == 1) opt_s = 1;

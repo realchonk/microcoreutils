@@ -23,36 +23,16 @@ static void signal_handler(int sig) {
       break;
    }
 }
-
-static bool set_hostname(const char* hn, size_t len) {
-   if (sethostname(hn, len) != 0) {
-      perror("Failed to set hostname");
-      return false;
-   }
-   char* buffer = (char*)malloc(len + 10);
-   if (!buffer) {
-      perror("Failed to allocate buffer");
-      return false;
-   }
-   strcpy(buffer, "HOSTNAME=");
-   strncat(buffer, hn, len);
-   putenv(buffer);
-   // DO NOT FREE!
-   return true;
-}
-static bool init_hostname(const char* path, const char* defval) {
+static bool init_hostname(const char* path) {
    FILE* file = fopen(path, "r");
-   if (!file) return set_hostname(defval, strlen(defval));
+   if (!file) return false;
    char buffer[HOST_NAME_MAX + 1];
-   if (!fgets(buffer, sizeof(buffer), file)) {
-      fclose(file);
-      return set_hostname(defval, strlen(defval));
-   }
+   if (!fgets(buffer, sizeof(buffer), file)) return fclose(file), false;
    fclose(file);
 
    const size_t len = strlen(buffer) - 1;
    if (buffer[len] == '\n') buffer[len] = '\0';
-   return set_hostname(buffer, len);
+   return sethostname(buffer, len) == 0;
 }
 
 int main(void) {
@@ -78,14 +58,9 @@ int main(void) {
    if (mount(NULL, "/dev/pts", "devpts", 0, NULL) < 0) perror("Failed to mount /dev/pts");
 
    // Set the hostname
-   init_hostname("/etc/hostname", "linux");
+   if (!init_hostname("/etc/hostname")) perror("init: failed to set hostname");
 
    // Setup some environement variables
-   putenv("USER=root");
-   putenv("SHELL=/bin/sh");
-   putenv("EUID=0");
-   putenv("EGID=0");
-   putenv("HOME=/root");
    putenv("TERM=linux");
 
    // Start single-user mode
@@ -93,7 +68,7 @@ int main(void) {
    while (running) {
       pid_t pid = fork();
       if (pid == 0) {
-         execl("/bin/sh", "-", NULL);
+         execl("/bin/login", "-", NULL);
          perror("init: failed to exec /bin/sh");
          return 1;
       }

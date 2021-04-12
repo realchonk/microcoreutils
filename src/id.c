@@ -1,4 +1,5 @@
 #include <sys/types.h>
+#include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
@@ -7,14 +8,48 @@
 #include <ctype.h>
 #include <pwd.h>
 #include <grp.h>
+#include "buf.h"
 
-static int get_groups(const char* user, gid_t gid, gid_t** groups, int* ngroups) {
-   *ngroups = 0;
-   getgrouplist(user, gid, NULL, ngroups);
-   *groups = (gid_t*)malloc(sizeof(gid_t) * *ngroups);
-   const int r = getgrouplist(user, gid, *groups, ngroups);
-   if (r == -1) fprintf(stderr, "id: failed to get group list for '%s'\n", user);
-   return r;
+static gid_t* getusrgroups(const char* user) {
+   FILE* file = fopen("/etc/group", "r");
+   if (!file) return NULL;
+   const size_t len_user = strlen(user);
+   gid_t* gids = NULL;
+   char* line = NULL;
+   char ch;
+   while (1) {
+      ch = fgetc(file);
+      if (ch == '\n' || ch == EOF) {
+         if (!line || *line == '#') goto cont;
+         buf_push(line, '\0');
+         const char* s = strrchr(line, ':') + 1;
+         const char* end = s + strlen(s);
+         if (!s || !*s) goto cont;
+
+         const char* tmp;
+         do {
+            tmp = strchr(s, ',');
+            if (!tmp) tmp = end;
+            const size_t len_s = tmp - s;
+            
+            if (len_user == len_s && memcmp(user, s, len_s) == 0) {
+               const size_t len_name = strchr(line, ':') - line;
+               char* name = strndup(line, len_name);
+               struct group* grp = getgrnam(name);
+               if (grp) buf_push(gids, grp->gr_gid);
+               free(name);
+               break;
+            }
+            s = tmp + 1;
+         } while (tmp != end);
+
+         cont:
+         buf_free(line);
+         if (ch == EOF) break;
+      } else buf_push(line, ch);
+   }
+   fclose(file);
+   return gids;
 }
 
 static int printgrpinfo(gid_t gid) {
@@ -89,24 +124,25 @@ int main(int argc, char* argv[]) {
       else printf("%d\n", pw->pw_gid);
    }
    else if (opt_G) {
-      int ngroups;
-      gid_t* groups;
-      if (get_groups(pw->pw_name, pw->pw_gid, &groups, &ngroups) == -1) return 1;
-      if (ngroups == 0) return 0;
+      gid_t* groups = getusrgroups(pw->pw_name);
+      if (!groups) return 0;
       if (opt_n) {
-         printgrpinfo2(groups[0]);
-         for (int i = 1; i < ngroups; ++i) {
+         printgrpinfo2(pw->pw_gid);
+         for (size_t i = 0; i < buf_len(groups); ++i) {
+            if (groups[i] == pw->pw_gid) continue;
             putchar(' ');
             printgrpinfo2(groups[i]);
          }
       }
       else {
-         printf("%u", groups[0]);
-         for (int i = 1; i < ngroups; ++i) {
+         printf("%u", pw->pw_gid);
+         for (size_t i = 0; i < buf_len(groups); ++i) {
+            if (groups[i] == pw->pw_gid) continue;
             printf(" %u", groups[i]);
          }
       }
       putchar('\n');
+      buf_free(groups);
    }
    else {
       struct group* grp = getgrgid(pw->pw_gid);
@@ -114,18 +150,16 @@ int main(int argc, char* argv[]) {
          fprintf(stderr, "id: '%s': %s\n", pw->pw_name, strerror(errno));
          return 1;
       }
-      int ngroups;
-      gid_t* groups;
-      if (get_groups(pw->pw_name, pw->pw_gid, &groups, &ngroups) == -1) return 1;
+      gid_t* groups = getusrgroups(pw->pw_name);
       printf("uid=%u(%s) gid=%u(%s) groups=", pw->pw_uid, pw->pw_name, grp->gr_gid, grp->gr_name);
-      if (ngroups > 0) {
-         printgrpinfo(groups[0]);
-         for (int i = 1; i < ngroups; ++i) {
-            putchar(',');
-            printgrpinfo(groups[i]);
-         }
+      printgrpinfo(pw->pw_gid);
+      for (size_t i = 0; i < buf_len(groups); ++i) {
+         if (groups[i] == pw->pw_gid) continue;
+         putchar(',');
+         printgrpinfo(groups[i]);
       }
       putchar('\n');
+      buf_free(groups);
    }
 
    return 0;

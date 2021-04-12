@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <pwd.h>
 #include <grp.h>
+#include "buf.h"
 
 inline static int is_directory(const struct stat* st) {
    return (st->st_mode & S_IFMT) == S_IFDIR;
@@ -51,11 +52,23 @@ inline static int getusrinfo(uid_t* uid, gid_t* gid, const char* user, const cha
    return true;
 }
 
+#ifndef _GNU_SOURCE
 inline static const char* basename(const char* path) {
    const char* tmp = strrchr(path, '/');
    return tmp ? tmp + 1 : path;
 }
+#endif
 
 
+inline static char* readline(FILE* file) {
+   char* line = NULL;
+   char ch;
+   while ((ch = fgetc(file)) != EOF) {
+      if (ch == '\n') break;
+      else buf_push(line, ch);
+   }
+   buf_push(line, '\0');
+   return line;
+}
 
 #endif /* FILE_COMMON_H */

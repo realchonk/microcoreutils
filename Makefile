@@ -4,11 +4,12 @@ CFLAGS += -std=gnu99 -Wall -Wextra -O3
 programs=bin/[ $(patsubst src/%.c,bin/%,$(wildcard src/*.c)) $(patsubst src/%.sh,bin/%,$(wildcard src/*.sh))
 
 DESTDIR ?= /usr/local
-BINDIR ?= $(DESTDIR)/bin
-MANDIR ?= $(DESTDIR)/share/man/man1
+BINDIR ?= bin
+DATADIR ?= share
+MANDIR ?= $(DATADIR)/man/man1
 
-programs_BINDIR=$(patsubst bin/%,$(BINDIR)/%,$(programs))
-doc_MANDIR=$(patsubst doc/%.1,$(MANDIR)/%.1,$(wildcard doc/*.1))
+programs_BINDIR=$(patsubst bin/%,$(DESTDIR)/$(BINDIR)/%,$(programs))
+doc_MANDIR=$(patsubst doc/%.1,$(DESTDIR)/$(MANDIR)/%.1,$(wildcard doc/*.1))
 
 all: progs
 
@@ -19,6 +20,9 @@ bin:
 
 bin/[: bin/test
 	ln -sf test bin/[
+
+bin/login: src/login.c
+	$(CC) -o $@ $< $(CFLAGS) -lcrypt
 
 bin/%: src/%.c
 	$(CC) -o $@ $< $(CFLAGS)
@@ -38,14 +42,14 @@ help:
 	@echo "TODOs:"
 	@grep -n TODO $(wildcard src/*.c)
 
-$(BINDIR):
+$(DESTDIR)/$(BINDIR):
 	install -dm755 $@
-$(BINDIR)/%: bin/% $(BINDIR)
+$(DESTDIR)/$(BINDIR)/%: bin/% $(BINDIR)
 	install -m755 $< $@
 
-$(MANDIR):
+$(DESTDIR)/$(MANDIR):
 	install -dm755 $@
-$(MANDIR)/%.1: doc/%.1 $(MANDIR)
+$(DESTDIR)/$(MANDIR)/%.1: doc/%.1 $(DESTDIR)/$(MANDIR)
 	install -m644 $< $@
 
 install: $(programs_BINDIR) $(doc_MANDIR)

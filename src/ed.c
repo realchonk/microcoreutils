@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <ctype.h>
+#include "common.h"
 #include "buf.h"
 
 // Simple ED clone
@@ -26,16 +27,6 @@ struct ed_data {
    size_t current_line;
 };
 
-static char* readline(FILE* file) {
-   char* line = NULL;
-   char ch;
-   while ((ch = fgetc(file)) != EOF) {
-      if (ch == '\n') break;
-      else buf_push(line, ch);
-   }
-   buf_push(line, '\0');
-   return line;
-}
 static bool write_file(const char* filename, char** buffer, int suppress) {
    FILE* file = fopen(filename, "w");
    if (!file) {

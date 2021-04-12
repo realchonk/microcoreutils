@@ -40,3 +40,4 @@ but there are some extra programs (like init).
 - halt
 - init
 - tr
+- login (untested)
