@@ -4,21 +4,28 @@
 #include <stdbool.h>
 #include <string.h>
 #include <unistd.h>
-#include <shadow.h>
 #include <stdio.h>
 #include <errno.h>
-#include <crypt.h>
 #include <pwd.h>
 #include "common.h"
+#include "clearenv.h"
+
+#if defined(__linux__)
+#include <shadow.h>
+#include <crypt.h>
+#endif
 
 static bool check_passwd(struct passwd* user, const char* pwd) {
    if (!user) return false;
    if (!user->pw_passwd || !*user->pw_passwd) return true;
+#if defined(__linux__)
    if (strcmp(user->pw_passwd, "x") == 0) {
       struct spwd* shadow = getspnam(user->pw_name);
       if (!shadow) return false;
       else return strcmp(shadow->sp_pwdp, crypt(pwd, shadow->sp_pwdp)) == 0;
-   } else return strcmp(user->pw_passwd, crypt(pwd, user->pw_passwd)) == 0;
+   } else
+#endif
+   return strcmp(user->pw_passwd, crypt(pwd, user->pw_passwd)) == 0;
 }
 
 static void fix_env(const struct passwd* pw) {

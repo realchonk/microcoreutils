@@ -5,9 +5,11 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <errno.h>
+#include "clearenv.h"
 
 // For some reason glibc-2.33 on Gentoo doesn't declare this:
 extern char** environ;
+
 
 static bool is_env(const char* s) {
    size_t i = 0;

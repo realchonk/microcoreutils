@@ -33,7 +33,7 @@ static int sort_name(const void* p1, const void* p2) {
 static int sort_t(const void* p1, const void* p2) {
    const struct ls_result* e1 = p1;
    const struct ls_result* e2 = p2;
-   int r = e1->st.st_mtim.tv_nsec - e2->st.st_mtim.tv_nsec;
+   int r = e1->st.st_mtime - e2->st.st_mtime;
    if (r == 0) r = strcmp(e1->name, e2->name);
    return reverse_sort ? -r : r;
 }
@@ -47,14 +47,14 @@ static int sort_S(const void* p1, const void* p2) {
 static int sort_c(const void* p1, const void* p2) {
    const struct ls_result* e1 = p1;
    const struct ls_result* e2 = p2;
-   int r = e1->st.st_ctim.tv_nsec - e2->st.st_ctim.tv_nsec;
+   int r = e1->st.st_ctime - e2->st.st_ctime;
    if (r == 0) r = strcmp(e1->name, e2->name);
    return reverse_sort ? -r : r;
 }
 static int sort_u(const void* p1, const void* p2) {
    const struct ls_result* e1 = p1;
    const struct ls_result* e2 = p2;
-   int r = e1->st.st_atim.tv_nsec - e2->st.st_atim.tv_nsec;
+   int r = e1->st.st_atime - e2->st.st_atime;
    if (r == 0) r = strcmp(e1->name, e2->name);
    return reverse_sort ? -r : r;
 }
@@ -111,7 +111,7 @@ static void print_entry(const char* name, struct stat* st, const char* path) {
          free_group = 1;
       }
 
-      struct tm tm = *localtime(&st->st_atim.tv_sec);
+      struct tm tm = *localtime(&st->st_atime);
       //strftime(time, sizeof(time), "%c", tm);
       char* time = asctime(&tm);
       time[strlen(time) - 1] = '\0';

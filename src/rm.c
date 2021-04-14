@@ -1,6 +1,6 @@
-#include <sys/sysmacros.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <stdbool.h>
 #include <unistd.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -8,6 +8,10 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <errno.h>
+
+#if defined(__linux__)
+#include <sys/sysmacros>
+#endif
 
 static int has_permission(int euid, int egid, int uid, int gid, int mode) {
    if (euid == uid) return (mode & 0200) == 0200;
@@ -23,8 +27,8 @@ static int do_prompt(void) {
 }
 
 static int euid, egid, recursive, force, prompt;
-static int delete_file(const char*);
-static int recursive_delete(const char* path) {
+static bool delete_file(const char*);
+static bool recursive_delete(const char* path) {
    DIR* dir;
    struct dirent* ent;
    if ((dir = opendir(path)) == NULL) {
@@ -34,37 +38,36 @@ static int recursive_delete(const char* path) {
 
    const size_t len = strlen(path);
    char* buffer = (char*)malloc(len + 260);
-   readdir(dir);  // read .
-   readdir(dir);  // read ..
-   int rv = 1;
+   bool rv = true;
    while ((ent = readdir(dir)) != NULL) {
+      if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0) continue;
       memcpy(buffer, path, len);
       buffer[len] = '/';
       strncpy(buffer + len + 1, ent->d_name, 256);
       
       if (!delete_file(buffer) && !force)
-         rv = 0;
+         rv = false;
 
    }
    free(buffer);
    return rv;
 }
 
-static int delete_file(const char* path) {
+static bool delete_file(const char* path) {
    struct stat statbuf;
    if (stat(path, &statbuf) != 0) {
       if (!force) {
          fprintf(stderr, "rm: cannot remove '%s': %s\n", path, strerror(errno));
-         return 0;
+         return false;
       }
-      return 1;
+      return true;
    }
    const int mode = statbuf.st_mode & 0777;
    const int uid = statbuf.st_uid;
    const int gid = statbuf.st_gid;
    if (prompt || (!has_permission(euid, egid, uid, gid, mode) && !force)) {
       fprintf(stderr, "rm: remove '%s'? ", path);
-      if (!do_prompt()) return 1;
+      if (!do_prompt()) return true;
    }
 
 
@@ -72,16 +75,21 @@ static int delete_file(const char* path) {
       // 'path' is a directory
       if (!recursive) {
          fprintf(stderr, "rm: cannot remove '%s': %s\n", path, strerror(EISDIR));
-         return 0;
+         return false;
       }
-      return recursive_delete(path);
+      if (!recursive_delete(path)) return false;
+      if (rmdir(path) != 0) {
+         fprintf(stderr, "rm: cannot remove '%s': %s\n", path, strerror(errno));
+         return false;
+      }
+      return true;
    }
 
    if (unlink(path) != 0) {
       fprintf(stderr, "rm: cannot remove '%s': %s\n", path, strerror(errno));
-      return 0;
+      return false;
    }
-   return 1;
+   return true;
 }
 
 

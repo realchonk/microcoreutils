@@ -1,5 +1,4 @@
 #include <sys/reboot.h>
-#include <sys/mount.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
@@ -12,6 +11,12 @@
 #include <stdio.h>
 #include <fcntl.h>
 
+#if defined(__linux__)
+#include <sys/mount.h>
+#else
+#warning "init is currently only available for Linux"
+#endif
+
 static bool running;
 static pid_t pid_shell;
 static void signal_handler(int sig) {
@@ -23,6 +28,7 @@ static void signal_handler(int sig) {
       break;
    }
 }
+#ifdef __linux__
 static bool init_hostname(const char* path) {
    FILE* file = fopen(path, "r");
    if (!file) return false;
@@ -34,6 +40,12 @@ static bool init_hostname(const char* path) {
    if (buffer[len] == '\n') buffer[len] = '\0';
    return sethostname(buffer, len) == 0;
 }
+#else
+static bool init_hostname(const char* path) {
+   (void)path;
+   return false;
+}
+#endif
 
 int main(void) {
    if (getpid() != 1) {
@@ -45,6 +57,7 @@ int main(void) {
    signal(SIGTERM, signal_handler);
    signal(SIGKILL, signal_handler);
 
+#ifdef __linux__
    // Create /proc, /sys, /dev, /dev/pts
    mkdir("/proc", 755);
    mkdir("/sys", 755);
@@ -56,12 +69,15 @@ int main(void) {
    if (mount(NULL, "/sys", "sysfs", 0, NULL) < 0) perror("Failed to mount /sys");
    mount(NULL, "/dev", "devtmpfs", 0, NULL); // May already be mounted by kernel
    if (mount(NULL, "/dev/pts", "devpts", 0, NULL) < 0) perror("Failed to mount /dev/pts");
+#endif
 
    // Set the hostname
    if (!init_hostname("/etc/hostname")) perror("init: failed to set hostname");
 
+#ifdef __linux__
    // Setup some environement variables
    putenv("TERM=linux");
+#endif
 
    // Start single-user mode
    running = true;
@@ -82,8 +98,10 @@ int main(void) {
    // Write all changes to disk
    sync();
 
+#ifdef __linux__
    // TODO: find portable solution
    reboot(RB_POWER_OFF);
+#endif
 
    return 0;
 }
