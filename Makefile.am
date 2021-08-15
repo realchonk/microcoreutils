@@ -86,7 +86,12 @@ false_CPPFLAGS		= -DEXIT_CODE=1
 AM_CPPFLAGS			= -Iinclude
 
 install-data-local:
-	ln -s test $(DESTDIR)/$(bindir)/[
+	mkdir -p $(DESTDIR)/usr/bin
+	ln -sf test $(DESTDIR)/$(bindir)/[
+	ln -sf ../../$(bindir)/env $(DESTDIR)/usr/bin/env
+
+uninstall-local:
+	rm -f $(DESTDIR)/$(bindir)/[
 
 full-clean: clean
 	rm -f Makefile Makefile.in configure configure~ src/.dirstamp stamp-h1 aclocal.m4

@@ -1,11 +1,15 @@
-m4_define([mcu_VERSION], [1.0])
-AC_INIT([microcoreutils], m4_defn([mcu_VERSION]), [benni@stuerz.xyz], m4_defn([mcu_VERSION]), [https://github.com/Benni3D/microcoreutils])
+AC_INIT([microcoreutils], 1.0, [benni@stuerz.xyz], [microcoreutils], [https://github.com/Benni3D/microcoreutils])
 
 AC_PREREQ([2.69])
 AC_CONFIG_SRCDIR([src/echo.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([1.16 foreign subdir-objects -Wall])
+
+AC_SUBST([datarootdir], ['${prefix}/usr/share'])
+
+# Setup default installation paths
+AC_PREFIX_DEFAULT([/])
 
 # Check for programs.
 AC_PROG_CC
