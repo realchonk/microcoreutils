@@ -1,4 +1,4 @@
-.TH cat 1 "2021-03-11"
+.TH cat 1 "2021-08-15"
 
 .SH NAME
 cat - concatenate and print files
@@ -47,38 +47,3 @@ but accepts multiple occurences of '-' as a
 .I
 file
 operand.
-
-.SH STDIN
-The standard input is being used if no
-.I
-file
-operands have been specified, or if a
-.I
-file
-operand is '-'.
-See INPUT FILES section.
-
-.SH STDOUT
-The standard output contains the sequence of bytes read from the input files.
-
-.SH STDERR
-The standard error is being used for diagnostic messages.
-
-.SH INPUT FILES
-The input files can be of any type.
-
-.SH OUTPUT FILES
-None.
-
-.SH EXIT STATUS
-The following exit values are returned:
-.PP
-0
-.RE
-.RS 5
-All input files were output successfully.
-.RE
->0
-.RE
-.RS 5
-An error occured.

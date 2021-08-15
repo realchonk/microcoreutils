@@ -1,4 +1,4 @@
-.TH echo 1 "2021-03-11"
+.TH echo 1 "2021-08-15"
 
 .SH NAME
 echo - write arguments to standard output
@@ -22,7 +22,6 @@ The
 echo
 utility recognizes the "--" argument as a string operand.
 .PP
-Implementations shall not support any options.
 
 .SH OPERANDS
 The following operands are be supported:
@@ -100,28 +99,3 @@ Write an 8-bit value that is a zero, one or two-digit hexadecimal number
 .I
 num
 (extension).
-
-.SH STDIN
-Not used.
-
-.SH STDOUT
-The
-.I
-echo
-utility arguments are separated by single <space> characters and a <newline> character follows the last argument, if '\\c' was not specified.
-
-.SH STDERR
-Not used.
-
-.SH INPUT FILES
-None.
-
-.SH OUTPUT FILES
-None.
-
-.SH EXIT STATUS
-The
-.I
-echo
-utility always returns 0 as the exit status, meaning success.
-

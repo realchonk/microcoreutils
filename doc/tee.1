@@ -1,4 +1,4 @@
-.TH tee 1 "2021-03-11"
+.TH tee 1 "2021-08-15"
 
 .SH NAME
 tee - duplicate standard input
@@ -53,34 +53,3 @@ If a
 .I
 file
 is '-', it refers to a file named -
-
-.SH STDIN
-The standard input can be of any type.
-
-.SH STDOUT
-The standard output is a copy of standard input.
-
-.SH STDERR
-The standard error is being used for diagnostic messages.
-
-.SH INPUT FILES
-None.
-
-.SH OUTPUT FILES
-If any
-.I
-file
-operands are specified, the standard input is copied to each names file.
-
-.SH EXIT STATUS
-The following exit values are returned:
-.PP
-0
-.RE
-.RS 5
-All input files were output successfully.
-.RE
->0
-.RE
-.RS 5
-An error occured.

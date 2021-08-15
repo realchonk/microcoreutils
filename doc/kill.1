@@ -1,4 +1,4 @@
-.TH kill 1 "2021-04-09"
+.TH kill 1 "2021-08-15"
 
 .SH NAME
 kill - terminate or signal processes
@@ -51,36 +51,3 @@ A decimal integer specifying a process or process group to be signaled.
 .RE
 .RS 5
 A decimal integer specifying a signal number.
-
-
-.SH STDIN
-Not used.
-
-.SH STDOUT
-If the
-.B -l
-option was specified, the symbolic name of each signal is written to standard output.
-
-.SH STDERR
-The standard error is being used for diagnostic messages.
-
-.SH INPUT FILES
-None.
-
-.SH OUTPUT FILES
-None.
-
-.SH EXIT STATUS
-The following exit values are returned:
-.PP
-0
-.RE
-.RS 5
-At least one matching process was found for each
-.I pid
-operand, and the specified signal was successfully processed for at least one matching process.
-.RE
->0
-.RE
-.RS 5
-An error occured.

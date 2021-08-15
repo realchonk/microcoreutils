@@ -1,0 +1,62 @@
+.TH du 1 "2021-08-15"
+
+.SH NAME
+du - estimate file space usage
+
+.SH SYNOPSIS
+.SY du
+.OP -a\fR|\fI-s
+.OP -k
+.OP -H\fR|\fIL
+.OP file...
+
+.SH DESCRIPTION
+The
+.I du
+prints out an estimate of the space used by files.
+
+.SH OPTIONS
+.B -a
+.RE
+.RS 5
+In addition to the default output, report the size of each file not of type directory rooted in the special file.
+The
+.B -a
+option does not affect whether non-directories given as
+.I files
+are listed.
+.RE
+.B -s
+.RE
+.RS 5
+Instead of the default output, report only the total sum for each of the specified files.
+.RE
+.B -k
+.RE
+.RS 5
+Write the file size in units of 1024 bytes, rather than the default 512-byte units. 
+.RE
+.B -H
+.RE
+.RS 5
+If a symbolic link is specified on the command line,
+count the size of the file or file hierarchy referenced by the link.
+.RE
+.B -L
+.RE
+.RS 5
+If a symbolic link is specified on the command line or encountered during the traversal of a file hierarchy,
+count the size of the file or file hierarchy referenced by the link.
+.RE
+
+.SH OPERANDS
+The following operands are supported:
+.PP
+.I file
+.RE
+.RS 5
+The pathname of a file whoose size is to be written.
+If no
+.I file
+is specified, the current directory is used.
+
