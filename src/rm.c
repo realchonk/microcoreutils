@@ -8,8 +8,9 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <errno.h>
+#include "config.h"
 
-#if defined(__linux__)
+#if HAVE_SYS_SYSMACROS_H
 #include <sys/sysmacros.h>
 #endif
 

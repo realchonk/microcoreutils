@@ -10,8 +10,9 @@
 #include <string.h>
 #include <stdio.h>
 #include <fcntl.h>
+#include "config.h"
 
-#if defined(__linux__)
+#if HAVE_SYS_MOUNT_H
 #include <sys/mount.h>
 #else
 #warning "init is currently only available for Linux"
@@ -29,7 +30,7 @@ static void signal_handler(int sig) {
       break;
    }
 }
-#ifdef __linux__
+#if HAVE_SETHOSTNAME
 static bool init_hostname(const char* path) {
    FILE* file = fopen(path, "r");
    if (!file) return false;

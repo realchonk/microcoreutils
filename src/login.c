@@ -1,3 +1,7 @@
+#include "config.h"
+#if HAVE_SETRESUID
+#define _GNU_SOURCE
+#endif
 #include <sys/utsname.h>
 #include <sys/types.h>
 #include <stdbool.h>
@@ -9,15 +13,18 @@
 #include "common.h"
 #include "clearenv.h"
 
-#if defined(__linux__)
-#include <shadow.h>
+#if HAVE_CRYPT_H
 #include <crypt.h>
+#endif
+
+#if HAVE_SHADOW_H
+#include <shadow.h>
 #endif
 
 static bool check_passwd(struct passwd* user, const char* pwd) {
    if (!user) return false;
    if (!user->pw_passwd || !*user->pw_passwd) return true;
-#if defined(__linux__)
+#if HAVE_SHADOW_H
    if (strcmp(user->pw_passwd, "x") == 0) {
       struct spwd* shadow = getspnam(user->pw_name);
       if (!shadow) return false;
@@ -88,7 +95,7 @@ begin:
    buf_free(pwd);
    bool failed;
    if (passwd->pw_uid != getuid()) {
-#if defined(__linux__) || defined(__FreeBSD__)
+#if HAVE_SETRESUID
       failed = setresgid(passwd->pw_gid, passwd->pw_gid, passwd->pw_gid) != 0 || initgroups(passwd->pw_name, passwd->pw_gid) != 0 || setresuid(passwd->pw_uid, passwd->pw_uid, passwd->pw_uid) != 0;
 #else
       failed = setreuid(passwd->pw_uid, passwd->pw_uid) != 0 || setregid(passwd->pw_gid, passwd->pw_gid) != 0;

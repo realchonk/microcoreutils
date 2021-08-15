@@ -1,0 +1,95 @@
+
+bin_PROGRAMS = basename cat chgrp chmod chown clear cp date dd dirname du echo ed \
+					env false halt head id kill ln login ls mkdir mv pwd rm rmdir sleep \
+					sync tee test tr true tty uname unlink wc
+
+sbin_PROGRAMS = init
+
+man1_MANS = doc/basename.1		\
+				doc/cat.1			\
+				doc/chgrp.1			\
+				doc/chown.1			\
+				doc/clear.1			\
+				doc/cp.1				\
+				doc/date.1			\
+				doc/dirname.1		\
+				doc/du.1				\
+				doc/echo.1			\
+				doc/env.1			\
+				doc/false.1			\
+				doc/halt.1			\
+				doc/head.1			\
+				doc/id.1				\
+				doc/kill.1			\
+				doc/ln.1				\
+				doc/mkdir.1			\
+				doc/mv.1				\
+				doc/pwd.1			\
+				doc/rm.1				\
+				doc/rmdir.1			\
+				doc/sleep.1			\
+				doc/sync.1			\
+				doc/tee.1			\
+				doc/tr.1				\
+				doc/true.1			\
+				doc/tty.1			\
+				doc/uname.1			\
+				doc/unlink.1		\
+				doc/wc.1
+
+man8_MANS = doc/init.8
+
+basename_SOURCES	= src/basename.c
+cat_SOURCES			= src/cat.c
+chgrp_SOURCES		= src/chgrp.c
+chmod_SOURCES		= src/chmod.c
+chown_SOURCES		= src/chown.c
+clear_SOURCES		= src/clear.c
+cp_SOURCES			= src/cp.c
+date_SOURCES		= src/date.c
+dd_SOURCES			= src/dd.c
+dirname_SOURCES	= src/dirname.c
+du_SOURCES			= src/du.c
+echo_SOURCES		= src/echo.c
+ed_SOURCES			= src/ed.c
+env_SOURCES			= src/env.c
+halt_SOURCES		= src/halt.c
+false_SOURCES		= src/true.c
+head_SOURCES		= src/head.c
+id_SOURCES			= src/id.c
+init_SOURCES 		= src/init.c
+kill_SOURCES		= src/kill.c
+ln_SOURCES			= src/ln.c
+login_SOURCES		= src/login.c
+ls_SOURCES			= src/ls.c
+mkdir_SOURCES		= src/mkdir.c
+mv_SOURCES			= src/mv.c
+pwd_SOURCES			= src/pwd.c
+rm_SOURCES			= src/rm.c
+rmdir_SOURCES		= src/rmdir.c
+sleep_SOURCES		= src/sleep.c
+sync_SOURCES		= src/sync.c
+tee_SOURCES			= src/tee.c
+test_SOURCES		= src/test.c
+tr_SOURCES			= src/tr.c
+true_SOURCES		= src/true.c
+tty_SOURCES			= src/tty.c
+uname_SOURCES		= src/uname.c
+unlink_SOURCES		= src/unlink.c
+wc_SOURCES			= src/wc.c
+
+login_LDFLAGS		= -lcrypt
+
+true_CPPFLAGS		= -DEXIT_CODE=0
+false_CPPFLAGS		= -DEXIT_CODE=1
+
+AM_CPPFLAGS			= -Iinclude
+
+install-data-local:
+	ln -s test $(DESTDIR)/$(bindir)/[
+
+full-clean: clean
+	rm -f Makefile Makefile.in configure configure~ src/.dirstamp stamp-h1 aclocal.m4
+	rm -f config.h config.h.in config.h.in~ config.log config.status
+	rm -rf autom4te.cache build-aux src/.deps .deps
+
