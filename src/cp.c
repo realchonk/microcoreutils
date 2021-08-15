@@ -123,7 +123,7 @@ static bool copy_dir(const char* dest_file, const char* source_file, const struc
 
    bool ec = true;
    while ((ent = readdir(dir)) != NULL) {
-      if (strcmp(".", ent->d_name) == 0 || strcmp("..", ent->d_name) == 0) continue;
+      if (!strcmp(".", ent->d_name) || !strcmp("..", ent->d_name)) continue;
       strncpy(new_dest + len_dest + 1, ent->d_name, 0 + sizeof(ent->d_name));
       strncpy(new_source + len_source + 1, ent->d_name, 0 + sizeof(ent->d_name));
       if (!copy(new_dest, new_source)) ec = false;

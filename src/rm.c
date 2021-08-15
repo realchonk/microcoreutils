@@ -10,7 +10,7 @@
 #include <errno.h>
 
 #if defined(__linux__)
-#include <sys/sysmacros>
+#include <sys/sysmacros.h>
 #endif
 
 static int has_permission(int euid, int egid, int uid, int gid, int mode) {

@@ -1,4 +1,3 @@
-#define _GNU_SOURCE
 #include <sys/utsname.h>
 #include <sys/types.h>
 #include <stdbool.h>

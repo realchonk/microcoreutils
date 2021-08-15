@@ -23,6 +23,7 @@ static void signal_handler(int sig) {
    switch (sig) {
    case SIGTERM:
    case SIGKILL:
+   case SIGUSR1:
       kill(pid_shell, SIGKILL);
       running = false;
       break;
@@ -54,6 +55,7 @@ int main(void) {
    }
 
    // Register signal handlers
+   signal(SIGUSR1, signal_handler);
    signal(SIGTERM, signal_handler);
    signal(SIGKILL, signal_handler);
 

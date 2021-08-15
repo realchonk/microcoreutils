@@ -1,9 +1,14 @@
+UNAME = $(shell uname)
+
 CC=$(CROSS_COMPILE)gcc
 CFLAGS += -D_XOPEN_SOURCE=700 -std=c99 -Wall -Wextra -O3
 
+ifeq ($(UNAME), Linux)
+CFLAGS += -D_GNU_SOURCE
+endif
+
 programs=bin/[ $(patsubst src/%.c,bin/%,$(wildcard src/*.c)) $(patsubst src/%.sh,bin/%,$(wildcard src/*.sh))
 
-UNAME = $(shell uname)
 
 DESTDIR ?= /usr/local
 BINDIR ?= bin
@@ -23,7 +28,7 @@ bin:
 bin/[: bin/test
 	ln -sf test bin/[
 
-ifeq ($(UNAME), "Linux")
+ifeq ($(UNAME), Linux)
 bin/login: src/login.c
 	$(CC) -o $@ $< $(CFLAGS) -lcrypt
 endif

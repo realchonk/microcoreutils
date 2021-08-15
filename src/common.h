@@ -71,4 +71,11 @@ inline static char* readline(FILE* file) {
    return line;
 }
 
+inline static bool strcnt(const char* s, char ch) {
+   while (*s) {
+      if (*s == ch) return true;
+      ++s;
+   }
+   return false;
+}
 #endif /* FILE_COMMON_H */

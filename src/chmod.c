@@ -11,6 +11,7 @@
 #include <ctype.h>
 #include <pwd.h>
 #include <grp.h>
+#include "common.h"
 
 static bool get_mode(const char* filename, mode_t* mode) {
    struct stat st;
@@ -35,13 +36,6 @@ static bool parse_mode(const char* s, mode_t* u) {
 static void mode_add(mode_t* mode, int mask, bool value) {
    if (value) *mode |= mask;
    else *mode &= ~mask;
-}
-static bool strcnt(const char* s, char ch) {
-   while (*s) {
-      if (*s == ch) return true;
-      ++s;
-   }
-   return false;
 }
 static bool parse_mode2(const char* s, mode_t* mode, const mode_t um) {
    bool u = false, g = false, o = false, a = false;

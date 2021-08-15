@@ -41,3 +41,5 @@ but there are some extra programs (like init).
 - init
 - tr
 - login (untested)
+- du (missing -x option)
+- dd (buggy)
