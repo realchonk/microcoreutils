@@ -14,13 +14,14 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-bin_PROGRAMS = basename cat chgrp chmod chown clear cp date dd dirname du echo ed \
+bin_PROGRAMS = basename cal cat chgrp chmod chown clear cp date dd dirname du echo ed \
 					env false halt head id kill ln login ls mkdir mv pwd rm rmdir sleep \
 					sync tee test tr true tty uname unlink wc
 
 sbin_PROGRAMS = init
 
 man1_MANS = doc/basename.1		\
+				doc/cal.1			\
 				doc/cat.1			\
 				doc/chgrp.1			\
 				doc/chown.1			\
@@ -55,6 +56,7 @@ man1_MANS = doc/basename.1		\
 man8_MANS = doc/init.8
 
 basename_SOURCES	= src/basename.c
+cal_SOURCES			= src/cal.c
 cat_SOURCES			= src/cat.c
 chgrp_SOURCES		= src/chgrp.c
 chmod_SOURCES		= src/chmod.c
