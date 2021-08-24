@@ -20,8 +20,8 @@ Just a simple<br>
 <code>make</code>
 
 ### Installation
-NOTE: normally, you shouldn't install this package directly to your system.
-<code>make DESTDIR=... install</code>
+NOTE: normally, you shouldn't install this package directly to your system.<br>
+Use <code>make DESTDIR=... install</code>
 
 ## Currently finished programs
 - echo
@@ -51,6 +51,7 @@ NOTE: normally, you shouldn't install this package directly to your system.
 - test
 - ln
 - cp
+- cal
 
 ## Unfinished
 - chmod (missing minor feature)
