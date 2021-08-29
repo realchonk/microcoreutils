@@ -14,7 +14,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-bin_PROGRAMS = basename cal cat chgrp chmod chown clear cp date dd dirname du echo ed \
+bin_PROGRAMS = basename cal cat chgrp chmod chown cksum clear cp date dd dirname du echo ed \
 					env false halt head id kill ln login ls mkdir mv pwd rm rmdir sleep \
 					sync tee test tr true tty uname unlink wc
 
@@ -25,6 +25,7 @@ man1_MANS = doc/basename.1		\
 				doc/cat.1			\
 				doc/chgrp.1			\
 				doc/chown.1			\
+				doc/cksum.1			\
 				doc/clear.1			\
 				doc/cp.1				\
 				doc/date.1			\
@@ -61,6 +62,7 @@ cat_SOURCES			= src/cat.c
 chgrp_SOURCES		= src/chgrp.c
 chmod_SOURCES		= src/chmod.c
 chown_SOURCES		= src/chown.c
+cksum_SOURCES		= src/cksum.c
 clear_SOURCES		= src/clear.c
 cp_SOURCES			= src/cp.c
 date_SOURCES		= src/date.c
