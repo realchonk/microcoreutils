@@ -1,7 +1,7 @@
 # Narrowly-POSIX complient UNIX tools
 This project aims to be as POSIX complient as possible.<br>
-There are no extra options than described by POSIX,<br>
-but there are some extra programs (like init).
+There are no extra options other than described by the POSIX standard,<br>
+but there are a few extra programs (like init).
 
 ## Building/Installation
 ### Configuration
@@ -24,7 +24,9 @@ NOTE: normally, you shouldn't install this package directly to your system.<br>
 Use <code>make DESTDIR=... install</code>
 
 ## Programs
-TODO: turn names into links to the corresponding files.
+TODO: turn names into links to the corresponding files.<br>
+TODO 2: add configure option to disable extra programs.<br>
+TODO 3: move these 3 lines into a TODO file.<br>
 
 | Name | Is finished? | Has man page? | Notes |
 |------|--------------|--------------|--------|
