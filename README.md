@@ -13,7 +13,7 @@ Common configure options:<br>
 |--------|-------------|
 | --help | see all available options |
 | --prefix=PREFIX  | installation path |
-| --host=TARGET | host architecture |
+| --host=HOST | host architecture |
 
 ### Building
 Just a simple<br>
@@ -23,53 +23,47 @@ Just a simple<br>
 NOTE: normally, you shouldn't install this package directly to your system.<br>
 Use <code>make DESTDIR=... install</code>
 
-## Currently finished programs
-- echo
-- cat
-- tee
-- true
-- false
-- sleep
-- unlink
-- head
-- mv
-- rmdir
-- basename
-- dirname
-- id
-- uname
-- wc
-- rm
-- date
-- kill
-- tty
-- sync
-- env
-- pwd
-- chown
-- chgrp
-- test
-- ln
-- cp
-- cal
-- expr
-
-## Missing man pages
-- test(1)
-- expr(1)
-- chmod(1)
-- ls(1)
-- login(8)
-- dd(1)
-
-## Unfinished
-- chmod (missing minor feature)
-- ls (incomplete options)
-- clear (unportable)
-- ed (only basic functionality)
-- halt
-- init
-- tr
-- login (untested)
-- du (missing -x option)
-- dd (buggy)
+## Programs
+| Name | Is finished? | Has man page? | Notes |
+|------|--------------|--------------|--------|
+| basename | ✔ | ✔ | |
+| cal | ✔ | ✔ | |
+| cat | ✔ | ✔ | |
+| chgrp | ✔ | ✔ | |
+| chmod | ❌ | ❌ | Add support for u+g etc. |
+| chown | ✔ | ✔ | |
+| cksum | ✔ | ✔ | |
+| clear | ✔ | ✔ | Check for portability |
+| cp | ✔ | ✔ | |
+| date | ✔ | ✔ | |
+| dd | ❌ | ❌ | |
+| dirname | ✔ | ✔ | |
+| du | ❌ | ✔ | Missing options |
+| echo | ✔ | ✔ | |
+| ed | ❌ | ❌ | Only basic functionality |
+| env | ✔ | ✔ | |
+| expr | ✔ |  | |
+| false | ✔ | ✔ | Uses the same source-code as true |
+| halt | ❌ | ❌ | Depends on init |
+| head | ✔ | ✔ | |
+| id | ✔ | ✔ | |
+| init | ❌ | ❌ | |
+| kill | | ✔ | |
+| ln | ✔ | ✔ | |
+| login | ❌ | ❌ | |
+| ls | ❌ | ❌ | Missing options |
+| mkdir | ✔ | ✔ | |
+| mv | ✔ | ✔ | |
+| pwd | ✔ |  ✔| |
+| rm | ✔ | ✔ | |
+| rmdir | ✔ | ✔ | |
+| sleep | ✔ | ✔ | |
+| sync | ✔ | ✔ | |
+| tee | ✔ | ✔ | |
+| test | ✔ | ❌ | |
+| tr | ❌ | ✔ | Only basic matching |
+| true | ✔ | ✔ | |
+| tty | ✔ | ✔ | |
+| uname | ✔ | ✔ | |
+| unlink | ✔ | ✔ | |
+| wc | ✔ | ✔ | |
