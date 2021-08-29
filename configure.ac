@@ -48,6 +48,7 @@ AC_FUNC_FORK
 AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
+AC_FUNC_STRCOLL
 AC_CHECK_FUNCS([getcwd getspnam lchown memmove mkdir putenv realpath
                 rmdir sethostname strchr strdup strerror strndup strrchr
                 strtol strtoul uname setresuid clearenv])

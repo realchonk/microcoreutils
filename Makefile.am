@@ -15,7 +15,7 @@
 
 
 bin_PROGRAMS = basename cal cat chgrp chmod chown cksum clear cp date dd dirname du echo ed \
-					env false halt head id kill ln login ls mkdir mv pwd rm rmdir sleep \
+					env expr false halt head id kill ln login ls mkdir mv pwd rm rmdir sleep \
 					sync tee test tr true tty uname unlink wc
 
 sbin_PROGRAMS = init
@@ -72,6 +72,7 @@ du_SOURCES			= src/du.c
 echo_SOURCES		= src/echo.c
 ed_SOURCES			= src/ed.c
 env_SOURCES			= src/env.c
+expr_SOURCES		= src/expr.c
 halt_SOURCES		= src/halt.c
 false_SOURCES		= src/true.c
 head_SOURCES		= src/head.c

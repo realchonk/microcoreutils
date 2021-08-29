@@ -64,3 +64,4 @@ Use <code>make DESTDIR=... install</code>
 - login (untested)
 - du (missing -x option)
 - dd (buggy)
+- expr (matching)
