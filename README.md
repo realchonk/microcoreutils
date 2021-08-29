@@ -42,13 +42,13 @@ Use <code>make DESTDIR=... install</code>
 | echo | ✔ | ✔ | |
 | ed | ❌ | ❌ | Only basic functionality |
 | env | ✔ | ✔ | |
-| expr | ✔ |  | |
+| expr | ✔ | ❌ | |
 | false | ✔ | ✔ | Uses the same source-code as true |
 | halt | ❌ | ❌ | Depends on init |
 | head | ✔ | ✔ | |
 | id | ✔ | ✔ | |
 | init | ❌ | ❌ | |
-| kill | | ✔ | |
+| kill | ❌ | ✔ | |
 | ln | ✔ | ✔ | |
 | login | ❌ | ❌ | |
 | ls | ❌ | ❌ | Missing options |
