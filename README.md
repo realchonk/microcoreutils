@@ -69,3 +69,7 @@ TODO: turn names into links to the corresponding files.
 | uname | ✔ | ✔ | |
 | unlink | ✔ | ✔ | |
 | wc | ✔ | ✔ | |
+
+## Notes
+Finding sources with missing copyright:<br>
+<code>diff \<(grep -rn '^//\s\*GNU General Public License' src | cut -d':' -f1) \<(find src -type f)</code>
