@@ -52,6 +52,15 @@ Use <code>make DESTDIR=... install</code>
 - ln
 - cp
 - cal
+- expr
+
+## Missing man pages
+- test(1)
+- expr(1)
+- chmod(1)
+- ls(1)
+- login(8)
+- dd(1)
 
 ## Unfinished
 - chmod (missing minor feature)
@@ -64,4 +73,3 @@ Use <code>make DESTDIR=... install</code>
 - login (untested)
 - du (missing -x option)
 - dd (buggy)
-- expr (matching)
