@@ -24,6 +24,8 @@ NOTE: normally, you shouldn't install this package directly to your system.<br>
 Use <code>make DESTDIR=... install</code>
 
 ## Programs
+TODO: turn names into links to the corresponding files.
+
 | Name | Is finished? | Has man page? | Notes |
 |------|--------------|--------------|--------|
 | basename | ✔ | ✔ | |
