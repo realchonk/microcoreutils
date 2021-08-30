@@ -73,4 +73,6 @@ TODO 3: move these 3 lines into a TODO file.<br>
 
 ## Notes
 Finding sources with missing copyright:<br>
-<code>diff \<(grep -rn '^//\s\*GNU General Public License' src | cut -d':' -f1) \<(find src -type f)</code>
+<code>diff \<(grep -rn '^//\s\*GNU General Public License' src | cut -d':' -f1) \<(find src -type f)</code><br>
+Code I used to make the links:<br>
+<code>awk -F'|' 'NR>=34&&NR<=74{printf "|[%s](src/%s.c)|%s|%s|%s|\n", $2, $2, $3, $4, $5 }' README.md| sed 's/\s\+/ /; s/\/\s*/\//; s/\s*\././; s/\[\s*/ [/; s/\s*\]/]/; s/)/) /'</code>
