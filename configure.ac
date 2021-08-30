@@ -53,5 +53,11 @@ AC_CHECK_FUNCS([getcwd getspnam lchown memmove mkdir putenv realpath
                 rmdir sethostname strchr strdup strerror strndup strrchr
                 strtol strtoul uname setresuid clearenv])
 
+# Enable extra programs
+AC_ARG_ENABLE([extra-progs],
+              [AS_HELP_STRING([--enable-extra-progs], [enable extra programs (like halt)])],
+              [AM_CONDITIONAL([ENABLE_EXTRA_PROGS], [test x$enableval = xyes])],
+              [AM_CONDITIONAL([ENABLE_EXTRA_PROGS], false)])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

@@ -15,10 +15,9 @@
 
 
 bin_PROGRAMS = basename cal cat chgrp chmod chown cksum clear cp date dd dirname du echo ed \
-					env expr false halt head id kill ln login ls mkdir mv pwd rm rmdir sleep \
-					sync tee test tr true tty uname unlink wc
-
-sbin_PROGRAMS = init
+					env expr false head id kill ln ls mkdir mv pwd rm rmdir sleep tee test tr true \
+					tty uname unlink wc
+sbin_PROGRAMS =
 
 man1_MANS = doc/basename.1		\
 				doc/cal.1			\
@@ -34,7 +33,6 @@ man1_MANS = doc/basename.1		\
 				doc/echo.1			\
 				doc/env.1			\
 				doc/false.1			\
-				doc/halt.1			\
 				doc/head.1			\
 				doc/id.1				\
 				doc/kill.1			\
@@ -45,7 +43,6 @@ man1_MANS = doc/basename.1		\
 				doc/rm.1				\
 				doc/rmdir.1			\
 				doc/sleep.1			\
-				doc/sync.1			\
 				doc/tee.1			\
 				doc/tr.1				\
 				doc/true.1			\
@@ -53,8 +50,14 @@ man1_MANS = doc/basename.1		\
 				doc/uname.1			\
 				doc/unlink.1		\
 				doc/wc.1
+man8_MANS =
 
-man8_MANS = doc/init.8
+if ENABLE_EXTRA_PROGS
+bin_PROGRAMS	+= login sync
+sbin_PROGRAMS 	+= halt init
+man1_MANS		+= doc/sync.1
+man8_MANS 		+= doc/halt.8 doc/init.8
+endif
 
 basename_SOURCES	= src/basename.c
 cal_SOURCES			= src/cal.c
