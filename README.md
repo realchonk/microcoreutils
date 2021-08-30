@@ -14,6 +14,7 @@ Common configure options:<br>
 | --help | see all available options |
 | --prefix=PREFIX  | installation path |
 | --host=HOST | host architecture |
+| --enable-extra-progs | enable extra programs (like halt(8)) |
 
 ### Building
 Just a simple<br>
