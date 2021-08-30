@@ -24,9 +24,6 @@ NOTE: normally, you shouldn't install this package directly to your system.<br>
 Use <code>make DESTDIR=... install</code>
 
 ## Programs
-TODO 2: add configure option to disable extra programs.<br>
-TODO 3: move these 3 lines into a TODO file.<br>
-
 | Name | Is finished? | Has man page? | Notes |
 |------|--------------|--------------|--------|
 | [basename](src/basename.c) | ✔ | ✔ | |
