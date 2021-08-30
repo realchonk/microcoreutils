@@ -46,7 +46,7 @@ TODO 3: move these 3 lines into a TODO file.<br>
 | [ed](src/ed.c) | ❌ | ❌ | Only basic functionality |
 | [env](src/env.c) | ✔ | ✔ | |
 | [expr](src/expr.c) | ✔ | ❌ | |
-| [false](src/false.c) | ✔ | ✔ | Uses the same source-code as true |
+| [false](src/true.c) | ✔ | ✔ | Uses the same source-code as true |
 | [halt](src/halt.c) | ❌ | ❌ | Depends on init |
 | [head](src/head.c) | ✔ | ✔ | |
 | [id](src/id.c) | ✔ | ✔ | |
