@@ -45,7 +45,7 @@ Use <code>make DESTDIR=... install</code>
 | [env](src/env.c) | ✔ | ✔ | |
 | [expr](src/expr.c) | ✔ | ❌ | |
 | [false](src/true.c) | ✔ | ✔ | Uses the same source-code as true |
-| [halt](src/halt.c) | ❌ | ❌ | Depends on init |
+| [halt](src/halt.c) | ❌ | ✔ | Depends on init |
 | [head](src/head.c) | ✔ | ✔ | |
 | [id](src/id.c) | ✔ | ✔ | |
 | [init](src/init.c) | ❌ | ❌ | |
