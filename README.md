@@ -27,47 +27,47 @@ Use <code>make DESTDIR=... install</code>
 ## Programs
 | Name | Is finished? | Has man page? | Notes |
 |------|--------------|--------------|--------|
-| [basename](src/basename.c) | ✔ | ✔ | |
-| [cal](src/cal.c) | ✔ | ✔ | |
-| [cat](src/cat.c) | ✔ | ✔ | |
-| [chgrp](src/chgrp.c) | ✔ | ✔ | |
+| [basename](src/basename.c) | ✔ | [✔](https://stuerz.xyz/mc-basename.1.html) | |
+| [cal](src/cal.c) | ✔ | [✔](https://stuerz.xyz/mc-cal.1.html) | |
+| [cat](src/cat.c) | ✔ | [✔](https://stuerz.xyz/mc-cat.1.html) | |
+| [chgrp](src/chgrp.c) | ✔ | [✔](https://stuerz.xyz/mc-chgrp.1.html) | |
 | [chmod](src/chmod.c) | ❌ | ❌ | Add support for u+g etc. |
-| [chown](src/chown.c) | ✔ | ✔ | |
-| [cksum](src/cksum.c) | ✔ | ✔ | |
-| [clear](src/clear.c) | ✔ | ✔ | Check for portability |
-| [cp](src/cp.c) | ✔ | ✔ | |
-| [date](src/date.c) | ✔ | ✔ | |
+| [chown](src/chown.c) | ✔ | [✔](https://stuerz.xyz/mc-chown.1.html) | |
+| [cksum](src/cksum.c) | ✔ | [✔](https://stuerz.xyz/mc-cksum.1.html) | |
+| [clear](src/clear.c) | ✔ | [✔](https://stuerz.xyz/mc-clear.1.html) | Check for portability |
+| [cp](src/cp.c) | ✔ | [✔](https://stuerz.xyz/mc-cp.1.html) | |
+| [date](src/date.c) | ✔ | [✔](https://stuerz.xyz/mc-date.1.html) | |
 | [dd](src/dd.c) | ❌ | ❌ | |
-| [dirname](src/dirname.c) | ✔ | ✔ | |
-| [du](src/du.c) | ❌ | ✔ | Missing options |
-| [echo](src/echo.c) | ✔ | ✔ | |
+| [dirname](src/dirname.c) | ✔ | [✔](https://stuerz.xyz/mc-dirname.1.html) | |
+| [du](src/du.c) | ❌ | [✔](https://stuerz.xyz/mc-du.1.html) | Missing options |
+| [echo](src/echo.c) | ✔ | [✔](https://stuerz.xyz/mc-echo.1.html) | |
 | [ed](src/ed.c) | ❌ | ❌ | Only basic functionality |
-| [env](src/env.c) | ✔ | ✔ | |
+| [env](src/env.c) | ✔ | [✔](https://stuerz.xyz/mc-env.1.html) | |
 | [expr](src/expr.c) | ✔ | ❌ | |
-| [false](src/true.c) | ✔ | ✔ | Uses the same source-code as true |
-| [halt](src/halt.c) | ❌ | ✔ | Depends on init |
-| [head](src/head.c) | ✔ | ✔ | |
-| [id](src/id.c) | ✔ | ✔ | |
+| [false](src/true.c) | ✔ | [✔](https://stuerz.xyz/mc-false.1.html) | Uses the same source-code as true |
+| [halt](src/halt.c) | ❌ | [✔](https://stuerz.xyz/mc-halt.1.html) | Depends on init |
+| [head](src/head.c) | ✔ | [✔](https://stuerz.xyz/mc-head.1.html) | |
+| [id](src/id.c) | ✔ | [✔](https://stuerz.xyz/mc-id.1.html) | |
 | [init](src/init.c) | ❌ | ❌ | |
-| [kill](src/kill.c) | ❌ | ✔ | |
-| [ln](src/ln.c) | ✔ | ✔ | |
+| [kill](src/kill.c) | ❌ | [✔](https://stuerz.xyz/mc-kill.1.html) | |
+| [ln](src/ln.c) | ✔ | [✔](https://stuerz.xyz/mc-ln.1.html) | |
 | [login](src/login.c) | ❌ | ❌ | |
 | [ls](src/ls.c) | ❌ | ❌ | Missing options |
-| [mkdir](src/mkdir.c) | ✔ | ✔ | |
-| [mv](src/mv.c) | ✔ | ✔ | |
+| [mkdir](src/mkdir.c) | ✔ | [✔](https://stuerz.xyz/mc-mkdir.1.html) | |
+| [mv](src/mv.c) | ✔ | [✔](https://stuerz.xyz/mc-mv.1.html) | |
 | [pwd](src/pwd.c) | ✔ |  ✔| |
-| [rm](src/rm.c) | ✔ | ✔ | |
-| [rmdir](src/rmdir.c) | ✔ | ✔ | |
-| [sleep](src/sleep.c) | ✔ | ✔ | |
-| [sync](src/sync.c) | ✔ | ✔ | |
-| [tee](src/tee.c) | ✔ | ✔ | |
+| [rm](src/rm.c) | ✔ | [✔](https://stuerz.xyz/mc-rm.1.html) | |
+| [rmdir](src/rmdir.c) | ✔ | [✔](https://stuerz.xyz/mc-rmdir.1.html) | |
+| [sleep](src/sleep.c) | ✔ | [✔](https://stuerz.xyz/mc-sleep.1.html) | |
+| [sync](src/sync.c) | ✔ | [✔](https://stuerz.xyz/mc-sync.1.html) | |
+| [tee](src/tee.c) | ✔ | [✔](https://stuerz.xyz/mc-tee.1.html) | |
 | [test](src/test.c) | ✔ | ❌ | |
-| [tr](src/tr.c) | ❌ | ✔ | Only basic matching |
-| [true](src/true.c) | ✔ | ✔ | |
-| [tty](src/tty.c) | ✔ | ✔ | |
-| [uname](src/uname.c) | ✔ | ✔ | |
-| [unlink](src/unlink.c) | ✔ | ✔ | |
-| [wc](src/wc.c) | ✔ | ✔ | |
+| [tr](src/tr.c) | ❌ | [✔](https://stuerz.xyz/mc-tr.1.html) | Only basic matching |
+| [true](src/true.c) | ✔ | [✔](https://stuerz.xyz/mc-true.1.html) | |
+| [tty](src/tty.c) | ✔ | [✔](https://stuerz.xyz/mc-tty.1.html) | |
+| [uname](src/uname.c) | ✔ | [✔](https://stuerz.xyz/mc-uname.1.html) | |
+| [unlink](src/unlink.c) | ✔ | [✔](https://stuerz.xyz/mc-unlink.1.html) | |
+| [wc](src/wc.c) | ✔ | [✔](https://stuerz.xyz/mc-wc.1.html) | |
 
 ## Notes
 Finding sources with missing copyright:<br>
