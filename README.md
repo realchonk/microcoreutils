@@ -45,10 +45,10 @@ Use <code>make DESTDIR=... install</code>
 | [env](src/env.c) | ✔ | [✔](https://stuerz.xyz/mc-env.1.html) | |
 | [expr](src/expr.c) | ✔ | ❌ | |
 | [false](src/true.c) | ✔ | [✔](https://stuerz.xyz/mc-false.1.html) | Uses the same source-code as true |
-| [halt](src/halt.c) | ❌ | [✔](https://stuerz.xyz/mc-halt.1.html) | Depends on init |
+| [halt](src/halt.c) | ❌ | [✔](https://stuerz.xyz/mc-halt.8.html) | Depends on init |
 | [head](src/head.c) | ✔ | [✔](https://stuerz.xyz/mc-head.1.html) | |
 | [id](src/id.c) | ✔ | [✔](https://stuerz.xyz/mc-id.1.html) | |
-| [init](src/init.c) | ❌ | ❌ | |
+| [init](src/init.c) | ❌ | [✔](https://stuerz.xyz/mc-init.8.html) | |
 | [kill](src/kill.c) | ❌ | [✔](https://stuerz.xyz/mc-kill.1.html) | |
 | [ln](src/ln.c) | ✔ | [✔](https://stuerz.xyz/mc-ln.1.html) | |
 | [login](src/login.c) | ❌ | ❌ | |
