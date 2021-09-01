@@ -69,6 +69,8 @@ Use <code>make DESTDIR=... install</code>
 | [unlink](src/unlink.c) | ✔ | [✔](https://stuerz.xyz/mc-unlink.1.html) | |
 | [wc](src/wc.c) | ✔ | [✔](https://stuerz.xyz/mc-wc.1.html) | |
 
+Note: if a program has a man page, the tick is a link to it.
+
 ## Notes
 Finding sources with missing copyright:<br>
 <code>diff \<(grep -rn '^//\s\*GNU General Public License' src | cut -d':' -f1) \<(find src -type f)</code><br>
