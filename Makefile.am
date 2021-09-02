@@ -15,8 +15,8 @@
 
 
 bin_PROGRAMS = basename cal cat chgrp chmod chown cksum clear cp date dd dirname du echo ed \
-					env expr false head id kill ln ls mkdir mv pwd rm rmdir sleep tee test tr true \
-					tty uname unlink wc
+					env expr false head id kill link ln ls mkdir mv pwd rm rmdir sleep tee test tr \
+					true tty uname unlink wc
 sbin_PROGRAMS =
 
 man1_MANS = doc/basename.1		\
@@ -36,6 +36,7 @@ man1_MANS = doc/basename.1		\
 				doc/head.1			\
 				doc/id.1				\
 				doc/kill.1			\
+				doc/link.1			\
 				doc/ln.1				\
 				doc/mkdir.1			\
 				doc/mv.1				\
@@ -82,6 +83,7 @@ head_SOURCES		= src/head.c
 id_SOURCES			= src/id.c
 init_SOURCES 		= src/init.c
 kill_SOURCES		= src/kill.c
+link_SOURCES		= src/link.c
 ln_SOURCES			= src/ln.c
 login_SOURCES		= src/login.c
 ls_SOURCES			= src/ls.c

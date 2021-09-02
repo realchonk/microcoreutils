@@ -50,6 +50,7 @@ Use <code>make DESTDIR=... install</code>
 | [id](src/id.c) | ✔ | [✔](https://stuerz.xyz/mc-id.1.html) | |
 | [init](src/init.c) | ❌ | [✔](https://stuerz.xyz/mc-init.8.html) | |
 | [kill](src/kill.c) | ❌ | [✔](https://stuerz.xyz/mc-kill.1.html) | |
+| [link](src/link.c) | ✔ | [✔](https://stuerz.xyz/mc-link.1.html) | |
 | [ln](src/ln.c) | ✔ | [✔](https://stuerz.xyz/mc-ln.1.html) | |
 | [login](src/login.c) | ❌ | ❌ | |
 | [ls](src/ls.c) | ❌ | ❌ | Missing options |
