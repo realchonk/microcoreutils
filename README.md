@@ -49,7 +49,7 @@ Use <code>make DESTDIR=... install</code>
 | [head](src/head.c) | ✔ | [✔](https://stuerz.xyz/mc-head.1.html) | |
 | [id](src/id.c) | ✔ | [✔](https://stuerz.xyz/mc-id.1.html) | |
 | [init](src/init.c) | ❌ | [✔](https://stuerz.xyz/mc-init.8.html) | |
-| [kill](src/kill.c) | ❌ | [✔](https://stuerz.xyz/mc-kill.1.html) | |
+| [kill](src/kill.c) | ✔ | [✔](https://stuerz.xyz/mc-kill.1.html) | doesn't support XSI syntax |
 | [link](src/link.c) | ✔ | [✔](https://stuerz.xyz/mc-link.1.html) | |
 | [ln](src/ln.c) | ✔ | [✔](https://stuerz.xyz/mc-ln.1.html) | |
 | [logname](src/logname.c) | ✔ | [✔](https://stuerz.xyz/mc-logname.1.html) | |

@@ -29,7 +29,6 @@ struct signal_mapping {
 
 
 #define sig(n) { SIG##n, #n }
-// TODO: find all standard UNIX signals
 static struct signal_mapping signals[] = {
    sig(ABRT),
    sig(ALRM),
