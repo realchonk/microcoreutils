@@ -13,7 +13,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-AC_INIT([microcoreutils], 1.1, [benni@stuerz.xyz], [microcoreutils], [https://github.com/Benni3D/microcoreutils])
+AC_INIT([microcoreutils], 1.2, [benni@stuerz.xyz], [microcoreutils], [https://github.com/Benni3D/microcoreutils])
 
 AC_PREREQ([2.69])
 AC_CONFIG_SRCDIR([src/echo.c])
