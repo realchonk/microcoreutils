@@ -1,0 +1,41 @@
+.TH true 1 "2021-09-03"
+
+.SH NAME
+expr - evaluate arguments as an expression
+
+.SH SYNOPSIS
+.SY expr
+\fIoperand\fR...
+.YS
+
+.SH DESCRIPTION
+The
+.I
+expr
+utility evaluated an expression and writes the result to standard output.
+
+.SH OPERANDS
+The supported operators are:
+.PP
+.RS 5
+(  )  |  &  =  >=  <  <=  !=  +  -  *  /  %  :
+.RE
+.PP
+Any other argument is interpreted as an
+.I integer
+or
+.I string\fR.
+
+.SH SEE ALSO
+<https://pubs.opengroup.org/onlinepubs/9699919799/utilities/expr.html>
+
+.PP
+.SH COPYRIGHT
+.br
+Copyright \(co 2021 Benjamin Stürz
+.br
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+.br
+This is free software; you are free to change and redistribute it.
+.br
+There is NO WARRANTY, to the extent permitted by law.

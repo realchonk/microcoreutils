@@ -43,7 +43,7 @@ Use <code>make DESTDIR=... install</code>
 | [echo](src/echo.c) | ✔ | [✔](https://stuerz.xyz/mc-echo.1.html) | |
 | [ed](src/ed.c) | ❌ | ❌ | Only basic functionality |
 | [env](src/env.c) | ✔ | [✔](https://stuerz.xyz/mc-env.1.html) | |
-| [expr](src/expr.c) | ✔ | ❌ | |
+| [expr](src/expr.c) | ✔ | [✔](https://stuerz.xyz/mc-expr.1.html) | |
 | [false](src/true.c) | ✔ | [✔](https://stuerz.xyz/mc-false.1.html) | Uses the same source-code as true |
 | [halt](src/halt.c) | ❌ | [✔](https://stuerz.xyz/mc-halt.8.html) | Depends on init |
 | [head](src/head.c) | ✔ | [✔](https://stuerz.xyz/mc-head.1.html) | |
