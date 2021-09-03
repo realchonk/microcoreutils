@@ -1,0 +1,51 @@
+.TH chmod 1 "2021-09-03"
+
+.SH NAME
+chmod - change the file modes
+
+.SH SYNOPSIS
+.SY chmod
+.OP -R
+.I mode
+.I file...
+.YS
+
+.SH DESCRIPTION
+The
+.I
+chmod
+utility changes the mode bits of each file named by the
+.I file
+operand.
+
+.SH OPTIONS
+.B -R
+.RE
+.RS 5
+Recursively change the file mode bits.
+
+.SH OPERANDS
+The following operands are supported:
+.PP
+.I mode
+.RE
+.RS 5
+Represents the change to be made to the file mode bits of each file named by one of the 
+.I file
+operands.
+.RE
+.B file
+.RE
+.RS 5
+A pathname of a file whoose file mode bits shall be modified.
+
+.PP
+.SH COPYRIGHT
+.br
+Copyright \(co 2021 Benjamin Stürz
+.br
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+.br
+This is free software; you are free to change and redistribute it.
+.br
+There is NO WARRANTY, to the extent permitted by law.

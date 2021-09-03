@@ -31,7 +31,7 @@ Use <code>make DESTDIR=... install</code>
 | [cal](src/cal.c) | ✔ | [✔](https://stuerz.xyz/mc-cal.1.html) | |
 | [cat](src/cat.c) | ✔ | [✔](https://stuerz.xyz/mc-cat.1.html) | |
 | [chgrp](src/chgrp.c) | ✔ | [✔](https://stuerz.xyz/mc-chgrp.1.html) | |
-| [chmod](src/chmod.c) | ❌ | ❌ | Add support for u+g etc. |
+| [chmod](src/chmod.c) | ❌ | [✔](https://stuerz.xyz/mc-chmod.1.html) | Add support for u+g etc. |
 | [chown](src/chown.c) | ✔ | [✔](https://stuerz.xyz/mc-chown.1.html) | |
 | [cksum](src/cksum.c) | ✔ | [✔](https://stuerz.xyz/mc-cksum.1.html) | |
 | [clear](src/clear.c) | ✔ | [✔](https://stuerz.xyz/mc-clear.1.html) | Check for portability |

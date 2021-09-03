@@ -23,6 +23,7 @@ man1_MANS = doc/basename.1		\
 				doc/cal.1			\
 				doc/cat.1			\
 				doc/chgrp.1			\
+				doc/chmod.1			\
 				doc/chown.1			\
 				doc/cksum.1			\
 				doc/clear.1			\
