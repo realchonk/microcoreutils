@@ -32,6 +32,7 @@ man1_MANS = doc/basename.1		\
 				doc/du.1				\
 				doc/echo.1			\
 				doc/env.1			\
+				doc/expr.1			\
 				doc/false.1			\
 				doc/head.1			\
 				doc/id.1				\
