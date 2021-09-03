@@ -17,10 +17,6 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static void sigint_handler(int sig) {
-   (void)sig;
-}
-
 static FILE* open_file(const char* path, int append) {
    if (append) {
       FILE* file = fopen(path, "a");
@@ -43,7 +39,7 @@ int main(int argc, char* argv[]) {
          break;
       }
    }
-   if (ignore_sigint) signal(SIGINT, sigint_handler);
+   if (ignore_sigint) signal(SIGINT, SIG_IGN);
    const int num_files = argc - optind;
    FILE* files[num_files];
    int ec = 0;
