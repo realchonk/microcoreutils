@@ -35,7 +35,7 @@ Use <code>make DESTDIR=... install</code>
 | [chown](src/chown.c) | ✔ | [✔](https://stuerz.xyz/mc-chown.1.html) | |
 | [cksum](src/cksum.c) | ✔ | [✔](https://stuerz.xyz/mc-cksum.1.html) | |
 | [clear](src/clear.c) | ✔ | [✔](https://stuerz.xyz/mc-clear.1.html) | Check for portability |
-| [cp](src/cp.c) | ✔ | [✔](https://stuerz.xyz/mc-cp.1.html) | |
+| [cp](src/cp.c) | ❌ | [✔](https://stuerz.xyz/mc-cp.1.html) | option -p not implemented |
 | [date](src/date.c) | ✔ | [✔](https://stuerz.xyz/mc-date.1.html) | |
 | [dd](src/dd.c) | ❌ | ❌ | |
 | [dirname](src/dirname.c) | ✔ | [✔](https://stuerz.xyz/mc-dirname.1.html) | |
