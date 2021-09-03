@@ -63,7 +63,7 @@ Use <code>make DESTDIR=... install</code>
 | [sleep](src/sleep.c) | ✔ | [✔](https://stuerz.xyz/mc-sleep.1.html) | |
 | [sync](src/sync.c) | ✔ | [✔](https://stuerz.xyz/mc-sync.1.html) | |
 | [tee](src/tee.c) | ✔ | [✔](https://stuerz.xyz/mc-tee.1.html) | |
-| [test](src/test.c) | ✔ | ❌ | |
+| [test](src/test.c) | ✔ | [✔](https://stuerz.xyz/mc-test.1.html) | |
 | [tr](src/tr.c) | ❌ | [✔](https://stuerz.xyz/mc-tr.1.html) | Only basic matching |
 | [true](src/true.c) | ✔ | [✔](https://stuerz.xyz/mc-true.1.html) | |
 | [tty](src/tty.c) | ✔ | [✔](https://stuerz.xyz/mc-tty.1.html) | |

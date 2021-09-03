@@ -48,6 +48,7 @@ man1_MANS = doc/basename.1		\
 				doc/rmdir.1			\
 				doc/sleep.1			\
 				doc/tee.1			\
+				doc/test.1			\
 				doc/tr.1				\
 				doc/true.1			\
 				doc/tty.1			\

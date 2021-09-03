@@ -64,7 +64,7 @@ static int parse_expr(int* const i, int argc, char* argv[]) {
          else return !(st.st_mode & S_ISGID);
       case 'h':
       case 'L':
-         if (stat(argv[(*i)++], &st) != 0) return 1;
+         if (lstat(argv[(*i)++], &st) != 0) return 1;
          else return (st.st_mode & S_IFMT) != S_IFLNK;
       case 'n': return !*argv[(*i)++];
       case 'p':

@@ -1,0 +1,334 @@
+.TH test 1 "2021-09-03"
+
+.SH NAME
+test - evaluate expression
+
+.SH SYNOPSIS
+.SY test
+.I expression
+.YS
+
+.SY test
+.YS
+
+.SY [
+.I expression
+.B ]
+.YS
+
+.SY [
+.B ]
+.YS
+
+.SH DESCRIPTION
+The
+.I test
+utility evaluates the
+.I expression
+and indicates the result of the evaluation by its exit status.
+
+.SH OPTIONS
+.B -b
+.I pathname
+.RE
+.RS 5
+True if
+.I pathname
+resolves to an existing block special file.
+.RE
+.B -c
+.I pathname
+.RE
+.RS 5
+True if
+.I pathname
+resolves to an exisiting character special file.
+.RE
+.B -d
+.I pathname
+.RE
+.RS 5
+True if
+.I pathname
+resolves to an existing directory.
+.RE
+.B -e
+.I pathname
+.RE
+.RS 5
+True if
+.I pathname
+resolves to an existing directory entry.
+.RE
+.B -f
+.I pathname
+.RE
+.RS 5
+True if
+.I pathname
+resolves to an existing regular file.
+.RE
+.B -g
+.I pathname
+.RE
+.RS 5
+True if
+.I pathname
+resolves to an existing file that has its set-group-ID flag set.
+.RE
+.B -h
+.I pathname
+.RE
+.RS 5
+True if
+.I pathname
+resolves to an existing symbolic link.
+.RE
+.B .L
+.I pathname
+.RE
+.RS 5
+True if
+.I pathname
+resolves to an existing symbolic link.
+.RE
+.B -n
+.I string
+.RE
+.RS 5
+True if the length of
+.I string
+is non-zero.
+.RE
+.B -p
+.I pathname
+.RE
+.RS 5
+True if
+.I pathname
+resolves to an existing FIFO.
+.RE
+.B -r
+.I pathname
+.RE
+.RS 5
+True if
+.I pathname
+resolves to an existing file for which permission to read the file will be granted.
+.RE
+.B -S
+.I pathname
+.RE
+.RS 5
+True if
+.I pathname
+resolves to an existing socket.
+.RE
+.B -s
+.I pathname
+.RE
+.RS 5
+True if
+.I pathname
+resolves to an existing file that has a size greater than zero.
+.RE
+.B -t
+.I file_descriptor
+.RE
+.RS 5
+True if
+.I file_descriptor
+is open and associated with a terminal.
+.RE
+.B -u
+.I pathname
+.RE
+.RS 5
+True if
+.I pathname
+is resolved to an existing file that has its set-user-ID flag set.
+.RE
+.B -w
+.I pathname
+.RE
+.RS 5
+True if
+.I pathname
+resolves to an existing file for which permission to write to the file will be granted.
+.RE
+.B -x
+.I pathname
+.RE
+.RS 5
+True if
+.I pathname
+resolves to an existing file for which permission to execute the file (or search it, if it is a directory) will be granted.
+.RE
+.B -z
+.I string
+.RE
+.RS 5
+True if the length of
+.I string
+is zero.
+.RE
+.I string
+.RE
+.RS 5
+True if the length of
+.I string
+is non-zero.
+.RE
+.I s1
+.B =
+.I s2
+.RE
+.RS 5
+True if strings
+.I s1
+and
+.I s2
+are identical.
+.RE
+.I s1
+.B !=
+.I s2
+.RE
+.RS 5
+True if strings
+.I s1
+and
+.I s2
+are not identical.
+.RE
+.I n1
+.B -eq
+.I n2
+.RE
+.RS 5
+True if the integers
+.I n1
+and
+.I n2
+are algebraically equal.
+.RE
+.I n1
+.B -ne
+.I n2
+.RE
+.RS 5
+True if the integers
+.I n1
+and
+.I n2
+are not algebraically equal.
+.RE
+.I n1
+.B -gt
+.I n2
+.RE
+.RS 5
+True if the integer
+.I n1
+is algebraically greater than the integer
+.I n2\fR.
+.RE
+.I n1
+.B -ge
+.I n2
+.RE
+.RS 5
+True if the integer
+.I n1
+is algebraically greater than or equal to the integer
+.I n2\fR.
+.RE
+.I n1
+.B -lt
+.I n2
+.RE
+.RS 5
+True if the integer
+.I n1
+is algebraically less than the integer
+.I n2\fR.
+.RE
+.I n1
+.B -le
+.I n2
+.RE
+.RS 5
+True if the integer
+.I n1
+is algebraically less than or equal to the integer
+.I n2\fR.
+.RE
+.I expr1
+.B -a
+.I expr2
+.RE
+.RS 5
+True if both expressions
+.I expr1
+and
+.I expr2
+are true.
+.RE
+.I expr1
+.B -o
+.I expr2
+.RE
+.RS 5
+True if at least one of the expressions
+.I expr1
+and
+.I expr2
+is true.
+.RE
+.B !
+.I expression
+.RE
+.RS 5
+True if the
+.I expression
+is false.
+.RE
+.B (
+.I expression
+.B )
+.RE
+.RS 5
+True if the
+.I expression
+is true.
+
+.SH EXIT STATUS
+0
+.RE
+.RS 5
+.I expression
+evaluated to true.
+.RE
+1
+.RE
+.RS 5
+.I expression
+evaluated to false or
+.I expression
+was missing.
+.RE
+>1
+.RE
+.RS 5
+An error occured.
+
+.PP
+.SH COPYRIGHT
+.br
+Copyright \(co 2021 Benjamin Stürz
+.br
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+.br
+This is free software; you are free to change and redistribute it.
+.br
+There is NO WARRANTY, to the extent permitted by law.
