@@ -48,11 +48,12 @@ int main(int argc, char* argv[]) {
       }
    }
    for (; optind < argc; ++optind) {
-      if (is_env(argv[optind])) putenv(argv[optind]);
-      else {
+      if (is_env(argv[optind])) {
+         putenv(argv[optind]);
+      } else {
          execvp(argv[optind], argv + optind);
          const int saved_errno = errno;
-         errprintf("'%s'", argv[optind])
+         errprintf("'%s'", argv[optind]);
          return saved_errno == ENOENT ? 127 : 126;
       }
    }

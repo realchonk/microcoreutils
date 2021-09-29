@@ -13,12 +13,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "test"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "errprintf.h"
 #include "common.h"
 
 #define streq(s1, s2) (strcmp(s1, s2) == 0)

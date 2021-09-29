@@ -11,7 +11,17 @@ cmp - compare two files
 .YS
 
 .SH DESCRIPTION
-Print CRC checksum and byte counts of each \fIfile\fR.
+The
+.I cmp
+utility compares two files.
+If both files are equal,
+.I cmp
+returns with exit code 0.
+Otherwise it returns with 1 and if the
+.B -s
+options was not specifed
+.I cmp
+prints a message.
 
 .SH OPTIONS
 .B

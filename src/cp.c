@@ -57,7 +57,7 @@ static bool fcopy(const char* dest_file, const char* source_file, const struct s
       if (fd_dest < 0) {
          if (force) {
             if (unlink(dest_file) != 0) {
-               errprintf("failed to remove '%s'", dest_file)
+               errprintf("failed to remove '%s'", dest_file);
                return false;
             }
          } else {

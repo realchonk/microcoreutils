@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
       else file = fopen(argv[i], "r");
 		has_done = 1;
       if (!file) {
-         errprintf("cat: %s", argv[i])
+         errprintf("cat: %s", argv[i]);
 			ec = 1;
 			continue;
 		}

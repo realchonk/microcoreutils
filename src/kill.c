@@ -153,7 +153,7 @@ int main(int argc, char* argv[]) {
          return 1;
       }
       if (kill(pid, sig) < 0) {
-         errprintf("failed to kill process '%s'", argv[optind])
+         errprintf("failed to kill process '%s'", argv[optind]);
          ec = 1;
          continue;
       }

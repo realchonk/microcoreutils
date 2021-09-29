@@ -58,7 +58,6 @@ int main(int argc, char** argv) {
       FILE* file = !strcmp(filename, "-") ? stdin : fopen(filename, "rb");
       if (!file) {
          errprintf("%s", filename);
-         fprintf(stderr, "cksum: %s: %s\n", filename);
          ec = 1;
          continue;
       }

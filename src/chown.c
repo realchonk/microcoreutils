@@ -28,9 +28,9 @@
 #include <ctype.h>
 #include <pwd.h>
 #include <grp.h>
+#include "errprintf.h"
 #include "common.h"
 #include "chown.h"
-#include "errprintf.h"
 
 static int recursive, opt_h = 0, opt_upper = 0, initial;
 

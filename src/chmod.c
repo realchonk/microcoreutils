@@ -13,6 +13,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "chmod"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdbool.h>
@@ -31,7 +33,7 @@
 static bool get_mode(const char* filename, mode_t* mode) {
    struct stat st;
    if (stat(filename, &st) < 0) {
-      errprintf("%s", filename)
+      errprintf("%s", filename);
       return false;
    }
    *mode = st.st_mode;

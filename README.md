@@ -58,6 +58,7 @@ Use <code>make DESTDIR=... install</code>
 | [ls](src/ls.c) | ❌ | ❌ | Missing options |
 | [mkdir](src/mkdir.c) | ✔ | [✔](https://stuerz.xyz/mc-mkdir.1.html) | |
 | [mv](src/mv.c) | ❌ | [✔](https://stuerz.xyz/mc-mv.1.html) | |
+| [nice](src/nice.c) | ✔ | [✔](https://stuerz.xyz/mc-nice.1.html) | |
 | [pwd](src/pwd.c) | ✔ |  ✔| |
 | [rm](src/rm.c) | ✔ | [✔](https://stuerz.xyz/mc-rm.1.html) | |
 | [rmdir](src/rmdir.c) | ✔ | [✔](https://stuerz.xyz/mc-rmdir.1.html) | |

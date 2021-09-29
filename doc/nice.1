@@ -1,0 +1,54 @@
+.TH cmp 1 "2021-09-29"
+
+.SH NAME
+cmp - invoke a utility with an altered nice value
+
+.SH SYNOPSIS
+.SY nice
+.OP -n \fIincrement\fR
+.I utility
+.I argument\fR...
+.YS
+
+.SH DESCRIPTION
+The
+.I nice
+utility invokes a utility with an altered nice value.
+If no 
+.B -n
+options was specified the default nice value is 10.
+
+.SH OPTIONS
+.B -n
+.I increment
+.RE
+.RS 5
+Set the nice value to
+.I increment\fR.
+.RE
+
+.SH OPERANDS
+The following operands are be supported:
+.PP
+.I utility
+.RE
+.RS 5
+A utility that shall be invoked.
+.RE
+.I argument
+.RE
+.RS 5
+Any string to be supplied as an argument when invoking the utility named by the
+.I utility
+operand.
+
+.PP
+.SH COPYRIGHT
+.br
+Copyright \(co 2021 Benjamin Stürz
+.br
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+.br
+This is free software; you are free to change and redistribute it.
+.br
+There is NO WARRANTY, to the extent permitted by law.
