@@ -11,13 +11,15 @@
 //  GNU General Public License for more details.
 //  
 //  You should have received a copy of the GNU General Public License
-//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+//  along with this program.  If no❌t, see <https://www.gnu.org/licenses/>.
+
+#define PROG_NAME "cksum"
 
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
-#include <errno.h>
+#include "errprintf.h"
 
 static uint32_t crctab[];
 
@@ -55,7 +57,8 @@ int main(int argc, char** argv) {
       const char* filename = argv[i];
       FILE* file = !strcmp(filename, "-") ? stdin : fopen(filename, "rb");
       if (!file) {
-         fprintf(stderr, "cksum: %s: %s\n", filename, strerror(errno));
+         errprintf("%s", filename);
+         fprintf(stderr, "cksum: %s: %s\n", filename);
          ec = 1;
          continue;
       }

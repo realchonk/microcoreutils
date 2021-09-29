@@ -13,12 +13,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "ed"
+
 #include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
-#include <errno.h>
 #include <ctype.h>
+#include "errprintf.h"
 #include "common.h"
 #include "buf.h"
 
@@ -45,7 +47,8 @@ struct ed_data {
 static bool write_file(const char* filename, char** buffer, int suppress) {
    FILE* file = fopen(filename, "w");
    if (!file) {
-      if (!suppress) fprintf(stderr, "%s: %s\n", filename, strerror(errno));
+      if (!suppress)
+         errprintf("%s", filename);
       return false;
    }
    int num = 0;
@@ -53,13 +56,15 @@ static bool write_file(const char* filename, char** buffer, int suppress) {
       num += fprintf(file, "%s\n", buffer[i]);
    }
    fclose(file);
-   if (!suppress) fprintf(stderr, "%d\n", num);
+   if (!suppress)
+      fprintf(stderr, "%d\n", num);
    return true;
 }
 static bool read_file(const char* filename, char*** buffer, int suppress) {
    FILE* file = fopen(filename, "r");
    if (!file) {
-      if (!suppress) fprintf(stderr, "ed: %s: %s\n", filename, strerror(errno));
+      if (!suppress)
+         errprintf("%s", filename);
       return false;
    }
    size_t num = 0;
@@ -71,8 +76,10 @@ static bool read_file(const char* filename, char*** buffer, int suppress) {
       ++num;
    }
    fclose(file);
-   if (line) buf_push(line, '\0'), buf_push(*buffer, line);
-   if (!suppress) printf("%zu\n", num);
+   if (line)
+      buf_push(line, '\0'), buf_push(*buffer, line);
+   if (!suppress)
+      printf("%zu\n", num);
    return true;
 }
 

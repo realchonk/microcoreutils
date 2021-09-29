@@ -13,6 +13,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "login"
+
 #include "config.h"
 #if HAVE_SETRESUID
 #define _GNU_SOURCE
@@ -23,8 +25,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <errno.h>
 #include <pwd.h>
+#include "errprintf.h"
 #include "common.h"
 #include "clearenv.h"
 
@@ -116,12 +118,12 @@ begin:
       failed = setreuid(passwd->pw_uid, passwd->pw_uid) != 0 || setregid(passwd->pw_gid, passwd->pw_gid) != 0;
 #endif
       if (failed) {
-         fprintf(stderr, "login: failed to setuid or setgid: %s\n", strerror(errno));
+         errprintf("failed to setuid or setgid");
          goto begin;
       }
    }
    fix_env(passwd);
    execl(passwd->pw_shell, "-", NULL);
-   fprintf(stderr, "login: failed to launch login shell: %s\n", strerror(errno));
+   errprintf("failed to launch login shell");
    goto begin;
 }

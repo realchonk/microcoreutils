@@ -13,6 +13,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "env"
+
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -20,6 +22,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <errno.h>
+#include "errprintf.h"
 #include "clearenv.h"
 
 // For some reason glibc-2.33 on Gentoo doesn't declare this:
@@ -48,8 +51,9 @@ int main(int argc, char* argv[]) {
       if (is_env(argv[optind])) putenv(argv[optind]);
       else {
          execvp(argv[optind], argv + optind);
-         fprintf(stderr, "env: '%s': %s\n", argv[optind], strerror(errno));
-         return errno == ENOENT ? 127 : 126;
+         const int saved_errno = errno;
+         errprintf("'%s'", argv[optind])
+         return saved_errno == ENOENT ? 127 : 126;
       }
    }
    for (size_t i = 0; environ[i]; ++i) {

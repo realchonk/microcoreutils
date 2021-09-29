@@ -13,12 +13,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "expr"
+
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <regex.h>
 #include <stdio.h>
-#include <errno.h>
+#include "errprintf.h"
 #include "config.h"
 
 #if !HAVE_STRCOLL
@@ -45,7 +47,7 @@ static const char* to_str(long num) {
    const size_t len = num_digits(num) + 1;
    char* buffer = malloc(len);
    if (!buffer) {
-      fprintf(stderr, "expr: malloc(%zu) failed: %s\n", len, strerror(errno));
+      errprintf("failed to allocate buffer");
       exit(3);
    }
    snprintf(buffer, len, "%ld", num);
@@ -127,7 +129,7 @@ static bool match(struct expr* expr) {
       const size_t len = backref.rm_eo - backref.rm_so + 1;
       char* buf = malloc(len);
       if (!buf) {
-         fprintf(stderr, "expr: malloc(%zu) failed: %s\n", len, strerror(errno));
+         errprintf("failed to allocate buffer");
          exit(3);
       }
       strncpy(buf, text + backref.rm_so, len);

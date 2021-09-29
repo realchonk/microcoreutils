@@ -13,11 +13,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "wc"
+
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
-#include <errno.h>
+#include "errprintf.h"
 
 struct count_result {
    size_t words;
@@ -75,7 +77,7 @@ int main(int argc, char* argv[]) {
       if (strcmp(path, "-") == 0) file = stdin;
       else file = fopen(path, "r");
       if (!file) {
-         fprintf(stderr, "wc: failed to open '%s': %s\n", path, strerror(errno));
+         errprintf("failed to open '%s'", path);
          ec = 1;
          continue;
       }

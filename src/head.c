@@ -13,11 +13,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "head"
+
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <errno.h>
+#include "errprintf.h"
 
 static void head(FILE* file, unsigned n) {
    unsigned i = 0;
@@ -51,7 +53,7 @@ int main(int argc, char* argv[]) {
       if (strcmp(path, "-") == 0) file = stdin;
       else file = fopen(path, "r");
       if (!file) {
-         printf("head: failed to open '%s': %s\n", path, strerror(errno));
+         errprintf("failed to open '%s'", path);
          ec = 1;
          continue;
       }

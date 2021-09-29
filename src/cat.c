@@ -13,10 +13,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "cat"
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <errno.h>
+#include "errprintf.h"
 
 static void cat(FILE* file) {
 	char ch;
@@ -33,7 +35,7 @@ int main(int argc, char* argv[]) {
       else file = fopen(argv[i], "r");
 		has_done = 1;
       if (!file) {
-			fprintf(stderr, "cat: %s: %s\n", argv[i], strerror(errno));
+         errprintf("cat: %s", argv[i])
 			ec = 1;
 			continue;
 		}

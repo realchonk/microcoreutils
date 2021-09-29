@@ -13,6 +13,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "ls"
+
 #include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
@@ -20,8 +22,8 @@
 #include <dirent.h>
 #include <limits.h>
 #include <stdio.h>
-#include <errno.h>
 #include <time.h>
+#include "errprintf.h"
 #include "common.h"
 #include "buf.h"
 
@@ -167,7 +169,7 @@ static struct ls_result* do_ls(const char* path) {
    struct ls_result* result = NULL;
    struct stat st;
    if (stat(path, &st) != 0) {
-      fprintf(stderr, "ls: cannot access '%s': %s\n", path, strerror(errno));
+      errprintf("cannot access '%s'", path);
       return NULL;
    }
    if (is_directory(&st)) {
@@ -177,12 +179,12 @@ static struct ls_result* do_ls(const char* path) {
       struct stat new_st;
       char* buffer = (char*)malloc(len + 260);
       if (!buffer) {
-         fprintf(stderr, "ls: failed to allocate buffer: %s\n", strerror(errno));
+         errprintf("failed to allocate buffer");
          return NULL;
       }
       if ((dir = opendir(path)) == NULL) {
          free(buffer);
-         fprintf(stderr, "ls: failed to access '%s': %s\n", path, strerror(errno));
+         errprintf("failed to access '%s'", path);
          return NULL;
       }
       while ((ent = readdir(dir)) != NULL) {
@@ -196,7 +198,7 @@ static struct ls_result* do_ls(const char* path) {
          if (follow_links) ec = stat(buffer, &new_st);
          else ec = lstat(buffer, &new_st);
          if (ec != 0) {
-            fprintf(stderr, "ls: failed to access '%s': %s\n", buffer, strerror(errno));
+            errprintf("failed to access '%s'", buffer);
             return NULL;
          }
          trs.st = new_st;

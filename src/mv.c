@@ -13,11 +13,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "mv"
+
 #include <sys/stat.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
-#include <errno.h>
+#include "errprintf.h"
 
 int main(int argc, char* argv[]) {
    if (argc < 3) {
@@ -50,9 +52,9 @@ print_usage:
       }
       const int ec = rename(src, dest);
       if (ec  == -1) {
-         printf("mv: cannot move '%s' to '%s': %s\n", src, dest, strerror(errno));
+         errprintf("cannot move '%s' to '%s'", src, dest);
       }
-      return errno;
+      return ec;
    }
    else {
 

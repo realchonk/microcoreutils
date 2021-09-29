@@ -13,6 +13,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "du"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdbool.h>
@@ -20,14 +22,12 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <stdio.h>
-#include <errno.h>
+#include "errprintf.h"
 
 static bool use_kilo = false;
 static bool summarize = false;
 static bool show_all = false;
 static char HL = ' ';
-
-#define geterr() strerror(errno)
 
 static size_t traverse(const char* path, bool top) {
    struct stat st;
@@ -36,7 +36,7 @@ static size_t traverse(const char* path, bool top) {
       ec = stat(path, &st);
    else ec = lstat(path, &st);
    if (ec) {
-      fprintf(stderr, "du: failed to stat '%s': %s\n", path, geterr());
+      errprintf("failed to stat '%s'", path);
       return 0;
    }
    const bool is_dir = st.st_mode & S_IFDIR;
@@ -47,7 +47,7 @@ static size_t traverse(const char* path, bool top) {
       DIR* dir = opendir(path);
       struct dirent* ent;
       if (!dir) {
-         fprintf(stderr, "du: failed to open directory '%s': %s\n", path, geterr());
+         errprintf("failed to open directory '%s'", path);
          return 0;
       }
       char buffer[len_path + 262];

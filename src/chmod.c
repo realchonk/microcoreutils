@@ -22,16 +22,16 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <stdio.h>
-#include <errno.h>
 #include <ctype.h>
 #include <pwd.h>
 #include <grp.h>
+#include "errprintf.h"
 #include "common.h"
 
 static bool get_mode(const char* filename, mode_t* mode) {
    struct stat st;
    if (stat(filename, &st) < 0) {
-      fprintf(stderr, "chmod: %s: %s\n", filename, strerror(errno));
+      errprintf("%s", filename)
       return false;
    }
    *mode = st.st_mode;
@@ -129,7 +129,7 @@ static int recursive;
 static int do_chmod(const char* path, mode_t mode) {
    struct stat st;
    if (stat(path, &st) != 0) {
-      fprintf(stderr, "chmod: failed to stat '%s': %s\n", path, strerror(errno));
+      errprintf("failed to stat '%s'", path);
       return false;
    }
    int rv = true;
@@ -140,12 +140,12 @@ static int do_chmod(const char* path, mode_t mode) {
       struct dirent* ent;
       char* buffer = (char*)malloc(len + 260);
       if (!buffer) {
-         fprintf(stderr, "chmod: failed to allocate buffer: %s\n", strerror(errno));
+         errprintf("failed to allocate buffer");
          return false;
       }
       if ((dir = opendir(path)) == NULL) {
          free(buffer);
-         fprintf(stderr, "chmod: failed to access '%s': %s\n", path, strerror(errno));
+         errprintf("failed to access '%s'", path);
          return false;
       }
       memcpy(buffer, path, len);
@@ -154,14 +154,14 @@ static int do_chmod(const char* path, mode_t mode) {
          if (strcmp(".", ent->d_name) == 0 || strcmp("..", ent->d_name) == 0) continue;
          strncpy(buffer + len + 1, ent->d_name, 0 + sizeof(ent->d_name)); // '0 + ...' to suppress warnings on gcc
          if (chmod(buffer, mode) != 0) {
-            fprintf(stderr, "chmod: failed to change mode for '%s': %s\n", buffer, strerror(errno));
+            errprintf("failed to change mode for '%s'", buffer);
             rv = false;
          }
       }
       free(buffer);
    }
    if (chmod(path, mode) != 0) {
-      fprintf(stderr, "chmod: failed to change mode for '%s': %s\n", path, strerror(errno));
+      errprintf("failed to change mode for '%s'", path);
       return false;
    }
    return rv;

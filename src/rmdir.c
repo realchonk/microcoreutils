@@ -13,11 +13,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "rmdir"
+
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <errno.h>
+#include "errprintf.h"
 
 
 int main(int argc, char* argv[]) {
@@ -38,14 +40,14 @@ print_usage:
    for (; optind < argc; ++optind) {
       const char* path = argv[optind];
       if (rmdir(path) < 0) {
-         fprintf(stderr, "rmdir: %s: %s\n", path, strerror(errno));
+         errprintf("%s", path);
          ec = 1;
          continue;
       }
       if (parents) {
          char* buffer = (char*)malloc(strlen(path) + 1);
          if (!buffer) {
-            fprintf(stderr, "rmdir: %s\n", strerror(errno));
+            errprintf("");
             ec = 1;
             continue;
          }
@@ -55,7 +57,7 @@ print_usage:
          while ((end = strrchr(buffer, '/')) != NULL) {
             *end = '\0';
             if (rmdir(path) != 0) {
-               fprintf(stderr, "rmdir: %s: %s\n", path, strerror(errno));
+               errprintf("%s", path);
                ec = 1;
                break;
             }

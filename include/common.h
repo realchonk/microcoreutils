@@ -20,7 +20,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
-#include <errno.h>
 #include <pwd.h>
 #include <grp.h>
 #include "buf.h"
@@ -46,7 +45,7 @@ inline static int getusrinfo(uid_t* uid, gid_t* gid, const char* user, const cha
    } else {
       struct passwd* pw = getpwnam(user);
       if (!pw) {
-         fprintf(stderr, "chown: failed to get user info for '%s': %s\n", user, strerror(errno));
+         errprintf("failed to get user info for '%s'", user);
          return false;
       }
       *uid = pw->pw_uid;
@@ -58,7 +57,7 @@ inline static int getusrinfo(uid_t* uid, gid_t* gid, const char* user, const cha
       } else {
          struct group* grp = getgrnam(group);
          if (!grp) {
-            fprintf(stderr, "chown: failed to get group info for '%s': %s\n", group, strerror(errno));
+            errprintf("failed to get group info for '%s'", group);
             return false;
          }
          *gid = grp->gr_gid;

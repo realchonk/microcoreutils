@@ -13,10 +13,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "unlink"
+
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
-#include <errno.h>
+#include "errprintf.h"
 
 int main(int argc, char* argv[]) {
    if (argc != 2) {
@@ -24,7 +26,7 @@ int main(int argc, char* argv[]) {
       return 1;
    }
    if (unlink(argv[1]) != 0) {
-      printf("unlink: cannot unlink '%s': %s\n", argv[1], strerror(errno));
+      errprintf("cannot unlink '%s'", argv[1]);
       return 1;
    }
    return 0;

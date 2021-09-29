@@ -13,6 +13,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "kill"
+
 #include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
@@ -20,7 +22,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <ctype.h>
-#include <errno.h>
+#include "errprintf.h"
 
 struct signal_mapping {
    int signal;
@@ -151,7 +153,7 @@ int main(int argc, char* argv[]) {
          return 1;
       }
       if (kill(pid, sig) < 0) {
-         fprintf(stderr, "kill: failed to kill process %s: %s\n", argv[optind], strerror(errno));
+         errprintf("failed to kill process '%s'", argv[optind])
          ec = 1;
          continue;
       }

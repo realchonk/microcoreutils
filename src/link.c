@@ -13,10 +13,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "link"
+
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
-#include <errno.h>
+#include "errprintf.h"
 
 int main(int argc, char** argv) {
    if (argc != 3) {
@@ -26,7 +28,7 @@ int main(int argc, char** argv) {
    const char* file1 = argv[1];
    const char* file2 = argv[2];
    if (link(file1, file2) != 0) {
-      fprintf(stderr, "link: cannot create link '%s' to '%s': %s\n", file2, file1, strerror(errno));
+      errprintf("cannot create link '%s' to '%s'", file2, file1);
       return 1;
    }
    return 0;

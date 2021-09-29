@@ -13,6 +13,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "cp"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdbool.h>
@@ -23,9 +25,10 @@
 #include <limits.h>
 #include <dirent.h>
 #include <stdio.h>
-#include <errno.h>
 #include <fcntl.h>
 #include <ctype.h>
+#include <errno.h>
+#include "errprintf.h"
 
 static bool recursive = false, prompt = false, force = false, initial = false;
 static int opt_HLP = 'H';
@@ -54,24 +57,24 @@ static bool fcopy(const char* dest_file, const char* source_file, const struct s
       if (fd_dest < 0) {
          if (force) {
             if (unlink(dest_file) != 0) {
-               fprintf(stderr, "cp: failed to remove '%s': %s\n", dest_file, strerror(errno));
+               errprintf("failed to remove '%s'", dest_file)
                return false;
             }
          } else {
-            fprintf(stderr, "cp: failed to access '%s': %s\n", dest_file, strerror(errno));
+            errprintf("failed to access '%s'", dest_file);
             return false;
          }
       }
    }
    if (fd_dest < 0) fd_dest = open(dest_file, O_WRONLY | O_CREAT, st_source->st_mode);
    if (fd_dest < 0) {
-      fprintf(stderr, "cp: failed to open '%s' for write: %s\n", dest_file, strerror(errno));
+      errprintf("failed to create '%s' for write", dest_file);
       return false;
    }
 
    const int fd_src = open(source_file, O_RDONLY);
    if (fd_src < 0) {
-      fprintf(stderr, "cp: failed to open '%s' for read: %s\n", source_file, strerror(errno));
+      errprintf("failed to open '%s' for read", source_file);
       close(fd_dest);
       return false;
    }
@@ -89,12 +92,12 @@ static bool copy_link(const char* dest_file, const char* source_file) {
    char* buffer = (char*)malloc(PATH_MAX + 1);
    if (!buffer) return perror("cp: failed to allocate buffer"), false;
    if (readlink(source_file, buffer, PATH_MAX) <= 0) {
-      fprintf(stderr, "cp: failed to resolve symbolic link '%s': %s\n", source_file, strerror(errno));
+      errprintf("failed to resolve symbolic link '%s'", source_file);
       free(buffer);
       return false;
    }
    if (symlink(dest_file, buffer) != 0) {
-      fprintf(stderr, "cp: failed to create symbolic link '%s': %s\n", dest_file, strerror(errno));
+      errprintf("failed to create symbolic link '%s'", dest_file);
       free(buffer);
       return false;
    }
@@ -114,14 +117,14 @@ static bool copy_dir(const char* dest_file, const char* source_file, const struc
       return false;
    }
    if (error && mkdir(dest_file, st_source->st_mode) != 0) {
-      fprintf(stderr, "cp: failed to create directory '%s': %s\n", dest_file, strerror(errno));
+      errprintf("failed to create directory '%s'", dest_file);
       return false;
    }
 
    struct dirent* ent;
    DIR* dir = opendir(source_file);
    if (!dir) {
-      fprintf(stderr, "cp: failed to open directory '%s': %s\n", dest_file, strerror(errno));
+      errprintf("failed to open directory '%s'", dest_file);
       return false;
    }
    const size_t len_dest = strlen(dest_file);
@@ -156,7 +159,7 @@ static bool copy(const char* dest_file, const char* source_file) {
    if (opt_HLP == 'P' || (opt_HLP == 'H' && !initial)) error = lstat(source_file, &st_source);
    else error = stat(source_file, &st_source);
    if (error != 0) {
-      fprintf(stderr, "cp: failed to access '%s': %s\n", source_file, strerror(errno));
+      errprintf("failed to access '%s'", source_file);
       return false;
    }
    struct stat st_dest;
@@ -203,7 +206,7 @@ int main(int argc, char* argv[]) {
    int error = stat(target, &st_target) ? errno : 0;
    
    if (((argc - optind) > 2 && error)) {
-      fprintf(stderr, "cp: failed to access target '%s': %s\n", target, strerror(errno));
+      errprintf("failed to access target '%s'", target);
       return 1;
    }
    if ((argc - optind) == 2) {

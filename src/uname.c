@@ -13,11 +13,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "uname"
+
 #include <sys/utsname.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <errno.h>
+#include "errprintf.h"
 
 #define print(x) if (i == 0) { printf("%s", (x)); i = 1; } else printf(" %s", (x))
 
@@ -43,7 +45,7 @@ int main(int argc, char* argv[]) {
 
    struct utsname u;
    if (uname(&u) != 0) {
-      fprintf(stderr, "uname: failed to retrieve system information: %s\n", strerror(errno));
+      errprintf("failed to retrive system information");
       return 1;
    }
 

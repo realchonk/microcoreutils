@@ -13,13 +13,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "mkdir"
+
 #include <sys/stat.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include <errno.h>
+#include "errprintf.h"
 
 int main(int argc, char* argv[]) {
    if (argc < 2) {
@@ -51,7 +53,7 @@ int main(int argc, char* argv[]) {
       if (make_parents) {
          char* buffer = (char*)malloc(strlen(path) + 1);
          if (!buffer) {
-            fprintf(stderr, "mkdir: %s\n", strerror(errno));
+            errprintf("");
             ec = 1;
             continue;
          }
@@ -64,7 +66,7 @@ int main(int argc, char* argv[]) {
             *end = '\0';
             ++end;
             if (mkdir(buffer, mode) != 0) {
-               fprintf(stderr, "mkdir: failed to create: '%s': %s\n", path, strerror(errno));
+               errprintf("failed to create '%s'", path);
                ec = 1;
                goto failed;
             }
@@ -74,7 +76,7 @@ int main(int argc, char* argv[]) {
          free(buffer);
       }
       if (mkdir(path, mode) != 0) {
-         fprintf(stderr, "mkdir: failed to create '%s': %s\n", path, strerror(errno));
+         errprintf("failed to create '%s'", path);
          ec = 1;
       }
 failed:;

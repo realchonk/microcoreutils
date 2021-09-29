@@ -13,6 +13,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "chgrp"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdbool.h>
@@ -22,10 +24,10 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <stdio.h>
-#include <errno.h>
 #include <ctype.h>
 #include <pwd.h>
 #include <grp.h>
+#include "errprintf.h"
 #include "common.h"
 #include "chown.h"
 
@@ -64,7 +66,7 @@ print_usage:
    } else {
       struct group* grp = getgrnam(group);
       if (!grp) {
-         fprintf(stderr, "chgrp: failed to get group info for '%s': %s\n", group, strerror(errno));
+         errprintf("failed to get group info for '%s'", group);
          return 1;
       }
       gid = grp->gr_gid;

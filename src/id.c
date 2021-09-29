@@ -13,16 +13,18 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "id"
+
 #include <sys/types.h>
 #include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <errno.h>
 #include <ctype.h>
 #include <pwd.h>
 #include <grp.h>
+#include "errprintf.h"
 #include "buf.h"
 
 static gid_t* getusrgroups(const char* user) {
@@ -70,7 +72,7 @@ static gid_t* getusrgroups(const char* user) {
 static int printgrpinfo(gid_t gid) {
    struct group* grp = getgrgid(gid);
    if (grp == NULL) {
-      fprintf(stderr, "id: %s\n", strerror(errno));
+      errprintf("");
       return -1;
    }
    printf("%d(%s)", grp->gr_gid, grp->gr_name);
@@ -131,7 +133,7 @@ int main(int argc, char* argv[]) {
       if (opt_n) {
          struct group* grp = getgrgid(pw->pw_gid);
          if (!grp) {
-            fprintf(stderr, "id: '%s': %s\n", pw->pw_name, strerror(errno));
+            errprintf("'%s'", pw->pw_name);
             return 1;
          }
          puts(grp->gr_name);
@@ -162,7 +164,7 @@ int main(int argc, char* argv[]) {
    else {
       struct group* grp = getgrgid(pw->pw_gid);
       if (!grp) {
-         fprintf(stderr, "id: '%s': %s\n", pw->pw_name, strerror(errno));
+         errprintf("'%s'", pw->pw_name);
          return 1;
       }
       gid_t* groups = getusrgroups(pw->pw_name);

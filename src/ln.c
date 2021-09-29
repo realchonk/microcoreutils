@@ -13,6 +13,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "ln"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdbool.h>
@@ -21,8 +23,9 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <stdio.h>
-#include <errno.h>
 #include <fcntl.h>
+#include <errno.h>
+#include "errprintf.h"
 
 int main(int argc, char* argv[]) {
    bool force = false, symbolic = false;
@@ -47,17 +50,16 @@ int main(int argc, char* argv[]) {
    struct stat st_target;
    int error = stat(target, &st_target) ? errno : 0;
    
-
-   if ((argc - optind) == 2 && (st_target.st_mode & S_IFMT) != S_IFDIR) {
+   if ((argc - optind) == 2 && (!error || ((st_target.st_mode & S_IFMT) != S_IFDIR))) {
       const char* path = argv[optind];
       if (symbolic) {
          if (symlink(path, target) != 0) {
-            fprintf(stderr, "ln: failed to create symbolic link '%s': %s\n", target, strerror(errno));
+            errprintf("failed to create symbolic link '%s'", target);
             return 1;
          } else return 0;
       } else {
          if (link(path, target) != 0) {
-            fprintf(stderr, "ln: failed to create hard-link '%s': %s\n", target, strerror(errno));
+            errprintf("failed to create hard-link '%s'", target);
             return 1;
          } else return 0;
       }
@@ -96,13 +98,13 @@ int main(int argc, char* argv[]) {
          continue;
       }
       if (!error && unlink(buffer) != 0) {
-         fprintf(stderr, "ln: failed to unlink '%s': %s\n", buffer, strerror(errno));
+         errprintf("failed to unlink '%s'", buffer);
          ec = 1;
          continue;
       }
       if (symbolic) {
          if (symlink(path, buffer) != 0) {
-            fprintf(stderr, "ln: failed to create symbolic link '%s': %s\n", buffer, strerror(errno));
+            errprintf("failed to create symbolic link '%s'", buffer);
             ec = 1;
          }
          continue;
@@ -110,13 +112,13 @@ int main(int argc, char* argv[]) {
       struct stat st_src;
       if (lstat(path, &st_src) != 0 && (st_src.st_mode & S_IFMT) == S_IFLNK) {
          if (linkat(AT_FDCWD, path, AT_FDCWD, buffer, opt_LP == 'P' ? 0 : AT_SYMLINK_FOLLOW) != 0) {
-            fprintf(stderr, "ln: failed to create hard-link '%s': %s\n", buffer, strerror(errno));
+            errprintf("failed to create hard-link '%s'", buffer);
             ec = 1;
          }
          continue;
       }
       if (link(path, buffer) != 0) {
-         fprintf(stderr, "ln: failed to create hard-link '%s': %s\n", buffer, strerror(errno));
+         errprintf("failed to create hard-link '%s'", buffer);
          ec = 1;
          continue;
       }

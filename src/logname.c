@@ -13,10 +13,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "logname"
+
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
-#include <errno.h>
+#include "errprintf.h"
 
 int main(void) {
    char* name = getlogin();
@@ -24,7 +26,7 @@ int main(void) {
       puts(name);
       return 0;
    } else {
-      fprintf(stderr, "logname: failed to invoke getlogin(): %s\n", strerror(errno));
+      errprintf("failed to invoke getlogin()");
       return 1;
    }
 }

@@ -24,13 +24,13 @@ static bool do_chown(const char* path, uid_t uid, gid_t gid) {
    if (opt_h || recursive) error = lstat(path, &st);
    else error = stat(path, &st);
    if (error != 0) {
-      fprintf(stderr, "chown: failed to access '%s': %s\n", path, strerror(errno));
+      errprintf("failed to access '%s", path);
       return false;
    }
    if ((st.st_mode & S_IFMT) == S_IFLNK) {
       if (opt_upper == 'P' || opt_h) {
          if (lchown(path, uid, gid) != 0) {
-            fprintf(stderr, "chown: failed to change ower for '%s': %s\n", path, strerror(errno));
+            errprintf("failed to change owner for '%s'", path);
             return false;
          }
          return true;
@@ -38,12 +38,12 @@ static bool do_chown(const char* path, uid_t uid, gid_t gid) {
       if (opt_upper == 'L' || (opt_upper == 'H' && initial)) {
          if (opt_h) {
             if (lchown(path, uid, gid) != 0) {
-               fprintf(stderr, "chown: failed to change ower for '%s': %s\n", path, strerror(errno));
+               errprintf("failed to change owner for '%s'", path);
                return false;
             }
          }
          if (stat(path, &st) != 0) {
-            fprintf(stderr, "chown: failed to resolve link '%s': %s\n", path, strerror(errno));
+            errprintf("failed to resolve symoblic link '%s'", path);
             return false;
          }
       }
@@ -55,11 +55,11 @@ static bool do_chown(const char* path, uid_t uid, gid_t gid) {
       struct dirent* ent;
       char* buffer = (char*)malloc(len + sizeof(ent->d_name) + 4);
       if (!buffer) {
-         fprintf(stderr, "chown: failed to allocate buffer: %s\n", strerror(errno));
+         errprintf("failed to allocate buffer");
          return false;
       }
       if ((dir = opendir(path)) == NULL) {
-         fprintf(stderr, "chown: failed to access '%s': %s\n", path, strerror(errno));
+         errprintf("failed to access '%s'", path);
          return false;
       }
       memcpy(buffer, path, len);
@@ -79,7 +79,7 @@ static bool do_chown(const char* path, uid_t uid, gid_t gid) {
    if (opt_h) error = lchown(path, uid, gid);
    else error = chown(path, uid, gid);
    if (error != 0) {
-      fprintf(stderr, "chown: failed to change owner of '%s': %s\n", path, strerror(errno));
+      errprintf("failed to change owner for '%s'", path);
       return false;
    }
    return rv;

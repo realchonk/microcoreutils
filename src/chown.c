@@ -13,6 +13,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "chown"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdbool.h>
@@ -23,12 +25,12 @@
 #include <limits.h>
 #include <fcntl.h>
 #include <stdio.h>
-#include <errno.h>
 #include <ctype.h>
 #include <pwd.h>
 #include <grp.h>
 #include "common.h"
 #include "chown.h"
+#include "errprintf.h"
 
 static int recursive, opt_h = 0, opt_upper = 0, initial;
 
@@ -61,7 +63,7 @@ print_usage:
       group = end + 1;
       char* tmp = (char*)malloc(end - owner + 2);
       if (!tmp) {
-         fprintf(stderr, "chmod: failed to allocate memory: %s\n", strerror(errno));
+         errprintf("failed to allocate memory");
          return 1;
       }
       strncpy(tmp, owner, end - owner);

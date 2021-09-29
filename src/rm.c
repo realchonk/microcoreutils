@@ -13,6 +13,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "rm"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdbool.h>
@@ -22,7 +24,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <stdio.h>
-#include <errno.h>
+#include "errprintf.h"
 #include "config.h"
 
 #if HAVE_SYS_SYSMACROS_H
@@ -48,7 +50,7 @@ static bool recursive_delete(const char* path) {
    DIR* dir;
    struct dirent* ent;
    if ((dir = opendir(path)) == NULL) {
-      fprintf(stderr, "rm: failed to open '%s': %s\n", path, strerror(errno));
+      errprintf("failed to open '%s'", path);
       return 0;
    }
 
@@ -73,7 +75,7 @@ static bool delete_file(const char* path) {
    struct stat statbuf;
    if (stat(path, &statbuf) != 0) {
       if (!force) {
-         fprintf(stderr, "rm: cannot remove '%s': %s\n", path, strerror(errno));
+         errprintf("cannot remove '%s'", path);
          return false;
       }
       return true;
@@ -95,14 +97,14 @@ static bool delete_file(const char* path) {
       }
       if (!recursive_delete(path)) return false;
       if (rmdir(path) != 0) {
-         fprintf(stderr, "rm: cannot remove '%s': %s\n", path, strerror(errno));
+         errprintf("cannot remove '%s'", path);
          return false;
       }
       return true;
    }
 
    if (unlink(path) != 0) {
-      fprintf(stderr, "rm: cannot remove '%s': %s\n", path, strerror(errno));
+      errprintf("cannot remove '%s'", path);
       return false;
    }
    return true;

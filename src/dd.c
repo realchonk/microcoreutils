@@ -13,15 +13,17 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define PROG_NAME "dd"
+
 #include <sys/stat.h>
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <errno.h>
 #include <ctype.h>
 #include <fcntl.h>
+#include "errprintf.h"
 
 struct dd_options {
    const char* input;
@@ -121,7 +123,7 @@ int main(int argc, char* argv[]) {
    else in = STDIN_FILENO;
    
    if (in < 0) {
-      fprintf(stderr, "dd: failed to open '%s' for read: %s\n", opts.input, strerror(errno));
+      errprintf("failed to open '%s' for read", opts.input);
       return 1;
    }
 
@@ -135,7 +137,7 @@ int main(int argc, char* argv[]) {
 
    if (out < 0) {
       close(in);
-      fprintf(stderr, "dd: failed to open '%s' for write: '%s'\n", opts.output, strerror(errno));
+      errprintf("failed to open '%s' for write", opts.output);
       return 1;
    }
 
