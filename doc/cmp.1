@@ -1,0 +1,53 @@
+.TH cmp 1 "2021-09-29"
+
+.SH NAME
+cmp - compare two files
+
+.SH SYNOPSIS
+.SY cmp
+.OP -l\fR|\fI-s
+.I file1
+.I file2
+.YS
+
+.SH DESCRIPTION
+Print CRC checksum and byte counts of each \fIfile\fR.
+
+.SH OPTIONS
+.B
+-l
+.RE
+.RS 5
+Write the byte number and the differing bytes
+for each difference.
+.RE
+.B -s
+.RE
+.RS 5
+Suppress the output to standard output and standard error.
+
+.SH OPERANDS
+The following operands are be supported:
+.PP
+.I
+file1
+.RE
+.RS 5
+The pathname for the first file to be compared.
+.RE
+.I
+file2
+.RE
+.RS 5
+The pathname for the second file to be compared.
+
+.PP
+.SH COPYRIGHT
+.br
+Copyright \(co 2021 Benjamin Stürz
+.br
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+.br
+This is free software; you are free to change and redistribute it.
+.br
+There is NO WARRANTY, to the extent permitted by law.

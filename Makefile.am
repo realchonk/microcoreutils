@@ -26,6 +26,7 @@ man1_MANS = doc/basename.1		\
 				doc/chmod.1			\
 				doc/chown.1			\
 				doc/cksum.1			\
+				doc/cmp.1			\
 				doc/clear.1			\
 				doc/cp.1				\
 				doc/date.1			\
