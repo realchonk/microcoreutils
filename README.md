@@ -34,7 +34,7 @@ Use <code>make DESTDIR=... install</code>
 | [chmod](src/chmod.c) | ❌ | [✔](https://stuerz.xyz/mc-chmod.1.html) | Add support for u+g etc. |
 | [chown](src/chown.c) | ✔ | [✔](https://stuerz.xyz/mc-chown.1.html) | |
 | [cksum](src/cksum.c) | ✔ | [✔](https://stuerz.xyz/mc-cksum.1.html) | |
-| [cmp](src/cmp.c) | ✔ | ❌ | |
+| [cmp](src/cmp.c) | ✔ | [✔](https://stuerz.xyz/mc-cmp.1.html) | |
 | [clear](src/clear.c) | ✔ | [✔](https://stuerz.xyz/mc-clear.1.html) | Check for portability |
 | [cp](src/cp.c) | ❌ | [✔](https://stuerz.xyz/mc-cp.1.html) | option -p not implemented |
 | [date](src/date.c) | ✔ | [✔](https://stuerz.xyz/mc-date.1.html) | |
