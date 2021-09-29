@@ -14,8 +14,8 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-bin_PROGRAMS = basename cal cat chgrp chmod chown cksum clear cp date dd dirname du echo ed \
-					env expr false head id kill link ln logname ls mkdir mv pwd rm rmdir sleep \
+bin_PROGRAMS = basename cal cat chgrp chmod chown cksum cmp clear cp date dd dirname du echo \
+					ed env expr false head id kill link ln logname ls mkdir mv pwd rm rmdir sleep \
 					tee test tr true tty uname unlink wc
 sbin_PROGRAMS =
 
@@ -71,6 +71,7 @@ chgrp_SOURCES		= src/chgrp.c
 chmod_SOURCES		= src/chmod.c
 chown_SOURCES		= src/chown.c
 cksum_SOURCES		= src/cksum.c
+cmp_SOURCES			= src/cmp.c
 clear_SOURCES		= src/clear.c
 cp_SOURCES			= src/cp.c
 date_SOURCES		= src/date.c
