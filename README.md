@@ -36,11 +36,11 @@ Use <code>make DESTDIR=... install</code>
 | [cksum](src/cksum.c) | ✔ | [✔](https://stuerz.xyz/mc-cksum.1.html) | |
 | [cmp](src/cmp.c) | ✔ | [✔](https://stuerz.xyz/mc-cmp.1.html) | |
 | [clear](src/clear.c) | ✔ | [✔](https://stuerz.xyz/mc-clear.1.html) | Check for portability |
-| [cp](src/cp.c) | ❌ | [✔](https://stuerz.xyz/mc-cp.1.html) | option -p not implemented |
+| [cp](src/cp.c) | ❌ | [✔](https://stuerz.xyz/mc-cp.1.html) | Unimplemented options: -p |
 | [date](src/date.c) | ✔ | [✔](https://stuerz.xyz/mc-date.1.html) | |
 | [dd](src/dd.c) | ❌ | ❌ | |
 | [dirname](src/dirname.c) | ✔ | [✔](https://stuerz.xyz/mc-dirname.1.html) | |
-| [du](src/du.c) | ❌ | [✔](https://stuerz.xyz/mc-du.1.html) | Missing options |
+| [du](src/du.c) | ❌ | [✔](https://stuerz.xyz/mc-du.1.html) | Unimplemented options: -x |
 | [echo](src/echo.c) | ✔ | [✔](https://stuerz.xyz/mc-echo.1.html) | |
 | [ed](src/ed.c) | ❌ | ❌ | Only basic functionality |
 | [env](src/env.c) | ✔ | [✔](https://stuerz.xyz/mc-env.1.html) | |
@@ -50,12 +50,12 @@ Use <code>make DESTDIR=... install</code>
 | [head](src/head.c) | ✔ | [✔](https://stuerz.xyz/mc-head.1.html) | |
 | [id](src/id.c) | ✔ | [✔](https://stuerz.xyz/mc-id.1.html) | |
 | [init](src/init.c) | ❌ | [✔](https://stuerz.xyz/mc-init.8.html) | |
-| [kill](src/kill.c) | ✔ | [✔](https://stuerz.xyz/mc-kill.1.html) | doesn't support XSI syntax |
+| [kill](src/kill.c) | ❌ | [✔](https://stuerz.xyz/mc-kill.1.html) | Doesn't support XSI syntax |
 | [link](src/link.c) | ✔ | [✔](https://stuerz.xyz/mc-link.1.html) | |
 | [ln](src/ln.c) | ✔ | [✔](https://stuerz.xyz/mc-ln.1.html) | |
 | [logname](src/logname.c) | ✔ | [✔](https://stuerz.xyz/mc-logname.1.html) | |
 | [login](src/login.c) | ❌ | ❌ | |
-| [ls](src/ls.c) | ❌ | ❌ | Missing options |
+| [ls](src/ls.c) | ❌ | ❌ | Unimplemented options: -k, -q, -s, -g, -n, -o, -C, -m, -x, -F, -R, -d |
 | [mkdir](src/mkdir.c) | ✔ | [✔](https://stuerz.xyz/mc-mkdir.1.html) | |
 | [mv](src/mv.c) | ✔ | [✔](https://stuerz.xyz/mc-mv.1.html) | |
 | [nice](src/nice.c) | ✔ | [✔](https://stuerz.xyz/mc-nice.1.html) | |
