@@ -53,6 +53,7 @@ bin_PROGRAMS = basename 		\
 					test				\
 					tr					\
 					true				\
+					tty				\
 					uname				\
 					unlink			\
 					wc
@@ -102,9 +103,9 @@ man1_MANS = doc/basename.1		\
 man8_MANS =
 
 if ENABLE_EXTRA_PROGS
-bin_PROGRAMS	+= login sync
+bin_PROGRAMS	+= login sync yes
 sbin_PROGRAMS 	+= halt init
-man1_MANS		+= doc/sync.1
+man1_MANS		+= doc/sync.1 doc/yes.1
 man8_MANS 		+= doc/halt.8 doc/init.8
 endif
 
@@ -155,6 +156,7 @@ tty_SOURCES			= src/tty.c
 uname_SOURCES		= src/uname.c
 unlink_SOURCES		= src/unlink.c
 wc_SOURCES			= src/wc.c
+yes_SOURCES			= src/yes.c
 
 login_LDFLAGS		= -lcrypt
 

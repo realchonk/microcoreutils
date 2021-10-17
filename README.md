@@ -46,15 +46,15 @@ Use <code>make DESTDIR=... install</code>
 | [env](src/env.c) | ✔ | [✔](https://stuerz.xyz/mc-env.1.html) | |
 | [expr](src/expr.c) | ✔ | [✔](https://stuerz.xyz/mc-expr.1.html) | |
 | [false](src/true.c) | ✔ | [✔](https://stuerz.xyz/mc-false.1.html) | Uses the same source-code as true |
-| [halt](src/halt.c) | ❌ | [✔](https://stuerz.xyz/mc-halt.8.html) | Depends on init |
+| [halt](src/halt.c) | ❌ | [✔](https://stuerz.xyz/mc-halt.8.html) | Extra program, Depends on init |
 | [head](src/head.c) | ✔ | [✔](https://stuerz.xyz/mc-head.1.html) | |
 | [id](src/id.c) | ✔ | [✔](https://stuerz.xyz/mc-id.1.html) | |
-| [init](src/init.c) | ❌ | [✔](https://stuerz.xyz/mc-init.8.html) | |
+| [init](src/init.c) | ❌ | [✔](https://stuerz.xyz/mc-init.8.html) | Extra program |
 | [kill](src/kill.c) | ❌ | [✔](https://stuerz.xyz/mc-kill.1.html) | Doesn't support XSI syntax |
 | [link](src/link.c) | ✔ | [✔](https://stuerz.xyz/mc-link.1.html) | |
 | [ln](src/ln.c) | ✔ | [✔](https://stuerz.xyz/mc-ln.1.html) | |
 | [logname](src/logname.c) | ✔ | [✔](https://stuerz.xyz/mc-logname.1.html) | |
-| [login](src/login.c) | ❌ | ❌ | |
+| [login](src/login.c) | ❌ | ❌ | Extra program |
 | [ls](src/ls.c) | ❌ | ❌ | Unimplemented options: -k, -q, -s, -g, -n, -o, -C, -m, -x, -F, -R, -d |
 | [mkdir](src/mkdir.c) | ✔ | [✔](https://stuerz.xyz/mc-mkdir.1.html) | |
 | [mv](src/mv.c) | ✔ | [✔](https://stuerz.xyz/mc-mv.1.html) | |
@@ -65,7 +65,7 @@ Use <code>make DESTDIR=... install</code>
 | [rm](src/rm.c) | ✔ | [✔](https://stuerz.xyz/mc-rm.1.html) | |
 | [rmdir](src/rmdir.c) | ✔ | [✔](https://stuerz.xyz/mc-rmdir.1.html) | |
 | [sleep](src/sleep.c) | ✔ | [✔](https://stuerz.xyz/mc-sleep.1.html) | |
-| [sync](src/sync.c) | ✔ | [✔](https://stuerz.xyz/mc-sync.1.html) | |
+| [sync](src/sync.c) | ✔ | [✔](https://stuerz.xyz/mc-sync.1.html) | Extra program |
 | [tee](src/tee.c) | ✔ | [✔](https://stuerz.xyz/mc-tee.1.html) | |
 | [test](src/test.c) | ✔ | [✔](https://stuerz.xyz/mc-test.1.html) | |
 | [tr](src/tr.c) | ❌ | [✔](https://stuerz.xyz/mc-tr.1.html) | Only basic matching |
@@ -74,6 +74,7 @@ Use <code>make DESTDIR=... install</code>
 | [uname](src/uname.c) | ✔ | [✔](https://stuerz.xyz/mc-uname.1.html) | |
 | [unlink](src/unlink.c) | ✔ | [✔](https://stuerz.xyz/mc-unlink.1.html) | |
 | [wc](src/wc.c) | ✔ | [✔](https://stuerz.xyz/mc-wc.1.html) | |
+| [yes](src/yes.c) | ✔ | [✔](https://stuerz.xyz/mc-yes.1.html) | Extra program |
 
 Note: if a program has a man page, the tick is a link to it.
 
