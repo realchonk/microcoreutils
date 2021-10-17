@@ -1,0 +1,64 @@
+.TH renice 1 "2021-10-17"
+
+.SH NAME
+renice - set nice values of running processes
+
+.SH SYNOPSIS
+.SY renice
+.OP -g\fR|\fB-p\fR|\fB-u
+.B -n
+.I increment
+.I ID\fR...
+.YS
+
+.SH DESCRIPTION
+The
+.I renice
+utility requests the nice value of an already running process to be changed.
+
+
+.SH OPTIONS
+.B -g
+.RE
+.RS 5
+Interpret the following operands as unsigned decimal integer process group IDs.
+.RE
+.B -p
+.RE
+.RS 5
+Interpret the following operands as unsigned decimal integer process IDs.
+The
+.B -p
+option is the default if no options are specified.
+.RE
+.B -u
+.RE
+.RS 5
+Interpret the following operands either as user names or user IDs.
+.RE
+.B -n
+.I increment
+.RE
+.RS 5
+Set the nice value to
+.I increment\fR.
+.RE
+
+.SH OPERANDS
+The following operands are be supported:
+.PP
+.I ID
+.RE
+.RS 5
+A process ID, process group ID, or user name/user ID, depending on the option selected.
+
+.PP
+.SH COPYRIGHT
+.br
+Copyright \(co 2021 Benjamin Stürz
+.br
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+.br
+This is free software; you are free to change and redistribute it.
+.br
+There is NO WARRANTY, to the extent permitted by law.
