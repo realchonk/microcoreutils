@@ -1,0 +1,57 @@
+.TH pathchk 1 "2021-10-17"
+
+.SH NAME
+pathchk - check pathnames
+
+.SH SYNOPSIS
+.SY pathchk
+.OP -p
+.OP -P
+.I pathname\fR...
+.YS
+
+.SH DESCRIPTION
+The
+.I
+pathchk
+utility checks if one or more pathnames are valid.
+More extensive portability checks are provided by the
+.B -p
+and
+.B -P
+options.
+
+.SH OPTIONS
+.B -p
+.RE
+.RS 5
+Instead of performing checks based on the underlying file system,
+check if a
+.I pathname
+complies to more general POSIX specifications.
+.RE
+.B -P
+.RE
+.RS 5
+Check if a
+.I pathname
+is empty or begins with a '-'.
+
+.SH OPERANDS
+The following operands are supported:
+.PP
+.I pathname
+.RE
+.RS 5
+A pathname to be checked.
+
+.PP
+.SH COPYRIGHT
+.br
+Copyright \(co 2021 Benjamin Stürz
+.br
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+.br
+This is free software; you are free to change and redistribute it.
+.br
+There is NO WARRANTY, to the extent permitted by law.

@@ -14,9 +14,49 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-bin_PROGRAMS = basename cal cat chgrp chmod chown cksum cmp clear cp date dd dirname du echo	\
-					ed env expr false head id kill link ln logname ls mkdir mv pwd nice renice rm \
-					rmdir	sleep tee test tr true tty uname unlink wc
+bin_PROGRAMS = basename 		\
+					cal				\
+					cat				\
+					chgrp				\
+					chmod				\
+					chown				\
+					cksum				\
+					cmp				\
+					clear				\
+					cp					\
+					date				\
+					dd					\
+					dirname			\
+					du					\
+					echo				\
+					ed					\
+					env				\
+					expr				\
+					false				\
+					head				\
+					id					\
+					kill				\
+					link				\
+					ln					\
+					logname			\
+					ls					\
+					mkdir				\
+					mv					\
+					nice				\
+					pathchk			\
+					pwd				\
+					renice			\
+					rm					\
+					rmdir				\
+					sleep				\
+					tee				\
+					test				\
+					tr					\
+					true				\
+					uname				\
+					unlink			\
+					wc
+
 sbin_PROGRAMS =
 
 man1_MANS = doc/basename.1		\
@@ -45,8 +85,9 @@ man1_MANS = doc/basename.1		\
 				doc/mkdir.1			\
 				doc/mv.1				\
 				doc/nice.1			\
-				doc/renice.1		\
+				doc/pathchk.1		\
 				doc/pwd.1			\
+				doc/renice.1		\
 				doc/rm.1				\
 				doc/rmdir.1			\
 				doc/sleep.1			\
@@ -98,6 +139,7 @@ login_SOURCES		= src/login.c
 ls_SOURCES			= src/ls.c
 mkdir_SOURCES		= src/mkdir.c
 mv_SOURCES			= src/mv.c
+pathchk_SOURCES	= src/pathchk.c
 pwd_SOURCES			= src/pwd.c
 rm_SOURCES			= src/rm.c
 rmdir_SOURCES		= src/rmdir.c
