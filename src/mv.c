@@ -16,47 +16,100 @@
 #define PROG_NAME "mv"
 
 #include <sys/stat.h>
+#include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include "errprintf.h"
+#include "prompt.h"
+
+static bool is_tty(void) {
+   return ttyname(STDIN_FILENO) != NULL;
+}
+
+#define is_dir(st) (((st).st_mode & S_IFMT) == S_IFDIR)
+
+#define is_writable(path) (access((path), W_OK) == 0)
+
+static char* make_sub_path(const char* dir, const char* ent) {
+   const size_t len_dir = strlen(dir);
+   const size_t len_ent = strlen(ent);
+   const size_t len_buf = len_dir + len_ent + 2;
+   char* buf = malloc(len_buf);
+   snprintf(buf, len_buf, "%s/%s", dir, ent);
+   return buf;
+}
 
 int main(int argc, char* argv[]) {
-   if (argc < 3) {
-print_usage:
-      puts("Usage: mv [-if] source_file target_file");
-      puts("       mv [-if] source_file... target_dir");
-      return 1;
-   }
-   int prompt = 0;
+   bool prompt = false;
    int option;
    while ((option = getopt(argc, argv, ":if")) != -1) {
       switch (option) {
-      case 'i':   prompt = 1; break;
-      case 'f':   prompt = 0; break;
+      case 'i':
+         prompt = true;
+         break;
+      case 'f':
+         prompt = false;
+         break;
       case '?':
          printf("mv: unknown option: -%c\n", optopt);
          break;
       }
    }
-   if ((argc - optind) < 2) goto print_usage;
-   struct stat s;
-   if ((argc - optind) == 2) {
-      const char* src = argv[optind];
-      const char* dest = argv[optind + 1];
-      if (prompt && stat(dest, &s) >= 0) {
-         char ch;
-         printf("mv: overwrite '%s'? ", dest);
-         while (scanf("%c\n", &ch) == 0);
-         if (ch != 'y') return 0;
-      }
-      const int ec = rename(src, dest);
-      if (ec  == -1) {
-         errprintf("cannot move '%s' to '%s'", src, dest);
-      }
-      return ec;
-   }
-   else {
 
+   const int narg = argc - optind;
+   struct stat st_dest, st_src;
+
+   if (narg < 2) {
+      fputs("Usage: mv [-if] source_file target_file\n", stderr);
+      fputs("       mv [-if] source_file... target_dir\n", stderr);
+      return 1;
    }
+
+   const char* src;
+   const char* dest = argv[argc - 1];
+   const int has_dest = stat(dest, &st_dest) == 0;
+
+   if (narg == 2 && (!has_dest || !is_dir(st_dest))) {
+      src = argv[optind];
+
+      // if the destination exists and one of the following:
+      // - `-i` was specified
+      // - the destination is not writable and stdin is a tty
+      // then print a prompt
+      if (has_dest && (prompt || (!is_writable(dest) && is_tty()))) {
+         if (!do_prompt(true, "overwrite '%s'", dest))
+            return 0;
+      }
+      if (rename(src, dest) != 0) {
+         errprintf("cannot move '%s' to '%s'", src, dest);
+         return 1;
+      }
+      return 0;
+   }
+
+   if (!has_dest) {
+      fprintf(stderr, "mv: no such directory '%s'.\n", dest);
+      return 1;
+   }
+
+   if (!is_dir(st_dest)) {
+      fprintf(stderr, "mv: '%s' is not a directory.\n", dest);
+      return 1;
+   }
+
+   for (int i = optind; i < (argc - 1); ++i) {
+      src = argv[i];
+      char* dest_path = make_sub_path(dest, src);
+
+      if (rename(src, dest_path) != 0) {
+         errprintf("failed to move '%s' to '%s", src, dest_path);
+         return 1;
+      }
+
+      free(dest_path);
+   }
+
+   return 0;
 }
