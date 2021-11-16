@@ -49,6 +49,7 @@ bin_PROGRAMS = basename 		\
 					rm					\
 					rmdir				\
 					sleep				\
+					split				\
 					tee				\
 					test				\
 					tr					\
@@ -92,6 +93,7 @@ man1_MANS = doc/basename.1		\
 				doc/rm.1				\
 				doc/rmdir.1			\
 				doc/sleep.1			\
+				doc/split.1			\
 				doc/tee.1			\
 				doc/test.1			\
 				doc/tr.1				\
@@ -147,6 +149,7 @@ rmdir_SOURCES		= src/rmdir.c
 nice_SOURCES		= src/nice.c
 renice_SOURCES		= src/renice.c
 sleep_SOURCES		= src/sleep.c
+split_SOURCES		= src/split.c
 sync_SOURCES		= src/sync.c
 tee_SOURCES			= src/tee.c
 test_SOURCES		= src/test.c

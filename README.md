@@ -65,6 +65,7 @@ Use <code>make DESTDIR=... install</code>
 | [rm](src/rm.c) | ✔ | [✔](https://stuerz.xyz/mc-rm.1.html) | |
 | [rmdir](src/rmdir.c) | ✔ | [✔](https://stuerz.xyz/mc-rmdir.1.html) | |
 | [sleep](src/sleep.c) | ✔ | [✔](https://stuerz.xyz/mc-sleep.1.html) | |
+| [split](src/split.c) | ✔ | [✔](https://stuerz.xyz/mc-split.1.html) | |
 | [sync](src/sync.c) | ✔ | [✔](https://stuerz.xyz/mc-sync.1.html) | Extra program |
 | [tee](src/tee.c) | ✔ | [✔](https://stuerz.xyz/mc-tee.1.html) | |
 | [test](src/test.c) | ✔ | [✔](https://stuerz.xyz/mc-test.1.html) | |

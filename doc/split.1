@@ -1,0 +1,107 @@
+.TH split 1 "2021-11-16"
+
+.SH NAME
+split - split a file into pieces
+
+.SH SYNOPSIS
+.SY split
+.OP -l line_count
+.OP -a suffix_length
+[\fIfile \fR[\fIname\fR]]
+.YS
+
+.SY split
+-b
+.I n\fR[k|m]
+.OP -a suffix_length
+[\fIfile \fR[\fIname\fR]]
+.YS
+
+.SH DESCRIPTION
+The
+.I
+split
+utility reads an input file and writes zero or more output files.
+The default size of each output file is 1000 lines.
+The size of the output files can be modified by specification of the
+.B -b
+or
+.B -l
+
+.SH OPTIONS
+.B -a
+.I suffix_length
+.RE
+.RS 5
+Use
+.I suffix_length
+letters to form the suffix portion of the filenames of the split files.
+If
+.B -a
+is not specified, the default is two.
+.RE
+.B -b
+.I n
+.RE
+.RS 5
+Split a file into pieces
+.I n
+bytes in size.
+.RE
+.B -b
+.I n\fBk\fR
+.RE
+.RS 5
+Split a file into pieces
+.I n\fR*1024
+bytes in size.
+.RE
+.B -b
+.I n\fBm\fR
+.RE
+.RS 5
+Split a file into pieces
+.I n\fR*1048576
+bytes in size.
+.RE
+.B -l
+.I line_count
+.RE
+.RS 5
+Specify the number of lines in each resulting file piece.
+The
+.I line_count
+argument is an unsigned decimal integer.
+The default is 1000.
+
+.SH OPERANDS
+.I file
+.RE
+.RS 5
+The pathname of the file to be split.
+If no file is given or
+.I file
+is
+.B '-'\fR,
+the standard input is used.
+.RE
+.I name
+.RE
+.RS 5
+The prefix to be used for each of the files resulting from the split operation.
+If no
+.I name
+is given,
+.B 'x'
+is used as the prefix of the output files.
+
+.PP
+.SH COPYRIGHT
+.br
+Copyright \(co 2021 Benjamin Stürz
+.br
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+.br
+This is free software; you are free to change and redistribute it.
+.br
+There is NO WARRANTY, to the extent permitted by law.
