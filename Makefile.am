@@ -33,6 +33,7 @@ bin_PROGRAMS = basename 		\
 					env				\
 					expr				\
 					false				\
+					grep				\
 					head				\
 					id					\
 					kill				\
@@ -78,6 +79,7 @@ man1_MANS = doc/basename.1		\
 				doc/env.1			\
 				doc/expr.1			\
 				doc/false.1			\
+				doc/grep.1			\
 				doc/head.1			\
 				doc/id.1				\
 				doc/kill.1			\
@@ -131,6 +133,7 @@ env_SOURCES			= src/env.c
 expr_SOURCES		= src/expr.c
 halt_SOURCES		= src/halt.c
 false_SOURCES		= src/true.c
+grep_SOURCES		= src/grep.c
 head_SOURCES		= src/head.c
 id_SOURCES			= src/id.c
 init_SOURCES 		= src/init.c

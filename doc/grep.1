@@ -1,0 +1,141 @@
+.TH head 1 "2021-11-21"
+
+.SH NAME
+grep - search a file for a pattern
+
+.SH SYNOPSIS
+.SY grep
+.OP -E\fR|\fB-F
+.OP -c\fR|\fB-l\fR|\fB-q
+.OP -insvx
+.B -e
+.I pattern_list
+[\fB-e \fIpattern_list\fR]...
+[\fB-f \fIpattern_file\fR]...
+[\fIfile\fR...]
+.YS
+
+.SY grep
+.OP -E\fR|\fB-F
+.OP -c\fR|\fB-l\fR|\fB-q
+.OP -insvx
+[\fB-e \fIpattern_list\fR]...
+.B -f
+.I pattern_file
+[\fB-f \fIpattern_file\fR]...
+[\fIfile\fR...]
+.YS
+
+.SY grep
+.OP -E\fR|\fB-F
+.OP -c\fR|\fB-l\fR|\fB-q
+.OP -insvx
+.I pattern_list
+[\fIfile\fR...]
+.YS
+
+.SH DESCRIPTION
+The
+.I grep
+utility searches input files for patterns.
+The patterns are specified by the
+.B -e
+option,
+.B -f
+option, or te
+.I pattern_list
+operand.
+
+.SH OPTIONS
+.B -E
+.RE
+.RS 5
+Match using extended regular expressions.
+.RE
+.B -F
+.RE
+.RS 5
+Match using fixed strings. (unimplemented)
+.RE
+.B -c
+.RE
+.RS 5
+Write only a count of selected lines to standard output.
+.RE
+.B -e
+.I pattern_list
+.RE
+.RS 5
+Specify oen or more patterns to be used during the search for input.
+.RE
+.B -f
+.I pattern_file
+.RE
+.RS 5
+Read one or more patterns from the file named by the pathname \fIpattern_file\fR.
+.RE
+.B -i
+.RE
+.RS 5
+Perform pattern matching in searches without regard to case.
+.RE
+.B -l
+.RE
+.RS 5
+Write only the names of files containing selected lines to standard output.
+.RE
+.B -n
+.RE
+.RS 5
+Precede each output line by its line number in the file.
+.RE
+.B -q
+.RE
+.RS 5
+Quiet.
+Nothing is printed to standard output,
+regardless of matching lines.
+.RE
+.B -s
+.RE
+.RS 5
+Suppress the error messages written for nonexistent or unreadable files.
+.RE
+.B -v
+.RE
+.RS 5
+Invert the search pattern.
+.RE
+.B -x
+.RE
+.RS 5
+Consider only input lines that use all characters in the line excluding
+the terminating <newline> to match an entire fixed string or regular
+expression to be matching lines. (unimplemented)
+
+.SH OPERANDS
+The following operand is supported:
+.PP
+.I pattern_list
+.RE
+.RS 5
+Specify one or more patterns to be used during the search for input.
+.RE
+.I file
+.RE
+.RS 5
+A pathname of a file to be searched for the patterns.
+If no
+.I file
+operands are specified, the standard input is used.
+
+.PP
+.SH COPYRIGHT
+.br
+Copyright \(co 2021 Benjamin Stürz
+.br
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+.br
+This is free software; you are free to change and redistribute it.
+.br
+There is NO WARRANTY, to the extent permitted by law.
