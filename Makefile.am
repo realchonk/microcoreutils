@@ -49,7 +49,6 @@ bin_PROGRAMS = basename 		\
 					renice			\
 					rm					\
 					rmdir				\
-					sed				\
 					sleep				\
 					split				\
 					tee				\
@@ -152,7 +151,6 @@ rm_SOURCES			= src/rm.c
 rmdir_SOURCES		= src/rmdir.c
 nice_SOURCES		= src/nice.c
 renice_SOURCES		= src/renice.c
-sed_SOURCES			= src/sed.c
 sleep_SOURCES		= src/sleep.c
 split_SOURCES		= src/split.c
 sync_SOURCES		= src/sync.c
