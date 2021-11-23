@@ -42,6 +42,7 @@ bin_PROGRAMS = basename 		\
 					logname			\
 					ls					\
 					mkdir				\
+					mkfifo			\
 					mv					\
 					nice				\
 					pathchk			\
@@ -87,6 +88,7 @@ man1_MANS = doc/basename.1		\
 				doc/ln.1				\
 				doc/logname.1		\
 				doc/mkdir.1			\
+				doc/mkfifo.1		\
 				doc/mv.1				\
 				doc/nice.1			\
 				doc/pathchk.1		\
@@ -144,6 +146,7 @@ logname_SOURCES	= src/logname.c
 login_SOURCES		= src/login.c
 ls_SOURCES			= src/ls.c
 mkdir_SOURCES		= src/mkdir.c
+mkfifo_SOURCES		= src/mkfifo.c
 mv_SOURCES			= src/mv.c
 pathchk_SOURCES	= src/pathchk.c
 pwd_SOURCES			= src/pwd.c

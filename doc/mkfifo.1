@@ -1,0 +1,46 @@
+.TH mkdir 1 "2021-11-23"
+
+.SH NAME
+mkfifo - make FIFO special files
+
+.SH SYNOPSIS
+.SY mkfifo
+.OP -m mode
+file\fI...
+.YS
+
+.SH DESCRIPTION
+The
+.I
+mkfifo
+utility creates FIFO special files specified by the operands, in the order specified.
+
+.SH OPTIONS
+.B -m
+.I mode
+.RE
+.RS 5
+Set the file permission bits of the newly-created directory to the specified
+.I
+mode
+value.
+
+.SH OPERANDS
+The following operands are supported:
+.PP
+.I
+file
+.RE
+.RS 5
+A pathname of a FIFO special file to be created.
+
+.PP
+.SH COPYRIGHT
+.br
+Copyright \(co 2021 Benjamin Stürz
+.br
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+.br
+This is free software; you are free to change and redistribute it.
+.br
+There is NO WARRANTY, to the extent permitted by law.

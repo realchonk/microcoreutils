@@ -58,6 +58,7 @@ Use <code>make DESTDIR=... install</code>
 | [login](src/login.c) | ❌ | ❌ | Extra program |
 | [ls](src/ls.c) | ❌ | ❌ | Unimplemented options: -k, -q, -s, -g, -n, -o, -C, -m, -x, -F, -R, -d |
 | [mkdir](src/mkdir.c) | ✔ | [✔](https://stuerz.xyz/mc-mkdir.1.html) | |
+| [mkfifo](src/mkfifo.c) | ✔ | [✔](https://stuerz.xyz/mc-mkfifo.1.html) | |
 | [mv](src/mv.c) | ✔ | [✔](https://stuerz.xyz/mc-mv.1.html) | |
 | [nice](src/nice.c) | ✔ | [✔](https://stuerz.xyz/mc-nice.1.html) | |
 | [pathchk](src/pathchk.c) | ✔ |  [✔](https://stuerz.xyz/mc-pathchk.1.html)| |
