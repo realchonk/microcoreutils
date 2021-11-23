@@ -18,6 +18,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
+#include "buf.h"
 
 inline static FILE* openfile_in(const char* filename) {
    return !strcmp(filename, "-") ? stdin : fopen(filename, "r");
@@ -30,6 +31,42 @@ inline static FILE* openfile_out(const char* filename) {
 inline static void closefile(FILE* file) {
    if (file != stdin && file != stdout)
       fclose(file);
+}
+inline static char* grep_readline(FILE* file) {
+   char* buf = NULL;
+   int ch;
+   while ((ch = fgetc(file)) != EOF) {
+      if (ch == '\n') {
+         buf_push(buf, '\0');
+         break;
+      }
+      buf_push(buf, ch);
+   }
+   if (!buf)
+      return NULL;
+   char* str = strdup(buf);
+   buf_free(buf);
+   return str;
+}
+inline static char* readfile(const char* path) {
+   FILE* file = openfile_in(path);
+   if (!file) {
+      errprintf("%s", path);
+      return NULL;
+   }
+   char* buf = NULL;
+   int ch;
+   while ((ch = fgetc(file)) != EOF) {
+      buf_push(buf, ch);
+   }
+   if (buf[buf_len(buf)-1] == '\n') {
+      buf[buf_len(buf)-1] = '\0';
+   } else {
+      buf_push(buf, '\0');
+   }
+   char* str = strdup(buf);
+   buf_free(buf);
+   return str;
 }
 
 #endif /* FILE_OPENFILE_H */

@@ -25,43 +25,6 @@
 #include "openfile.h"
 #include "buf.h"
 
-static char* grep_readline(FILE* file) {
-   char* buf = NULL;
-   int ch;
-   while ((ch = fgetc(file)) != EOF) {
-      if (ch == '\n') {
-         buf_push(buf, '\0');
-         break;
-      }
-      buf_push(buf, ch);
-   }
-   if (!buf)
-      return NULL;
-   char* str = strdup(buf);
-   buf_free(buf);
-   return str;
-}
-static char* readfile(const char* path) {
-   FILE* file = openfile_in(path);
-   if (!file) {
-      errprintf("%s", path);
-      return NULL;
-   }
-   char* buf = NULL;
-   int ch;
-   while ((ch = fgetc(file)) != EOF) {
-      buf_push(buf, ch);
-   }
-   if (buf[buf_len(buf)-1] == '\n') {
-      buf[buf_len(buf)-1] = '\0';
-   } else {
-      buf_push(buf, '\0');
-   }
-   char* str = strdup(buf);
-   buf_free(buf);
-   return str;
-}
-
 enum grep_mode {
    GREP_BRE,
    GREP_ERE,
