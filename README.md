@@ -46,7 +46,7 @@ Use <code>make DESTDIR=... install</code>
 | [env](src/env.c) | ✔ | [✔](https://stuerz.xyz/mc-env.1.html) | |
 | [expr](src/expr.c) | ✔ | [✔](https://stuerz.xyz/mc-expr.1.html) | |
 | [false](src/true.c) | ✔ | [✔](https://stuerz.xyz/mc-false.1.html) | Uses the same source-code as true |
-| [grep](src/true.c) | ❌ | [✔](https://stuerz.xyz/mc-grep.1.html) | Unimplemented options: -F, -x |
+| [grep](src/true.c) | ❌ | [✔](https://stuerz.xyz/mc-grep.1.html) | Unimplemented options: -x |
 | [halt](src/halt.c) | ❌ | [✔](https://stuerz.xyz/mc-halt.8.html) | Extra program, Depends on init |
 | [head](src/head.c) | ✔ | [✔](https://stuerz.xyz/mc-head.1.html) | |
 | [id](src/id.c) | ✔ | [✔](https://stuerz.xyz/mc-id.1.html) | |

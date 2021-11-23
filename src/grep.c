@@ -15,6 +15,7 @@
 
 #define PROG_NAME "grep"
 
+#include "config.h"
 #include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
@@ -78,6 +79,42 @@ static bool suppress_err = false;
 static bool inverse = false;
 static int pmode = 'p';
 static struct grep_pattern* patterns = NULL;
+static char*(*fix_strstr)(const char*, const char*) = NULL;
+static bool(*match_func)(const char*) = NULL;
+
+#if !HAVE_STRCASESTR
+static char* my_strcasestr(const char* hay, const char* needle) {
+   const size_t len_hay = strlen(hay);
+   const size_t len_needle = strlen(needle);
+   if (len_needle > len_hay)
+      return NULL;
+
+   const size_t len = len_hay - len_needle;
+
+   // `<=` is intended. 
+   for (size_t i = 0; i <= len; ++i) {
+      if (strcasecmp(hay + i, needle) == 0)
+         return (char*(hay + i);
+   }
+   return NULL;
+}
+#endif
+
+static bool regex_match(const char* line) {
+   for (size_t i = 0; i < buf_len(patterns); ++i) {
+      if (regexec(&patterns[i].regex, line, 0, NULL, 0) == 0)
+         return true;
+   }
+   return false;
+}
+
+static bool fix_match(const char* line) {
+   for (size_t i = 0; i < buf_len(patterns); ++i) {
+      if (fix_strstr(line, patterns[i].str))
+         return true;
+   }
+   return false;
+}
 
 static bool run_grep(FILE* file, const char* filename, bool print_filename) {
    size_t num_matched = 0;
@@ -85,17 +122,12 @@ static bool run_grep(FILE* file, const char* filename, bool print_filename) {
    size_t linenum = 0;
    char* line;
 
+   bool(*f)(const char*);
+
    while ((line = grep_readline(file)) != NULL) {
-      bool line_matched = false;
       ++linenum;
 
-      for (size_t i = 0; i < buf_len(patterns); ++i) {
-         int ec = regexec(&patterns[i].regex, line, 0, NULL, 0);
-         if (ec == 0) {
-            line_matched = true;
-            break;
-         }
-      }
+      const bool line_matched = match_func(line);
 
       if (line_matched ^ inverse) {
          ++num_matched;
@@ -131,8 +163,8 @@ static bool run_grep(FILE* file, const char* filename, bool print_filename) {
 }
 
 int main(int argc, char* argv[]) {
-   enum grep_mode rmode = GREP_BRE;
    bool icase = false;
+   enum grep_mode rmode = GREP_BRE;
    struct grep_pattern gp;
    int ec;
 
@@ -144,8 +176,6 @@ int main(int argc, char* argv[]) {
       rmode = GREP_ERE;
    } else if (!strcmp(basename, "fgrep")) {
       rmode = GREP_FIX;
-      fputs("grep: unimplemented option '-F'\n", stderr);
-      return 2;
    }
 
    int option;
@@ -155,8 +185,6 @@ int main(int argc, char* argv[]) {
          rmode = GREP_ERE;
          break;
       case 'F':
-         fputs("grep: unimplemented option '-F'\n", stderr);
-         return 2;
          rmode = GREP_FIX;
          break;
       case 'c':
@@ -206,40 +234,50 @@ int main(int argc, char* argv[]) {
       }
    }
 
-   int cflags = 0;
-   if (rmode == GREP_ERE) {
-      cflags |= REG_EXTENDED;
-   }
-   if (icase) {
-      cflags |= REG_ICASE;
-   }
+   if (rmode == GREP_FIX) {
+      if (icase) {
+         fix_strstr = strcasestr;
+      } else {
+         fix_strstr = strstr;
+      }
+      match_func = fix_match;
+   } else {
+      match_func = regex_match;
+      int cflags = 0;
+      if (rmode == GREP_ERE) {
+         cflags |= REG_EXTENDED;
+      }
+      if (icase) {
+         cflags |= REG_ICASE;
+      }
 
-   // Compile regex patterns
-   for (size_t i = 0; i < buf_len(patterns); ++i) {
-      struct grep_pattern* p = &patterns[i];
-      if (p->is_file) {
-         char* text = readfile(p->str);
-         if (!text) {
+      // Compile regex patterns
+      for (size_t i = 0; i < buf_len(patterns); ++i) {
+         struct grep_pattern* p = &patterns[i];
+         if (p->is_file) {
+            char* text = readfile(p->str);
+            if (!text) {
+               for (size_t j = 0; j < i; ++j) {
+                  regfree(&patterns[j].regex);
+               }
+               return 2;
+            }
+            ec = regcomp(&p->regex, text, cflags);
+            free(text);
+         } else {
+            ec = regcomp(&p->regex, p->str, cflags);
+         }
+         if (ec != 0) {
+            const size_t num = regerror(ec, &p->regex, NULL, 0);
+            char* buf = malloc(num);
+            regerror(ec, &p->regex, buf, num);
+            fprintf(stderr, "grep: %s\n", buf);
+            free(buf);
             for (size_t j = 0; j < i; ++j) {
                regfree(&patterns[j].regex);
             }
             return 2;
          }
-         ec = regcomp(&p->regex, text, cflags);
-         free(text);
-      } else {
-         ec = regcomp(&p->regex, p->str, cflags);
-      }
-      if (ec != 0) {
-         const size_t num = regerror(ec, &p->regex, NULL, 0);
-         char* buf = malloc(num);
-         regerror(ec, &p->regex, buf, num);
-         fprintf(stderr, "grep: %s\n", buf);
-         free(buf);
-         for (size_t j = 0; j < i; ++j) {
-            regfree(&patterns[j].regex);
-         }
-         return 2;
       }
    }
 
@@ -277,9 +315,11 @@ int main(int argc, char* argv[]) {
       }
    }
 
-   // Free regexes
-   for (size_t i = 0; i < buf_len(patterns); ++i) {
-      regfree(&patterns[i].regex);
+   if (rmode != GREP_FIX) {
+      // Free regexes
+      for (size_t i = 0; i < buf_len(patterns); ++i) {
+         regfree(&patterns[i].regex);
+      }
    }
 
    return ec;

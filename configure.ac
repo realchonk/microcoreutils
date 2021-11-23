@@ -13,9 +13,9 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-AC_INIT([microcoreutils], 1.3, [benni@stuerz.xyz], [microcoreutils], [https://github.com/Benni3D/microcoreutils])
+AC_INIT([microcoreutils],[1.3],[benni@stuerz.xyz],[microcoreutils],[https://github.com/Benni3D/microcoreutils])
 
-AC_PREREQ([2.69])
+AC_PREREQ([2.71])
 AC_CONFIG_SRCDIR([src/echo.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -25,6 +25,7 @@ AC_SUBST([datarootdir], ['${prefix}/usr/share'])
 
 # Setup default installation paths
 AC_PREFIX_DEFAULT([/])
+AC_USE_SYSTEM_EXTENSIONS
 
 # Check for programs.
 AC_PROG_CC
@@ -51,7 +52,8 @@ AC_FUNC_REALLOC
 AC_FUNC_STRCOLL
 AC_CHECK_FUNCS([getcwd getspnam lchown memmove mkdir putenv realpath
                 rmdir sethostname strchr strdup strerror strndup strrchr
-                strtol strtoul uname setresuid clearenv])
+                strtol strtoul uname setresuid clearenv strcasestr
+                strcasecmp])
 
 # Enable extra programs
 AC_ARG_ENABLE([extra-progs],
