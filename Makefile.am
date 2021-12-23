@@ -46,6 +46,7 @@ bin_PROGRAMS = basename 		\
 					mv					\
 					nice				\
 					pathchk			\
+					printf			\
 					pwd				\
 					renice			\
 					rm					\
@@ -149,6 +150,7 @@ mkdir_SOURCES		= src/mkdir.c
 mkfifo_SOURCES		= src/mkfifo.c
 mv_SOURCES			= src/mv.c
 pathchk_SOURCES	= src/pathchk.c
+printf_SOURCES		= src/printf.c
 pwd_SOURCES			= src/pwd.c
 rm_SOURCES			= src/rm.c
 rmdir_SOURCES		= src/rmdir.c
