@@ -61,8 +61,8 @@ Use <code>make DESTDIR=... install</code>
 | [mkfifo](src/mkfifo.c) | ✔ | [✔](https://stuerz.xyz/mc-mkfifo.1.html) | |
 | [mv](src/mv.c) | ✔ | [✔](https://stuerz.xyz/mc-mv.1.html) | |
 | [nice](src/nice.c) | ✔ | [✔](https://stuerz.xyz/mc-nice.1.html) | |
-| [pathchk](src/pathchk.c) | ✔ |  [✔](https://stuerz.xyz/mc-pathchk.1.html)| |
-| [printf](src/printf.c) | ❌ |  ❌ | Incomplete format string |
+| [pathchk](src/pathchk.c) | ✔ | [✔](https://stuerz.xyz/mc-pathchk.1.html) | |
+| [printf](src/printf.c) | ❌ | [✔](https://stuerz.xyz/mc-printf.1.html) | Incomplete format string |
 | [pwd](src/pwd.c) | ✔ |  [✔](https://stuerz.xyz/mc-pwd.1.html)| |
 | [renice](src/renice.c) | ✔ | [✔](https://stuerz.xyz/mc-renice.1.html) | |
 | [rm](src/rm.c) | ✔ | [✔](https://stuerz.xyz/mc-rm.1.html) | |

@@ -1,0 +1,49 @@
+.TH echo 1 "2021-12-24"
+
+.SH NAME
+printf - write formatted output
+
+.SH SYNOPSIS
+.SY print
+.B format
+.OP argument\fR...
+.YS
+
+.SH DESCRIPTION
+The
+.I printf
+utility writes formatted operands to the standard output.
+The
+.I argument
+operands are formatted under control of the
+.I format
+operand.
+
+
+.SH OPERANDS
+The following operands are be supported:
+.PP
+.I format
+.RE
+.RS 5
+A string describing the format to use to write the remaining operands.
+.RE
+.I argument
+.RE
+.RS 5
+The string to be written to standard output,
+under the control of \fIformat\fR.
+
+.SH SEE ALSO
+\fBprintf\fR(3)
+
+.PP
+.SH COPYRIGHT
+.br
+Copyright \(co 2021 Benjamin Stürz
+.br
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+.br
+This is free software; you are free to change and redistribute it.
+.br
+There is NO WARRANTY, to the extent permitted by law.

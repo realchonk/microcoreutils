@@ -93,6 +93,7 @@ man1_MANS = doc/basename.1		\
 				doc/mv.1				\
 				doc/nice.1			\
 				doc/pathchk.1		\
+				doc/printf.1		\
 				doc/pwd.1			\
 				doc/renice.1		\
 				doc/rm.1				\
